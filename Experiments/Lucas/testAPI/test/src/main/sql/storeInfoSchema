@@ -1,7 +1,0 @@
-CREATE TABLE `store_info` (
-`storeName` varchar(20) NOT NULL,
-`hours` varchar(20) DEFAULT NULL,
-`cash` int(20) DEFAULT NULL,
-`market_score` int(20) DEFAULT NULL,
-PRIMARY KEY (`storeName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
