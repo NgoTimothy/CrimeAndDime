@@ -1,0 +1,21 @@
+Check files you have changed by doing
+git status
+
+Make sure to add all the files you want to commit you can use the following command to add all files changed
+git add .
+or if you only want to add some files you can do
+git add filename
+
+Then commit those changes
+git commit -m "Meaningful message"
+
+Now before you push anything do the following
+git status
+If there are any differences that you don't want to lose do the following
+git pull
+
+Keep doing this for every branch that it is checked out from Ex. Master -> First Branch -> Second Branch If you are working on the second branch do the following commands for first and maser
+Do the same git status and git pull
+
+Now if you want to pull the latest changes into the branch you are currently working on do the following
+git pull origin sourceBranchName
