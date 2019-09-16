@@ -26,7 +26,7 @@ public class InventoryController {
             //connect to the database and execute query
             Class.forName("com.mysql.jdbc.Driver");
             Connection con= DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/dime_and_crime?useSSL=false","root","root");
+                    "jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","root","root");
             PreparedStatement prst = con.prepareStatement(query);
             Statement stmt=con.createStatement();
             ResultSet rs = prst.executeQuery();
