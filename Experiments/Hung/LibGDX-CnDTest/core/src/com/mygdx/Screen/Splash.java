@@ -24,6 +24,7 @@ public class Splash implements Screen {
         splashImg = new Sprite(splashTexture);
         splashImg.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
+
     }
 
     @Override
@@ -56,6 +57,7 @@ public class Splash implements Screen {
 
     @Override
     public void dispose () {
-
+        batch.dispose();
+        splashImg.getTexture().dispose();
     }
 }
