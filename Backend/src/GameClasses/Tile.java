@@ -23,6 +23,7 @@ public class Tile {
         curTileType = tileType.EMPTY;
         stockedItem = null;
         curShelfDirection = shelfDirection.NONE;
+        stockedItem = null;
     }
 
     /**

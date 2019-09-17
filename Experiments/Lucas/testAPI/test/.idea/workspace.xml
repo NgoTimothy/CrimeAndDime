@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="13faa00f-2311-43f8-b1c3-fdb4715d0436" name="Default Changelist" comment="">
+    <list default="true" id="3fbc46dd-5282-44e3-a001-957e3193f971" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/.travis.yml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/.name" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
@@ -19,10 +21,8 @@
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/libraries/Maven__com_google_code_gson_gson_2_8_5.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/libraries/Maven__com_jayway_jsonpath_json_path_2_4_0.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/libraries/Maven__com_vaadin_external_google_android_json_0_0_20131108_vaadin1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/libraries/Maven__javax_activation_javax_activation_api_1_2_0.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/libraries/Maven__javax_annotation_javax_annotation_api_1_3_2.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/libraries/Maven__javax_validation_validation_api_2_0_1_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/libraries/Maven__javax_xml_bind_jaxb_api_2_3_1.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/libraries/Maven__junit_junit_4_12.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_46.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/libraries/Maven__net_bytebuddy_byte_buddy_1_9_13.xml" afterDir="false" />
@@ -70,19 +70,42 @@
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/modules.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/uiDesigner.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/manifest.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/src/main/csv/inventoryData.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/src/main/csv/storeInfoData.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/src/main/java/Inventory/Application.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/src/main/java/Inventory/InventoryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/src/main/java/Inventory/Item.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/src/main/sql/inventorySchema" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/src/main/sql/storeInfoSchema" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/target/gs-rest-service-0.1.0.jar.original" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/target/maven-archiver/pom.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/gs-rest-service-0.1.0.jar.original" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/libraries/Maven__javax_activation_javax_activation_api_1_2_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/libraries/Maven__javax_activation_javax_activation_api_1_2_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/libraries/Maven__javax_xml_bind_jaxb_api_2_3_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Backend/src/API/test/.idea/libraries/Maven__javax_xml_bind_jaxb_api_2_3_1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Inventory/InventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Inventory/InventoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/sql/inventorySchema" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/sql/inventorySchema" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="CodeStyleSettingsInfer">
-    <option name="done" value="true" />
-  </component>
-  <component name="DefaultGradleProjectSettings">
-    <option name="isMigrated" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -94,27 +117,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../.." />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="importAutomatically" value="true" />
-      </MavenImportingSettings>
-    </option>
-  </component>
-  <component name="ProjectCodeStyleSettingsMigration">
-    <option name="version" value="1" />
-  </component>
-  <component name="ProjectId" id="1QcQ1qqgkozbdrwu2hk1naQ21E5" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="1QwFJbeWVlGvGbuJFmmxcT3HiHf" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../Backend/src/API/test/pom.xml" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../.." />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -129,26 +143,43 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="Run" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="Inventory.Application" />
+    <configuration name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="gs-rest-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Inventory.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="Inventory.Application" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.Application" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="13faa00f-2311-43f8-b1c3-fdb4715d0436" name="Default Changelist" comment="" />
-      <created>1562910026788</created>
+      <changelist id="3fbc46dd-5282-44e3-a001-957e3193f971" name="Default Changelist" comment="" />
+      <created>1568673680230</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1562910026788</updated>
+      <updated>1568673680230</updated>
+      <workItem from="1568673683691" duration="2814000" />
+      <workItem from="1568731385805" duration="2137000" />
+      <workItem from="1568747013807" duration="832000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -162,10 +193,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <ignored-roots>
-      <path value="$PROJECT_DIR$/.." />
-    </ignored-roots>
   </component>
 </project>
