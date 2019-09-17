@@ -14,6 +14,19 @@ public class Item {
         retailCost = BigDecimal.valueOf(0);
     }
 
+    public Item(String initName) {
+        name = initName;
+        wholesaleCost = BigDecimal.valueOf(0);
+        retailCost = BigDecimal.valueOf(0);
+    }
+
+    public Item(Item originalItem) {
+        name = originalItem.getName();
+        wholesaleCost = originalItem.getWholesaleCost();
+        retailCost = originalItem.getRetailCost();
+        quantity = originalItem.getQuantity();
+    }
+
     public String getName() {
         return name;
     }
@@ -30,14 +43,14 @@ public class Item {
         return  quantity;
     }
 
-    public void addItemQuantity(int addedItems) {
+    public void addQuantity(int addedItems) {
         if(addedItems < 0) {
             return;
         }
         quantity += addedItems;
     }
 
-    public void subtractItemQuantity(int subtractedItems) {
+    public void subtractQuantity(int subtractedItems) {
         if(subtractedItems > quantity) {
             return;
         }
@@ -64,5 +77,13 @@ public class Item {
             return;
         }
         retailCost = BigDecimal.valueOf(newRetailCost);
+    }
+
+    public void clearQuantity() {
+        quantity = 0;
+    }
+
+    public Item copy() {
+        return new Item(this);
     }
 }
