@@ -58,27 +58,27 @@ public class ItemTest {
 
     @Test
     public void testAddingItemQuantity() {
-        testItem.addItemQuantity(2);
+        testItem.addQuantity(2);
         assertEquals(2, testItem.getQuantity());
     }
 
     @Test
     public void testAddingNegativeQuantity() {
-        testItem.addItemQuantity(-2);
+        testItem.addQuantity(-2);
         assertEquals(0, testItem.getQuantity());
     }
 
     @Test
     public void testSubtractingQuantity() {
-        testItem.addItemQuantity(100);
-        testItem.subtractItemQuantity(20);
+        testItem.addQuantity(100);
+        testItem.subtractQuantity(20);
         assertEquals(80, testItem.getQuantity());
     }
 
     @Test
     public void testSubtractingQuantityThatIsGreaterThanQuantityOnHand() {
-        testItem.addItemQuantity(5);
-        testItem.subtractItemQuantity(10);
+        testItem.addQuantity(5);
+        testItem.subtractQuantity(10);
         assertEquals(5, testItem.getQuantity());
     }
 
@@ -114,6 +114,20 @@ public class ItemTest {
     public void testSettingBadValueForRetailCost() {
         testItem.setRetailCost(-25.55);
         assertEquals(BigDecimal.valueOf(0), testItem.getRetailCost());
+    }
+
+    @Test
+    public void testItemQuantityClears() {
+        testItem.clearQuantity();
+        assertEquals(0, testItem.getQuantity());
+    }
+
+    @Test
+    public void testItemCopy() {
+        Item newTestItem = testItem.copy();
+        testItem.addQuantity(10);
+        assertEquals(10, testItem.getQuantity());
+        assertEquals(0, newTestItem.getQuantity());
     }
 
 }
