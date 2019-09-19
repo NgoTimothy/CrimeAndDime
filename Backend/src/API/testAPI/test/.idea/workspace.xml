@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3fbc46dd-5282-44e3-a001-957e3193f971" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../../../../../Experiments/Lucas/testAPI/test/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../../../Experiments/Lucas/testAPI/test/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Experiments/Lucas/testAPI/test/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../Experiments/Lucas/testAPI/test/src/main/java/Inventory/InventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Experiments/Lucas/testAPI/test/src/main/java/Inventory/InventoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../Experiments/Lucas/testAPI/test/src/main/java/Inventory/LobbyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Experiments/Lucas/testAPI/test/src/main/java/Inventory/LobbyController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../Experiments/Lucas/testAPI/test/src/main/sql/inventorySchema" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Experiments/Lucas/testAPI/test/src/main/sql/inventorySchema" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -70,11 +66,11 @@
   </component>
   <component name="RunManager" selected="Application.Application">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Inventory.Application" />
+      <option name="MAIN_CLASS_NAME" value="Endpoints.Application" />
       <module name="gs-rest-service" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Inventory.*" />
+          <option name="PATTERN" value="Endpoints.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>

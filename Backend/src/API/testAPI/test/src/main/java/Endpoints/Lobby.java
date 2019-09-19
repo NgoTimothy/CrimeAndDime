@@ -1,4 +1,4 @@
-package Inventory;
+package Endpoints;
 
 public class Lobby {
     private int lobbyId;

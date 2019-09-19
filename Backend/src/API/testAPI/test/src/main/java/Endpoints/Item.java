@@ -1,4 +1,4 @@
-package Inventory;
+package Endpoints;
 
 public class Item
 {
