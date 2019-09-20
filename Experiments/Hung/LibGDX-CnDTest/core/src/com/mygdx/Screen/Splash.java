@@ -20,7 +20,7 @@ public class Splash implements Screen {
     {
         batch = new SpriteBatch();
 
-        Texture splashTexture = new Texture(Gdx.files.internal("assets/cndSplash.jpg"));
+        Texture splashTexture = new Texture(Gdx.files.internal("img/cndSplash.jpg"));
         splashImg = new Sprite(splashTexture);
         splashImg.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 

@@ -43,7 +43,7 @@ public class tileMapScreen implements Screen {
     @Override
     public void show ()
     {
-        maps = new TmxMapLoader().load("assets/CnD_Temp.tmx");
+        maps = new TmxMapLoader().load("img/CnD_Temp.tmx");
 
         render = new OrthogonalTiledMapRenderer(maps);
 
