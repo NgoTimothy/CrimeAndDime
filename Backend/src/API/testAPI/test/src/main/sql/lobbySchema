@@ -1,0 +1,11 @@
+CREATE TABLE `lobby` (
+`lobbyId` int(11) NOT NULL AUTO_INCREMENT,
+`lobbyName` varchar(20) NOT NULL,
+`hasPassword` BIT NOT NULL DEFAULT 0,
+`lobbyPassword` varchar(255),
+`numberOfPlayers` int(2) DEFAULT 0,
+PRIMARY KEY (`lobbyId`)
+) ENGINE=InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+//sha('password') to secure it
+

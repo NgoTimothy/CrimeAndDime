@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3fbc46dd-5282-44e3-a001-957e3193f971" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/GameClasses/Inventory.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../../../../Backend/src/TestClasses/InventoryTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../../Backend/src/API/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Backend/apiSrc/API/.gitignore" afterDir="false" />
@@ -97,12 +98,22 @@
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Inventory/LobbyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Inventory/LobbyController.java" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/../../../../Backend/src/API/testAPI/test/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Backend/src/API/testAPI/test/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Backend/src/API/testAPI/test/src/main/java/Inventory/Application.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Backend/src/API/testAPI/test/src/main/java/Inventory/Lobby.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Backend/src/API/testAPI/test/src/main/java/Inventory/LobbyController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+>>>>>>> 195f4498095f4ee537a03c192fde4193e07cc302
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
   </component>
   <component name="DefaultGradleProjectSettings">
     <option name="testRunner" value="GRADLE" />
@@ -118,9 +129,20 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../.." />
   </component>
+<<<<<<< HEAD
   <component name="ProjectId" id="1QwFJbeWVlGvGbuJFmmxcT3HiHf" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+=======
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1QwFJbeWVlGvGbuJFmmxcT3HiHf" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+>>>>>>> 195f4498095f4ee537a03c192fde4193e07cc302
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
@@ -128,7 +150,11 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+<<<<<<< HEAD
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../.." />
+=======
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../Backend/src/API/testAPI/test/pom.xml" />
+>>>>>>> 195f4498095f4ee537a03c192fde4193e07cc302
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -225,4 +251,10 @@
       </map>
     </option>
   </component>
+<<<<<<< HEAD
+=======
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+>>>>>>> 195f4498095f4ee537a03c192fde4193e07cc302
 </project>

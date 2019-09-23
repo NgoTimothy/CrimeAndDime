@@ -1,4 +1,4 @@
-package Inventory;
+package Endpoints;
 
 import java.sql.*;
 import java.util.ArrayList;
