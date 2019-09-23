@@ -1,11 +1,11 @@
-package com.mygdx.cnd.desktop;
+package com.mygdx.cndt.desktop;
 
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.mygdx.TileMapGame.TileMapGame;
-import com.mygdx.cnd.CrimeandDime;
+import com.mygdx.cndt.CrimeandDime;
 
 
 public class DesktopLauncher {

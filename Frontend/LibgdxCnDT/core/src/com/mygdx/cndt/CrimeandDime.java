@@ -1,4 +1,4 @@
-package com.mygdx.cnd;
+package com.mygdx.cndt;
 
 import com.badlogic.gdx.Game;
 import com.mygdx.Screen.MainMenuCnD;
