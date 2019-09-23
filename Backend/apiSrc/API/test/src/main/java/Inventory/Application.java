@@ -1,4 +1,4 @@
-package Inventory;
+package API.test.src.main.java.Inventory;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

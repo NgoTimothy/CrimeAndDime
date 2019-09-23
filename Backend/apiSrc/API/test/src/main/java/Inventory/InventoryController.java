@@ -19,7 +19,7 @@ public class InventoryController {
             //set up variable in while loop
             int i = 0;
             //create array list of items
-            ArrayList<Item> items = new ArrayList<Item>();
+            ArrayList<Inventory.Item> items = new ArrayList<Inventory.Item>();
             //query to query the database
             String query = "select * from crime_and_dime.inventory";
 
@@ -33,7 +33,7 @@ public class InventoryController {
             //loop through each line of result and add all items to item list
             while(rs.next()) {
                 //create instance of individual item class
-                Item item = new Item();
+                Inventory.Item item = new Inventory.Item();
                 item.setItem(rs.getString("item"));
                 item.setItemId(rs.getInt("itemid"));
                 item.setPrice(rs.getInt("price"));

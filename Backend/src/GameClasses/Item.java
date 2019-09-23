@@ -2,7 +2,7 @@ package GameClasses;
 
 import java.math.BigDecimal;
 
-public class Item {
+public class Item implements Comparable<Item> {
     private String name;
     private int quantity;
     private BigDecimal wholesaleCost;
@@ -85,5 +85,44 @@ public class Item {
 
     public Item copy() {
         return new Item(this);
+    }
+
+    /**
+     * If the original object is larger on the alphabet scale then it will return num > 0
+     * If the same object based on name return 0
+     * If smaller return num < 0
+     * @param o
+     * @return
+     */
+    @Override
+    public int compareTo(Item o) {
+        String originalString = this.getName();
+        String compareString = o.getName();
+        int originalStringLength = originalString.length();
+        int compareStringLength = compareString.length();
+        int smallestLengthString = Math.min(originalStringLength, compareStringLength);
+
+        for (int i = 0; i < smallestLengthString; i++) {
+            int originalCharValue = (int)originalString.charAt(i);
+            int compareCharValue = (int)compareString.charAt(i);
+
+            if(originalCharValue != compareCharValue) {
+                return originalCharValue - compareCharValue;
+            }
+        }
+
+        if(originalString != compareString) {
+            return originalStringLength - compareStringLength;
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        Item compareObject = (Item) object;
+        if(this.getName().toLowerCase() == compareObject.getName().toLowerCase()) {
+            return true;
+        }
+        return false;
     }
 }

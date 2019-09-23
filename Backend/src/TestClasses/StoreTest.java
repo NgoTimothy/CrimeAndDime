@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
 
-public class StoreClass {
+public class StoreTest {
     private Store testStore;
 
     @Before

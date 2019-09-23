@@ -103,7 +103,7 @@ public class Tile {
         if(!curTileType.equals(tileType.SHELF)) {
             throw new PlacingItemWithNoShelfException("Cannot place item on tile that is not a shelf");
         }
-        if(stockedItem != null && passedItem.getName().equals(stockedItem.getName())) {
+        if(stockedItem != null && (stockedItem.compareTo(passedItem) == 0)) {
             if((stockedItem.getQuantity() + stockNum) > shelfMax)
                 addToFirstItemSubToSecondItem(stockedItem, passedItem, (shelfMax - stockedItem.getQuantity()));
             else
