@@ -19,15 +19,13 @@ public class tileMapScreen implements Screen {
 
     @Override
     public void render(float delta){
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-
+        camera.update();
         render.setView(camera);
         render.render();
 
-       // camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-       // camera.update();
     }
 
 
@@ -37,18 +35,21 @@ public class tileMapScreen implements Screen {
         camera.viewportHeight = height;
 
        camera.update();
-
     }
 
     @Override
     public void show ()
     {
-        maps = new TmxMapLoader().load("img/CnD_Temp.tmx");
-
-        render = new OrthogonalTiledMapRenderer(maps);
+        float w = Gdx.graphics.getWidth();
+        float h = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera();
+        camera.setToOrtho(false,w,h);
+        camera.update();
 
+        maps = new TmxMapLoader().load("img/NewStoreMap.tmx");
+
+        render = new OrthogonalTiledMapRenderer(maps);
     }
 
 

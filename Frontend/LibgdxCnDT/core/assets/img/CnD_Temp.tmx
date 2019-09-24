@@ -3,6 +3,8 @@
  <tileset firstgid="1" source="egyptianTemple_preview.tsx"/>
  <tileset firstgid="106" source="tileset-wesley.tsx"/>
  <tileset firstgid="834" source="tileTemp.tsx"/>
+ <tileset firstgid="114" source="tileset-wesley.tsx"/>
+ <tileset firstgid="111" source="tileset-wesley.tsx"/>
  <layer id="1" name="Tile Layer 1" width="80" height="80">
   <data encoding="csv">
 114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,
