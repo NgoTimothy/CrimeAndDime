@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3fbc46dd-5282-44e3-a001-957e3193f971" name="Default Changelist" comment="" />
+    <list default="true" id="3fbc46dd-5282-44e3-a001-957e3193f971" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../../../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../.idea/tc_3_crimedime-tycoon.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../.idea/tc_3_crimedime-tycoon.iml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +56,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../../CodingPractice" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
@@ -137,6 +142,9 @@
       <workItem from="1568731385805" duration="2137000" />
       <workItem from="1568747013807" duration="832000" />
       <workItem from="1569373097189" duration="4844000" />
+      <workItem from="1569414464447" duration="273000" />
+      <workItem from="1569414759491" duration="150000" />
+      <workItem from="1569425547145" duration="315000" />
     </task>
     <servers />
   </component>
