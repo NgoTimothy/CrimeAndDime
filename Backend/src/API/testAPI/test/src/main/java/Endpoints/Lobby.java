@@ -27,4 +27,9 @@ public class Lobby {
 
     public void setNumberOfPlayers(int numPlayers) { numberOfPlayers = numPlayers; }
 
+    @Override
+    public String toString() {
+        return "Lobby [lobbyId=" + lobbyId + ", lobbyName=" + lobbyName + ", numberOfPlayers=" + numberOfPlayers + "]";
+    }
+
 }
