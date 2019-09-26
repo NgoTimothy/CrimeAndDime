@@ -11,8 +11,22 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mygdx.cndt.CrimeandDime;
+import com.badlogic.gdx.graphics.Color;
+
+import utility.Lobby;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 
 import java.awt.*;
 
@@ -23,10 +37,13 @@ public class Lobbies implements Screen {
     private Skin skin;
     private BitmapFont white, black;
     private Table table;
-    private TextButton buttonPlay,  buttonExit;
+    private TextButton playButton, exitButton, joinButton[];
     private Label heading;
     private SpriteBatch batch;
     private CrimeandDime game;
+    ArrayList<Lobby> lobbyList;
+    TextField newLobby;
+    Color color;
     
     public Lobbies(CrimeandDime game)
     {
@@ -34,27 +51,29 @@ public class Lobbies implements Screen {
     	white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
     	batch = new SpriteBatch();
-    	
+    	lobbyList = new ArrayList<Lobby>();	
     }
     
     @Override
     public void render(float delta){
-    	String myText = "Hello World!";
+    	
         Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        TextButton newButton = new TextButton("New Button", TextButtonStyle());
-        newButton.setPosition(100, 100);
-        stage.addActor(newButton); 
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);      
         
         stage.act(delta);
 
         stage.setDebugAll(true);
 
         stage.draw();
-        stage = new Stage();
+        
         batch.begin();
-        white.draw(batch, myText, 100, 100);          
+        white.draw(batch, "Lobbies", 500, 700);
+        
+        for(int i = 0; i < 10 && i < lobbyList.size(); i++)
+        {
+        	white.draw(batch, lobbyList.get(i).getLobbyName(), 300, 600 - i * 35);
+        	white.draw(batch, lobbyList.get(i).getNumPlayers() + "/4", 600, 600 - i * 35);
+        }
         
         batch.end();
     }
@@ -65,11 +84,49 @@ public class Lobbies implements Screen {
     {
     	stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+        
+        exitButton = new TextButton("X", TextButtonStyle());
+        exitButton.setPosition(1100, 600);
+        exitButton.setWidth(50);
+        exitButton.setHeight(50);
+        exitButton.addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            	game.setScreen(new MainMenuCnD(game));
+            }
+        });
+        stage.addActor(exitButton);
+        
+        playButton = new TextButton("Play", TextButtonStyle());
+        playButton.setPosition(1100, 50);
+        stage.addActor(playButton);
+        
+        getLobbies();
+        joinButton = new TextButton[lobbyList.size()];
+        for(int i = 0; i < 10 && i < lobbyList.size(); i++)
+        {
+	        joinButton[i] = new TextButton("Join", TextButtonStyle());
+	        joinButton[i].setPosition(700, 575 - i * 35);
+	        joinButton[i].addListener(new ClickListener()
+	        {
+	            @Override
+	            public void clicked(InputEvent event, float x, float y) {
+	            	game.setScreen(new LobbyScreen(game));
+	            }
+	        });
+	        stage.addActor(joinButton[i]);
+        }
+        
+//        TextFieldStyle style = new TextFieldStyle(black, );
+//    	newLobby = new TextField("", style);
+//        newLobby.setPosition(200, 200);
+//        stage.addActor(newLobby);
     }
 
 
     @Override
-    public void resize(int y, int x){
+    public void resize(int y, int x)	{
     	
     }
 
@@ -103,6 +160,70 @@ public class Lobbies implements Screen {
         textButtonStyle.pressedOffsetY = -1;
         textButtonStyle.font = black;
 		return textButtonStyle;
+    }
+    
+    private ArrayList<Lobby> getLobbies()
+    {
+    	//Get a string of lobby info from the API
+    	String result = "";
+    	try {
+        	String url = "http://coms-309-tc-3.misc.iastate.edu:8080/lobbyList";
+    		
+    		URL obj = new URL(url);
+    		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+    		// optional default is GET
+    		con.setRequestMethod("GET");
+
+    		String USER_AGENT = "Mozilla/5.0";
+    		
+    		//add request header
+    		con.setRequestProperty("User-Agent", USER_AGENT);
+
+    		int responseCode = con.getResponseCode();
+    		System.out.println("\nSending 'GET' request to URL : " + url);
+    		System.out.println("Response Code : " + responseCode);
+
+    		BufferedReader in = new BufferedReader(
+    		        new InputStreamReader(con.getInputStream()));
+    		String inputLine;
+    		StringBuffer response = new StringBuffer();
+
+    		while ((inputLine = in.readLine()) != null) {
+    			response.append(inputLine);
+    		}
+    		in.close();
+
+    		result = response.toString();
+    		//print result
+    		System.out.println(response.toString());
+    		
+        	}
+        	catch(Exception e)	{
+        		System.out.print(e);
+        	}    	    	
+    	
+    		String delims = "[{}\":,]+";
+    		String[] tokens = result.split(delims);
+    		for (String s : tokens) {
+    			System.out.println(s);
+    		}
+    		
+    		//Parse the string
+    		Lobby lobby;
+    		for (int i = 1; i < tokens.length - 8; i += 8)
+    		{
+    			if(tokens[i + 5].equals("false"))
+    				lobby = new Lobby(Integer.parseInt(tokens[i + 1]), tokens[i + 3], Integer.parseInt(tokens[i + 7]));
+    			else
+    			{
+    				lobby = new Lobby(Integer.parseInt(tokens[i + 1]), tokens[i + 3], Integer.parseInt(tokens[i + 9]));
+    				i += 2;
+    			}
+    			lobbyList.add(lobby);
+    		}
+    		
+    		return lobbyList;
     }
     
 }

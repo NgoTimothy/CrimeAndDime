@@ -43,11 +43,6 @@ public class MainMenuCnD implements Screen {
         stage.setDebugAll(true);
 
         stage.draw();
-        
-        if(buttonPlay.isPressed())
-        {
-        	game.setScreen(new Lobbies(game));
-        }
     }
 
 
@@ -87,7 +82,13 @@ public class MainMenuCnD implements Screen {
         });
         buttonPlay = new TextButton("Play", textButtonStyle);
         buttonPlay.pad(200);
-
+        buttonPlay.addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            	game.setScreen(new Lobbies(game));
+            }
+        });
         table.add(buttonExit);
         table.row();
         buttonExit.moveBy(540,0);

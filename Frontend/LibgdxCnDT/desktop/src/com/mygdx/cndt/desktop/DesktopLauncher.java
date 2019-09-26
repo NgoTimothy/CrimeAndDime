@@ -19,7 +19,7 @@ public class DesktopLauncher {
 		cfg.useGL30 = true;
 		cfg.width = 1280;
 		cfg.height = 720;
-
+		
 		/*
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		new LwjglApplication(new TileMapGame(), cfg);
