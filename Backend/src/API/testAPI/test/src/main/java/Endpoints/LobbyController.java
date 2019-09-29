@@ -79,10 +79,8 @@ public class LobbyController {
     @RequestMapping("/addToLobby")
     public String addUser(@RequestParam(value = "lobbyID", defaultValue = "15601") Integer lobbyID, @RequestParam(value = "username", defaultValue = "laknoll") String username) throws SQLException {
         Connection con = null;
-        Connection con2 = null;
         try {
 
-            ArrayList<String> players = new ArrayList<String>();
             String query = "UPDATE lobby SET numberOfPlayers = numberofPlayers + 1 WHERE lobbyID = ?";
             String query2 = "INSERT INTO lobby_group(username, lobbyID) VALUES(?, ?)";
             Class.forName("com.mysql.jdbc.Driver");
@@ -134,4 +132,34 @@ public class LobbyController {
         }
         return "Error";
     }
+    @RequestMapping("/addLobby")
+    public String addLobby(@RequestParam(value = "lobbyName", defaultValue = "Gaymer's") String lobbyName /*,@RequestParam(value = "username", defaultValue = "laknoll") String username*/) throws SQLException {
+        Connection con = null;
+        try {
+
+            //String query = "INSERT INTO lobby_group(username, lobbyID) VALUES(?, ?)";
+            String query2 = "INSERT INTO lobby(lobbyName, hasPassword, numberOfPlayers) VALUES(?, 0, 1)";
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection(
+                    // "jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","teamTC3","TC_3CrimeAndDime");
+                    "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
+            PreparedStatement prst = con.prepareStatement(query2);
+            prst.setString(1, lobbyName);
+            prst.executeUpdate();
+            //prst = con.prepareStatement(query);
+            //prst.setString(1, username);
+            //prst.setInt(2, lobbyID);
+            //prst.executeUpdate();
+
+            return "Welcome to the lobby!";
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        finally {
+            con.close();
+        }
+        return "Error";
+    }
+
 }
