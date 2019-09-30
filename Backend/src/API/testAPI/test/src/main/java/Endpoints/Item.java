@@ -5,14 +5,17 @@ public class Item
     private String name;
     private double price;
     private int itemId;
+    private int quantity;
 
     public Item() {
         name = "";
         price = 0;
+        quantity = 0;
     }
 
-    public Item(String name, double price) {
+    public Item(String name, int quantity, double price) {
         this.name = name;
+        this.quantity = quantity;
         this.price = price;
     }
 
@@ -26,6 +29,8 @@ public class Item
 
     public int getItemId() { return itemId; }
 
+    public int getQuantity() { return quantity; }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -37,4 +42,6 @@ public class Item
     public void setItemId(int itemId) {
         this.itemId = itemId;
     }
+
+    public void setQuantity(int quantity) {this.quantity = quantity; }
 }

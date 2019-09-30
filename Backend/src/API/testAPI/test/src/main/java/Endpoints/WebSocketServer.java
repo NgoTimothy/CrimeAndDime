@@ -12,6 +12,7 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,7 @@ public class WebSocketServer {
     private static Map<Session, String> sessionUsernameMap = new HashMap<>();
     private static Map<String, Session> usernameSessionMap = new HashMap<>();
     private static Map<String, User> userObjectMap = new HashMap<>();
+    private static Gson gson = new Gson();
 
     private final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
 
@@ -90,8 +92,15 @@ public class WebSocketServer {
         logger.info("Entered into Error");
     }
 
-    private void sendItemToUser(String username, String itemName, int quantity) {
-
+    private void sendItemToUser(String username, String itemName, int quantity, double price) {
+        try {
+            Item returnItem = new Item(itemName, quantity, price);
+            String returnString = gson.toJson(returnItem);
+            usernameSessionMap.get(username).getAsyncRemote().sendText(returnString);
+        } catch (Exception e) {
+            logger.info("Exception info: " + e.getMessage().toString());
+            e.printStackTrace();
+        }
     }
 
     private void sendMessageToParticularUser(String username, String message)
