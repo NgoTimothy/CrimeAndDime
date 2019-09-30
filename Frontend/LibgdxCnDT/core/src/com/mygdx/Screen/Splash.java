@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import javax.xml.soap.Text;
+//import javax.xml.soap.Text;
 
 public class Splash implements Screen {
 
