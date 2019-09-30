@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="9">
  <tileset firstgid="1" source="test.tsx"/>
  <layer id="1" name="Tile Layer 1" width="32" height="32">
   <data encoding="csv">
@@ -37,4 +37,14 @@
 401,402,403,404,404,405,406,406,406,406,406,406,406,406,406,406,406,406,406,406,404,405,406,406,406,406,406,406,406,407,408,409
 </data>
  </layer>
+ <objectgroup id="2" name="Shelf Object Layer">
+  <object id="1" name="Shelf" x="48" y="80" width="31.5" height="32"/>
+  <object id="2" name="Shelf" x="96.75" y="79.5" width="31.5" height="32"/>
+  <object id="3" name="Shelf" x="144.75" y="79.5" width="31.5" height="32"/>
+  <object id="4" name="Shelf" x="191.75" y="79" width="31.5" height="32"/>
+  <object id="5" name="Shelf" x="288.25" y="80" width="31.5" height="32"/>
+  <object id="6" name="Shelf" x="336.25" y="79" width="31.5" height="32"/>
+  <object id="7" name="Shelf" x="384.75" y="79.5" width="31.5" height="32"/>
+  <object id="8" name="Shelf" x="433.25" y="80" width="31.5" height="32"/>
+ </objectgroup>
 </map>

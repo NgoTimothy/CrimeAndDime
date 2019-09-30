@@ -4,10 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.mygdx.Objects.tempTile;
 
 public class tileMapScreen implements Screen {
 
@@ -15,7 +20,7 @@ public class tileMapScreen implements Screen {
     private TiledMapTileLayer layer;
     private OrthogonalTiledMapRenderer render;
     private OrthographicCamera camera;
-
+    private tempTile shelfTile;
 
     @Override
     public void render(float delta){
@@ -26,6 +31,18 @@ public class tileMapScreen implements Screen {
         render.setView(camera);
         render.render();
 
+        layer = (TiledMapTileLayer) maps.getLayers().get("Shelf Object layer");
+
+        MapLayer layer = maps.getLayers().get("Shelf Object Layer");
+        MapObjects shelf = layer.getObjects();
+
+        shelf.get("Shelf");
+        System.out.println(shelf.get("Shelf"));
+
+        shelfTile = new tempTile();
+        for (int i = 0; i < shelf.getCount(); i++){
+        //    TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+        }
     }
 
 
