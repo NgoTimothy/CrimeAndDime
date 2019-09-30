@@ -27,6 +27,7 @@ public class WebSocketServer {
     // Store all socket session and their corresponding username.
     private static Map<Session, String> sessionUsernameMap = new HashMap<>();
     private static Map<String, Session> usernameSessionMap = new HashMap<>();
+    private static Map<String, User> userObjectMap = new HashMap<>();
 
     private final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
 
@@ -35,16 +36,18 @@ public class WebSocketServer {
             Session session,
             @PathParam("username") String username, @PathParam("password") String psw) throws IOException
     {
-        if(!checkIfValidAccount(username, psw)) {
+        if(checkIfValidAccount(username, psw)) {
             onClose(session);//Switch to close method
+            logger.info("Entered into Open");
+
+            User newUser = new User(username);//Creates a new user object
+            sessionUsernameMap.put(session, username);
+            usernameSessionMap.put(username, session);
+            userObjectMap.put(username, newUser);
+
+            String message = "User:" + username + " has Joined the Chat";
+            broadcast(message);
         }
-        logger.info("Entered into Open");
-
-        sessionUsernameMap.put(session, username);
-        usernameSessionMap.put(username, session);
-
-        String message="User:" + username + " has Joined the Chat";
-        broadcast(message);
 
     }
 
@@ -58,8 +61,8 @@ public class WebSocketServer {
         if (message.startsWith("@")) // Direct message to a user using the format "@username <message>"
         {
             String destUsername = message.split(" ")[0].substring(1); // don't do this in your code!
-            sendMessageToPArticularUser(destUsername, "[DM] " + username + ": " + message);
-            sendMessageToPArticularUser(username, "[DM] " + username + ": " + message);
+            sendMessageToParticularUser(destUsername, "[DM] " + username + ": " + message);
+            sendMessageToParticularUser(username, "[DM] " + username + ": " + message);
         }
         else // Message to whole chat
         {
@@ -87,7 +90,11 @@ public class WebSocketServer {
         logger.info("Entered into Error");
     }
 
-    private void sendMessageToPArticularUser(String username, String message)
+    private void sendItemToUser(String username, String itemName, int quantity) {
+
+    }
+
+    private void sendMessageToParticularUser(String username, String message)
     {
         try {
             usernameSessionMap.get(username).getBasicRemote().sendText(message);
@@ -113,6 +120,6 @@ public class WebSocketServer {
 
     private static boolean checkIfValidAccount(String username, String psw) {
         //Call database and check if valid password
-        return false;
+        return true;
     }
 }

@@ -2,27 +2,35 @@ package Endpoints;
 
 public class Item
 {
-    private String item;
-    private int price;
+    private String name;
+    private double price;
     private int itemId;
 
-    public String getItem() {
-        return item;
+    public Item() {
+        name = "";
+        price = 0;
     }
 
-    public int getPrice() {
+    public Item(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
         return price;
     }
 
-    public int getItemId() {
-        return itemId;
+    public int getItemId() { return itemId; }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setItem(String item) {
-        this.item = item;
-    }
-
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
