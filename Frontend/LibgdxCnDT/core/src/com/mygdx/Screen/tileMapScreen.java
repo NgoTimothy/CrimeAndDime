@@ -4,14 +4,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.Objects.tempTile;
 
 public class tileMapScreen implements Screen {
@@ -21,6 +30,13 @@ public class tileMapScreen implements Screen {
     private OrthogonalTiledMapRenderer render;
     private OrthographicCamera camera;
     private tempTile shelfTile;
+    private TextButton shelfButton;
+    private TextButton.TextButtonStyle shelfButtonStyle;
+    private Skin skin;
+    private BitmapFont font;
+    private Stage stage;
+    private TextureAtlas shelfButtonAtlas;
+
 
     @Override
     public void render(float delta){
@@ -31,20 +47,9 @@ public class tileMapScreen implements Screen {
         render.setView(camera);
         render.render();
 
-        layer = (TiledMapTileLayer) maps.getLayers().get("Shelf Object layer");
 
-        MapLayer layer = maps.getLayers().get("Shelf Object Layer");
-        MapObjects shelf = layer.getObjects();
-
-        shelf.get("Shelf");
-        System.out.println(shelf.get("Shelf"));
-
-        shelfTile = new tempTile();
-        for (int i = 0; i < shelf.getCount(); i++){
-        //    TiledMapTileLayer.Cell cell = layer.getCell(x, y);
-        }
-
-
+        stage.setDebugAll(true);
+        stage.draw();
     }
 
 
@@ -59,6 +64,17 @@ public class tileMapScreen implements Screen {
     @Override
     public void show ()
     {
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        skin = new Skin();
+        font = new BitmapFont();
+        shelfButtonAtlas = new TextureAtlas(Gdx.files.internal("ui/button.pack"));
+        skin.addRegions(shelfButtonAtlas);
+        shelfButtonStyle = new TextButton.TextButtonStyle();
+        shelfButtonStyle.font = font;
+        shelfButtonStyle.up = skin.getDrawable("button.up.9");
+        shelfButtonStyle.down = skin.getDrawable("button.down");
+
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
@@ -69,6 +85,30 @@ public class tileMapScreen implements Screen {
         maps = new TmxMapLoader().load("img/NewStoreMap.tmx");
 
         render = new OrthogonalTiledMapRenderer(maps);
+
+        MapObjects shelfMapObject = maps.getLayers().get("Shelf Object Layer").getObjects();
+        int stringNumber = 1;
+        int y = 0;
+        for (MapObject shelfObjects : shelfMapObject )
+        {
+            if (shelfObjects instanceof RectangleMapObject){
+                tempTile shelfTile = new tempTile();
+                System.out.println("Found Shelf " + Integer.toString(stringNumber));
+                stringNumber++;
+                shelfButton = new TextButton("Temp", shelfButtonStyle);
+                shelfButton.moveBy(y,y);
+                y += 10;
+                stage.addActor(shelfButton);
+                shelfButton.addListener(new ClickListener()
+                {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        Gdx.app.exit();
+                    }
+                });
+            }
+        }
+
     }
 
 
