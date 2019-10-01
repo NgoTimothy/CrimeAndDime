@@ -76,8 +76,8 @@ public class LobbyController {
         return "Error";
     }
 
-    @RequestMapping("/addToLobby")
-    public String addUser(@RequestParam(value = "lobbyID", defaultValue = "15601") Integer lobbyID, @RequestParam(value = "username", defaultValue = "laknoll") String username) throws SQLException {
+    @RequestMapping("/addToLobby2")
+    public String addUser2(@RequestParam(value = "lobbyID", defaultValue = "15601") Integer lobbyID, @RequestParam(value = "username", defaultValue = "laknoll") String username) throws SQLException {
         Connection con = null;
         try {
 
@@ -92,6 +92,31 @@ public class LobbyController {
             prst.setInt(2, lobbyID);
             prst.executeUpdate();
             prst = con.prepareStatement(query);
+            prst.setInt(1, lobbyID);
+            prst.executeUpdate();
+
+            return "Welcome to the lobby!";
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        finally {
+            con.close();
+        }
+        return "Error";
+    }
+    @RequestMapping("/addToLobby")
+    public String addUser(@RequestParam(value = "lobbyID", defaultValue = "15601") Integer lobbyID/*, @RequestParam(value = "username", defaultValue = "laknoll") String username*/) throws SQLException {
+        Connection con = null;
+        try {
+
+            String query = "UPDATE lobby SET numberOfPlayers = numberofPlayers + 1 WHERE lobbyID = ?";
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection(
+                    // "jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","teamTC3","TC_3CrimeAndDime");
+                    "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
+
+            PreparedStatement prst = con.prepareStatement(query);
             prst.setInt(1, lobbyID);
             prst.executeUpdate();
 
