@@ -43,6 +43,8 @@ public class tileMapScreen implements Screen {
         for (int i = 0; i < shelf.getCount(); i++){
         //    TiledMapTileLayer.Cell cell = layer.getCell(x, y);
         }
+
+
     }
 
 

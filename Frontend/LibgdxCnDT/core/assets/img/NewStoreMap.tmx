@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="9">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="58">
  <tileset firstgid="1" source="test.tsx"/>
  <layer id="1" name="Tile Layer 1" width="32" height="32">
   <data encoding="csv">
@@ -46,5 +46,45 @@
   <object id="6" name="Shelf" x="336.25" y="79" width="31.5" height="32"/>
   <object id="7" name="Shelf" x="384.75" y="79.5" width="31.5" height="32"/>
   <object id="8" name="Shelf" x="433.25" y="80" width="31.5" height="32"/>
+  <object id="10" name="Shelf" x="48.2917" y="143.833" width="31.5" height="32"/>
+  <object id="11" name="Shelf" x="97.0417" y="143.333" width="31.5" height="32"/>
+  <object id="12" name="Shelf" x="145.042" y="143.333" width="31.5" height="32"/>
+  <object id="13" name="Shelf" x="192.042" y="142.833" width="31.5" height="32"/>
+  <object id="14" name="Shelf" x="288.542" y="143.833" width="31.5" height="32"/>
+  <object id="15" name="Shelf" x="336.542" y="142.833" width="31.5" height="32"/>
+  <object id="16" name="Shelf" x="385.042" y="143.333" width="31.5" height="32"/>
+  <object id="17" name="Shelf" x="433.542" y="143.833" width="31.5" height="32"/>
+  <object id="18" name="Shelf" x="48.2917" y="207.833" width="31.5" height="32"/>
+  <object id="19" name="Shelf" x="97.0417" y="207.333" width="31.5" height="32"/>
+  <object id="20" name="Shelf" x="145.042" y="207.333" width="31.5" height="32"/>
+  <object id="21" name="Shelf" x="192.042" y="206.833" width="31.5" height="32"/>
+  <object id="22" name="Shelf" x="288.542" y="207.833" width="31.5" height="32"/>
+  <object id="23" name="Shelf" x="336.542" y="206.833" width="31.5" height="32"/>
+  <object id="24" name="Shelf" x="385.042" y="207.333" width="31.5" height="32"/>
+  <object id="25" name="Shelf" x="433.542" y="207.833" width="31.5" height="32"/>
+  <object id="26" name="Shelf" x="46.2917" y="271.167" width="31.5" height="32"/>
+  <object id="27" name="Shelf" x="95.0417" y="271.333" width="31.5" height="32"/>
+  <object id="28" name="Shelf" x="143.708" y="271.333" width="31.5" height="32"/>
+  <object id="29" name="Shelf" x="192.042" y="270.833" width="31.5" height="32"/>
+  <object id="30" name="Shelf" x="287.875" y="271.167" width="31.5" height="32"/>
+  <object id="31" name="Shelf" x="337.208" y="271.5" width="31.5" height="32"/>
+  <object id="32" name="Shelf" x="383.042" y="272" width="31.5" height="32"/>
+  <object id="33" name="Shelf" x="431.542" y="271.833" width="31.5" height="32"/>
+  <object id="34" name="Shelf" x="46.9583" y="335.833" width="31.5" height="32"/>
+  <object id="35" name="Shelf" x="95.7083" y="335.333" width="31.5" height="32"/>
+  <object id="36" name="Shelf" x="143.708" y="335.333" width="31.5" height="32"/>
+  <object id="37" name="Shelf" x="190.708" y="334.833" width="31.5" height="32"/>
+  <object id="38" name="Shelf" x="287.208" y="335.833" width="31.5" height="32"/>
+  <object id="39" name="Shelf" x="335.208" y="334.833" width="31.5" height="32"/>
+  <object id="40" name="Shelf" x="383.708" y="335.333" width="31.5" height="32"/>
+  <object id="41" name="Shelf" x="432.208" y="335.833" width="31.5" height="32"/>
+  <object id="50" name="Shelf" x="48.2917" y="432.5" width="31.5" height="32"/>
+  <object id="51" name="Shelf" x="97.0417" y="432" width="31.5" height="32"/>
+  <object id="52" name="Shelf" x="145.042" y="432" width="31.5" height="32"/>
+  <object id="53" name="Shelf" x="192.042" y="431.5" width="31.5" height="32"/>
+  <object id="54" name="Shelf" x="288.542" y="432.5" width="31.5" height="32"/>
+  <object id="55" name="Shelf" x="336.542" y="431.5" width="31.5" height="32"/>
+  <object id="56" name="Shelf" x="385.042" y="432" width="31.5" height="32"/>
+  <object id="57" name="Shelf" x="433.542" y="432.5" width="31.5" height="32"/>
  </objectgroup>
 </map>
