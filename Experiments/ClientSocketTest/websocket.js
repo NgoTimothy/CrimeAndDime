@@ -9,7 +9,7 @@ function connect() {
     var pathname = document.location.pathname;
 
     ws = new WebSocket("ws://" +"localhost:8080"+"/websocket" + "/"+username);
-
+    document.getElementById("lobbyButton").style.display = "inline";
     ws.onmessage = function(event) {
         var log = document.getElementById("log");
         console.log(event.data);
@@ -31,6 +31,7 @@ function setLobbyId() {
     if(!isInt(lobbyId)) {
         lobbyId = "1";
     }
+    document.getElementById("moneyButton").style.display = "inline";
     ws.send("joinlobby " + lobbyId);
 }
 
@@ -40,7 +41,7 @@ function setMoney() {
     }
     myMoney = document.getElementById("money").value;
     if(Number.isNaN(myMoney)) {
-        lobbyId = "1";
+        myMoney = "1";
     }
     ws.send("sendmymoney " + myMoney);
 }
