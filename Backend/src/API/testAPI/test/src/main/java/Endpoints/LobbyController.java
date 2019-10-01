@@ -106,8 +106,8 @@ public class LobbyController {
         return "Error";
     }
 
-    @RequestMapping("/deleteFromLobby")
-    public String deleteUser(@RequestParam(value = "lobbyID") Integer lobbyID) throws SQLException {
+    @RequestMapping("/deleteLobby")
+    public String deleteLobby(@RequestParam(value = "lobbyID") Integer lobbyID) throws SQLException {
         Connection con = null;
         try {
 
@@ -199,5 +199,4 @@ public class LobbyController {
         }
         return "Error";
     }
-
 }
