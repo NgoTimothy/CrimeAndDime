@@ -1,8 +1,8 @@
 package Endpoints;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -18,10 +18,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 /**
  *
- * @author Vamsi Krishna Calpakkam
+ * @author Vamsi Krishna Calpakkam Wrote skeleton for code
+ * @author Timothy Ngo Implemented game specific methods
  *
  */
-@ServerEndpoint("/websocket/{username}/{password}")//Add password parameter
+@ServerEndpoint("/websocket/{username}")//Add password parameter /{password}
 @Component
 public class WebSocketServer {
 
@@ -36,9 +37,9 @@ public class WebSocketServer {
     @OnOpen
     public void onOpen(
             Session session,
-            @PathParam("username") String username, @PathParam("password") String psw) throws IOException
+            @PathParam("username") String username) throws IOException // Add , @PathParam("password") String psw
     {
-        if(checkIfValidAccount(username, psw)) {
+        if(checkIfValidAccount(username, "psw")) {//add psw variable here
             onClose(session);//Switch to close method
             logger.info("Entered into Open");
 
@@ -60,6 +61,19 @@ public class WebSocketServer {
         logger.info("Entered into Message: Got Message:"+message);
         String username = sessionUsernameMap.get(session);
 
+        if(message.contains("sendmymoney")) {
+            String[] tokens = message.split(" ");
+            double curMoney = Double.parseDouble(tokens[1]);
+            broadcastMoney(userObjectMap.get(username).getLobbyId(), username, curMoney);
+            return;
+        }
+        if(message.contains("joinlobby")) {
+            String[] tokens = message.split(" ");
+            int newLobbyId = Integer.parseInt(tokens[1]);
+            userObjectMap.get(username).setLobbyId(newLobbyId);
+            broadcast("I have joined lobby " + userObjectMap.get(username).getLobbyId());
+            return;
+        }
         if (message.startsWith("@")) // Direct message to a user using the format "@username <message>"
         {
             String destUsername = message.split(" ")[0].substring(1); // don't do this in your code!
@@ -127,8 +141,30 @@ public class WebSocketServer {
         });
     }
 
+    private static void broadcastMoney(int lobbyId, String currentUser, double money) {
+        ArrayList<String> userOpponents = new ArrayList<String>();
+        List<Map.Entry<String, User>> tempList = userObjectMap.entrySet().stream().filter(x -> x.getValue().getLobbyId() == lobbyId && x.getValue().getUsername() != currentUser).collect(Collectors.toList());
+        tempList.forEach(x -> userOpponents.add(x.getValue().getUsername()));
+        sessionUsernameMap.forEach((session, username) -> {
+            synchronized (session) {
+                try {
+                    if(userOpponents.contains(username))
+                        session.getBasicRemote().sendText(currentUser + " has this amount of money: " + String.valueOf(money));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
     private static boolean checkIfValidAccount(String username, String psw) {
         //Call database and check if valid password
         return true;
+    }
+
+    private static int numberOfPlayersInLobby(int lobbyId) {
+        int count = Math.toIntExact(userObjectMap.entrySet().stream().filter(x -> x.getValue().getLobbyId() == lobbyId).count());
+        return count;
     }
 }
