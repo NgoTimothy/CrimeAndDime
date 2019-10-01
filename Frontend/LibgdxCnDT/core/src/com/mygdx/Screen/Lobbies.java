@@ -212,8 +212,6 @@ public class Lobbies implements Screen {
     		in.close();
 
     		result = response.toString();
-    		//print result
-    		System.out.println(response.toString());
     		
         	}
         	catch(Exception e)	{
@@ -222,9 +220,6 @@ public class Lobbies implements Screen {
     	
     		String delims = "[{}\":,]+";
     		String[] tokens = result.split(delims);
-    		for (String s : tokens) {
-    			System.out.println(s);
-    		}
     		
     		//Parse the string
     		Lobby lobby;

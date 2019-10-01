@@ -54,9 +54,9 @@ public class LobbyScreen implements Screen {
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
     	batch = new SpriteBatch();
     	players = new String[4];
-    	for(int i = 0; i < lobby.getNumPlayers(); i++)
+    	for(int i = 0; i < lobby.getNumPlayers() + 1; i++)
     		players[i] = "player" + Integer.toString(i + 1);
-    	username = "player" + Integer.toString(lobby.getNumPlayers());
+    	username = "player" + Integer.toString(lobby.getNumPlayers() + 1);
     	messages = new ArrayList<String>();
     	this.lobby = lobby;
     	try {
@@ -64,6 +64,7 @@ public class LobbyScreen implements Screen {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+    	System.out.println(lobby.getLobbyID());
     }
     
     void newMethod() throws Exception
@@ -72,10 +73,13 @@ public class LobbyScreen implements Screen {
         clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
                     public void handleMessage(String message) {
                     	messages.add(message);
+                    	// query database to update
                     }
                 });
         	
-            clientEndPoint.sendMessage(username + " has joined this lobby.");
+            	clientEndPoint.sendMessage(username + " has joined this lobby.");
+//            String m = "[{\"action\": \"join\", \"message\":\"" + username + " has joined this lobby.\"}]";
+//            clientEndPoint.sendMessage(m);
     }
     
     @Override
@@ -100,9 +104,9 @@ public class LobbyScreen implements Screen {
 	        	white.draw(batch, "Open", i * 200 + 250, 400);
         }
         
-        for(int i = messages.size() - 1; i > -1 && i > messages.size() - 6; i--)
+        for(int i = 0; i < messages.size() && i < 5; i++)
         {
-        	white.draw(batch, messages.get(i), 50, i * 30 + 50);
+        	white.draw(batch, messages.get(messages.size() - i - 1), 50, i * 30 + 50);
         }
         
         batch.end();        
