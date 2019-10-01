@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -52,6 +53,8 @@ public class Lobbies implements Screen {
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
     	batch = new SpriteBatch();
     	lobbyList = new ArrayList<Lobby>();	
+    	stage = new Stage();
+    	color = new Color();
     }
     
     @Override
@@ -82,7 +85,6 @@ public class Lobbies implements Screen {
     @Override
     public void show()
     {
-    	stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         
         exitButton = new TextButton("X", TextButtonStyle());
@@ -103,25 +105,40 @@ public class Lobbies implements Screen {
         stage.addActor(playButton);
         
         getLobbies();
+        
         joinButton = new TextButton[lobbyList.size()];
         for(int i = 0; i < 10 && i < lobbyList.size(); i++)
         {
 	        joinButton[i] = new TextButton("Join", TextButtonStyle());
 	        joinButton[i].setPosition(700, 575 - i * 35);
+	        final Lobby l = lobbyList.get(i);
 	        joinButton[i].addListener(new ClickListener()
 	        {
 	            @Override
-	            public void clicked(InputEvent event, float x, float y) {
-	            	game.setScreen(new LobbyScreen(game));
+	            public void clicked(InputEvent event, float x, float y) {	
+	            	joinLobby(l.getLobbyID());
+	            	game.setScreen(new LobbyScreen(game, l));
 	            }
 	        });
 	        stage.addActor(joinButton[i]);
         }
         
-//        TextFieldStyle style = new TextFieldStyle(black, );
-//    	newLobby = new TextField("", style);
-//        newLobby.setPosition(200, 200);
-//        stage.addActor(newLobby);
+    	newLobby = new TextField("", new TextFieldStyle(white, color.WHITE, new BaseDrawable(), new BaseDrawable(), new BaseDrawable()));
+    	newLobby.setWidth(300);
+        newLobby.setPosition(200, 200);
+        stage.addActor(newLobby);
+        
+        TextButton startLobbyButton = new TextButton("Create Lobby", TextButtonStyle());
+        startLobbyButton.setPosition(550, 200);
+        startLobbyButton.addListener(new ClickListener()
+	        {
+	            @Override
+	            public void clicked(InputEvent event, float x, float y) {	            	
+	            	addLobby(newLobby.getText());
+	            	System.out.println(newLobby.getText());
+	            }
+	        });
+        stage.addActor(startLobbyButton);
     }
 
 
@@ -185,7 +202,7 @@ public class Lobbies implements Screen {
     		System.out.println("Response Code : " + responseCode);
 
     		BufferedReader in = new BufferedReader(
-    		        new InputStreamReader(con.getInputStream()));
+    		new InputStreamReader(con.getInputStream()));
     		String inputLine;
     		StringBuffer response = new StringBuffer();
 
@@ -224,6 +241,100 @@ public class Lobbies implements Screen {
     		}
     		
     		return lobbyList;
+    }   
+    
+    private void addLobby(String lobbyName)
+    {
+    	try {
+    	String url = "http://coms-309-tc-3.misc.iastate.edu:8080/addLobby";
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+		String USER_AGENT = "Mozilla/5.0";
+		
+		//add request header
+		con.setRequestMethod("POST");
+		con.setRequestProperty("User-Agent", USER_AGENT);
+		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+		String urlParameters = "lobbyName=" + lobbyName;
+		
+		// Send post request
+		con.setDoOutput(true);
+		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+		wr.writeBytes(urlParameters);
+		wr.flush();
+		wr.close();
+
+		int responseCode = con.getResponseCode();
+		System.out.println("\nSending 'POST' request to URL : " + url);
+		System.out.println("Post parameters : " + urlParameters);
+		System.out.println("Response Code : " + responseCode);
+
+		BufferedReader in = new BufferedReader(
+		        new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+		
+		//print result
+		System.out.println(response.toString());
+    	}
+    	catch(Exception e)	{
+    		System.out.print(e);
+    	}   
+    	
+    	getLobbies();
+    	show();
     }
     
+    private void joinLobby(int lobbyID)
+    {
+    	try {
+        	String url = "http://coms-309-tc-3.misc.iastate.edu:8080/addToLobby";
+    		URL obj = new URL(url);
+    		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+    		String USER_AGENT = "Mozilla/5.0";
+    		
+    		//add request header
+    		con.setRequestMethod("POST");
+    		con.setRequestProperty("User-Agent", USER_AGENT);
+    		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+    		String urlParameters = "lobbyID=" + lobbyID;
+    		
+    		// Send post request
+    		con.setDoOutput(true);
+    		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+    		wr.writeBytes(urlParameters);
+    		wr.flush();
+    		wr.close();
+
+    		int responseCode = con.getResponseCode();
+    		System.out.println("\nSending 'POST' request to URL : " + url);
+    		System.out.println("Post parameters : " + urlParameters);
+    		System.out.println("Response Code : " + responseCode);
+
+    		BufferedReader in = new BufferedReader(
+    		        new InputStreamReader(con.getInputStream()));
+    		String inputLine;
+    		StringBuffer response = new StringBuffer();
+
+    		while ((inputLine = in.readLine()) != null) {
+    			response.append(inputLine);
+    		}
+    		in.close();
+    		
+    		//print result
+    		System.out.println(response.toString());
+        	}
+        	catch(Exception e)	{
+        		System.out.print(e);
+        	}   
+    }
 }

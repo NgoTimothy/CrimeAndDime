@@ -16,14 +16,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.cndt.CrimeandDime;
 import com.badlogic.gdx.graphics.Color;
-
 import utility.Lobby;
+import utility.WebSocketClient;
 
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 import java.awt.*;
@@ -41,20 +43,39 @@ public class LobbyScreen implements Screen {
     private CrimeandDime game;
     private String players[];
     private ArrayList<String> messages;
+    private Lobby lobby;
+    private WebSocketClient clientEndPoint;
+    private String username;
     
-    public LobbyScreen(CrimeandDime game)
+    public LobbyScreen(CrimeandDime game, Lobby lobby)
     {
     	this.game = game;
     	white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
     	batch = new SpriteBatch();
     	players = new String[4];
+    	for(int i = 0; i < lobby.getNumPlayers(); i++)
+    		players[i] = "player" + Integer.toString(i + 1);
+    	username = "player" + Integer.toString(lobby.getNumPlayers());
     	messages = new ArrayList<String>();
-    	messages.add("Welcome to the game!");
-    	messages.add("Player1 has joined the game!");
-    	messages.add("hi");
-    	messages.add("a");
-    	messages.add("b");  	
+    	this.lobby = lobby;
+    	try {
+			newMethod();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    void newMethod() throws Exception
+    {
+    	clientEndPoint = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + lobby.getLobbyID() + "/" + username));
+        clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
+                    public void handleMessage(String message) {
+                    	messages.add(message);
+                    }
+                });
+        	
+            clientEndPoint.sendMessage(username + " has joined this lobby.");
     }
     
     @Override
@@ -70,11 +91,11 @@ public class LobbyScreen implements Screen {
         stage.draw();
         
         batch.begin();
-        white.draw(batch, "Name of lobby", 500, 700);
+        white.draw(batch, lobby.getLobbyName(), 500, 700);
         for(int i = 0; i < 4; i++)
         {
 	        if (players[i] != null)
-	        	white.draw(batch, players[0], i * 200 + 250, 400);
+	        	white.draw(batch, players[i], i * 200 + 250, 400);
 	        else
 	        	white.draw(batch, "Open", i * 200 + 250, 400);
         }
@@ -84,14 +105,7 @@ public class LobbyScreen implements Screen {
         	white.draw(batch, messages.get(i), 50, i * 30 + 50);
         }
         
-        batch.end();
-        
-//        TextFieldStyle s = new TextFieldStyle();
-//        TextField txtUsername = new TextField("", s);
-//        txtUsername.setMessageText("test");
-//        txtUsername.setPosition(30, 30);
-//        stage.addActor(txtUsername);
-        
+        batch.end();        
     }
 
 
@@ -109,6 +123,14 @@ public class LobbyScreen implements Screen {
         {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+            	leaveLobby();
+            	try {
+					clientEndPoint.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	lobby.setNumPlayers(lobby.getNumPlayers() - 1);
             	game.setScreen(new Lobbies(game));
             }
         });
@@ -135,12 +157,56 @@ public class LobbyScreen implements Screen {
     }
     @Override
     public void hide(){
-
+    	
     }
 
     @Override
     public void dispose () {
 
+    }
+    
+    private void leaveLobby()
+    {
+    	try {
+        	String url = "http://coms-309-tc-3.misc.iastate.edu:8080/deleteUser";
+    		URL obj = new URL(url);
+    		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+    		String USER_AGENT = "Mozilla/5.0";
+    		
+    		//add request header
+    		con.setRequestMethod("POST");
+    		con.setRequestProperty("User-Agent", USER_AGENT);
+    		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+    		String urlParameters = "lobbyID=" + lobby.getLobbyID();
+    		
+    		// Send post request
+    		con.setDoOutput(true);
+    		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+    		wr.writeBytes(urlParameters);
+    		wr.flush();
+    		wr.close();
+
+    		int responseCode = con.getResponseCode();
+    		System.out.println("\nSending 'POST' request to URL : " + url);
+    		System.out.println("Post parameters : " + urlParameters);
+    		System.out.println("Response Code : " + responseCode);
+
+    		BufferedReader in = new BufferedReader(
+    		        new InputStreamReader(con.getInputStream()));
+    		String inputLine;
+    		StringBuffer response = new StringBuffer();
+
+    		while ((inputLine = in.readLine()) != null) {
+    			response.append(inputLine);
+    		}
+    		in.close();
+    		
+        	}
+        	catch(Exception e)	{
+        		System.out.print(e);
+        	}   
     }
     
     private TextButton.TextButtonStyle TextButtonStyle()

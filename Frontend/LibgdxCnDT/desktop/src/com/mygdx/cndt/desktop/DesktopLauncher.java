@@ -29,8 +29,5 @@ public class DesktopLauncher {
 		cfg.width = 1280;
 		cfg.height = 720;
 		*/
-
 	}
-
-
 }
