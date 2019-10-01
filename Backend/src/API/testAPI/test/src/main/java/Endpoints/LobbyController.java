@@ -161,5 +161,43 @@ public class LobbyController {
         }
         return "Error";
     }
+    @RequestMapping("/addLobby2")
+    public String addLobby2(@RequestParam(value = "lobbyName", defaultValue = "Gaymer's") String lobbyName, @RequestParam(value = "username", defaultValue = "laknoll") String username) throws SQLException {
+        Connection con = null;
+        try {
+
+            String query = "INSERT INTO lobby_group(username, lobbyID) VALUES(?, ?)";
+            String query3 = "SELECT lobbyID FROM lobby WHERE lobbyName = ?";
+            String query2 = "INSERT INTO lobby(lobbyName, hasPassword, numberOfPlayers) VALUES(?, 0, 1)";
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection(
+                    // "jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","teamTC3","TC_3CrimeAndDime");
+                    "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
+
+            PreparedStatement prst = con.prepareStatement(query2);
+            prst.setString(1, lobbyName);
+            prst.executeUpdate();
+
+            prst = con.prepareStatement(query3);
+            prst.setString(1, lobbyName);
+            ResultSet rs = prst.executeQuery();
+            rs.next();
+            int lobbyID = rs.getInt("lobbyID");
+
+            prst = con.prepareStatement(query);
+            prst.setString(1, username);
+            prst.setInt(2, lobbyID);
+            prst.executeUpdate();
+
+            return "Welcome to the lobby!";
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        finally {
+            con.close();
+        }
+        return "Error";
+    }
 
 }
