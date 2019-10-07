@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapLayer;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -46,7 +48,6 @@ public class tileMapScreen implements Screen {
         camera.update();
         render.setView(camera);
         render.render();
-
 
         stage.setDebugAll(true);
         stage.draw();
@@ -95,17 +96,28 @@ public class tileMapScreen implements Screen {
                 tempTile shelfTile = new tempTile();
                 System.out.println("Found Shelf " + Integer.toString(stringNumber));
                 stringNumber++;
-                shelfButton = new TextButton("Temp", shelfButtonStyle);
-                shelfButton.moveBy(y,y);
-                y += 10;
-                stage.addActor(shelfButton);
-                shelfButton.addListener(new ClickListener()
+              //  shelfButton = new TextButton("Temp", shelfButtonStyle);
+               // shelfButton.moveBy(y,y);
+              //  y += 10;
+                Texture texture = new Texture(Gdx.files.internal("img/transparentPicture.png"));
+                Image shelfImage = new Image(texture);
+                shelfImage.setPosition(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY());
+                shelfImage.setSize(((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+
+                System.out.println("This is shelfObjects's Height" + ((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                System.out.println("This is shelfObjects's Width" + ((RectangleMapObject) shelfObjects).getRectangle().getWidth());
+                System.out.println("This is shelfObjects's X Value" + ((RectangleMapObject) shelfObjects).getRectangle().getX());
+                System.out.println("This is shelfObjects's Y Value"+ ((RectangleMapObject) shelfObjects).getRectangle().getY());
+
+                stage.addActor(shelfImage);
+                shelfImage.addListener(new ClickListener()
                 {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         Gdx.app.exit();
                     }
                 });
+
             }
         }
 
