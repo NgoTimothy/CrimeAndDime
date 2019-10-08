@@ -1,5 +1,6 @@
 package com.mygdx.Screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -45,6 +46,7 @@ public class tileMapScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_ALPHA_BITS);
         camera.update();
         render.setView(camera);
         render.render();
@@ -103,6 +105,7 @@ public class tileMapScreen implements Screen {
                 Image shelfImage = new Image(texture);
                 shelfImage.setPosition(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY());
                 shelfImage.setSize(((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                shelfImage.setColor(0,0,0,0);
 
                 System.out.println("This is shelfObjects's Height" + ((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                 System.out.println("This is shelfObjects's Width" + ((RectangleMapObject) shelfObjects).getRectangle().getWidth());
@@ -114,7 +117,7 @@ public class tileMapScreen implements Screen {
                 {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        Gdx.app.exit();
+                        ((Game) Gdx.app.getApplicationListener()).setScreen(new Splash());
                     }
                 });
 
