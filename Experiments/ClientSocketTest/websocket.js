@@ -8,7 +8,8 @@ function connect() {
     var host = document.location.host;
     var pathname = document.location.pathname;
 
-    ws = new WebSocket("ws://" +"localhost:8080"+"/websocket" + "/"+username);
+    ws = new WebSocket("ws://coms-309-tc-3.misc.iastate.edu:8081/websocket/" + username);
+    //ws = new WebSocket("ws://" +"localhost:8080"+"/websocket" + "/"+username);
     document.getElementById("lobbyButton").style.display = "inline";
     ws.onmessage = function(event) {
         var log = document.getElementById("log");
