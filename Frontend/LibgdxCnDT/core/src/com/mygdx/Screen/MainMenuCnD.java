@@ -1,5 +1,6 @@
 package com.mygdx.Screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -49,6 +51,8 @@ public class MainMenuCnD implements Screen {
         skin = new Skin(atlas);
 
         table = new Table(skin);
+        table.setFillParent(true);
+        stage.addActor(table);
 
         table.setBounds(0,0,Gdx.graphics.getHeight(),Gdx.graphics.getWidth());
 
@@ -73,6 +77,18 @@ public class MainMenuCnD implements Screen {
             }
         });
         buttonPlay = new TextButton("Play", textButtonStyle);
+        buttonPlay.addListener(new InputListener()
+        {
+            @Override
+            public void touchUp(InputEvent event, float x , float y,int pointer, int button){
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new tileMapScreen());
+            }
+            @Override
+            public boolean touchDown(InputEvent event, float x , float y,int pointer, int button){
+              return true;
+            }
+        });
+
         buttonPlay.pad(200);
 
         table.add(buttonExit);
@@ -88,7 +104,7 @@ public class MainMenuCnD implements Screen {
         table.add(heading);
         table.row();
         table.padBottom(50);
-        stage.addActor(table);
+
         stage.addActor(buttonPlay);
         stage.addActor(buttonExit);
         stage.addActor(heading);
