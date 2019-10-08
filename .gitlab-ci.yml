@@ -1,8 +1,8 @@
 # Stages of piepline, should match with stage tag inside each job.
 stages:
-  -maven-build
-  -maven-test
-  -autodeploy
+  - maven-build
+  - maven-test
+  - autodeploy
 
   # tags: "maven_tag" should match tag name provided in runner
 maven-build:
