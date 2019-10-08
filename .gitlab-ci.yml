@@ -23,7 +23,7 @@ maven-test:
     - mvn test
   artifacts:
     paths:
-      -spring/target/*.jar
+      - spring/target/*.jar
 
 autoDeploy:
   stage: autodeploy
