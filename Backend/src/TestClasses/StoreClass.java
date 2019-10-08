@@ -17,6 +17,6 @@ public class StoreClass {
     @Test
     public void testChangeTileInStore() {
         Tile testTile = testStore.getTile(0, 2);
-       // assertEquals(Tile.tileType.SHELF, testTile.getTileType());
+        assertEquals(Tile.tileType.SHELF, testTile.getTileType());
     }
 }
