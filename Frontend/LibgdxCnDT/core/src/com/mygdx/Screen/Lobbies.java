@@ -284,7 +284,6 @@ public class Lobbies implements Screen {
     	}   
     	
     	getLobbies();
-    	show();
     }
     
     private void joinLobby(int lobbyID)

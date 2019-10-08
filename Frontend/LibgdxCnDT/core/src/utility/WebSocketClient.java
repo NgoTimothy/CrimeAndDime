@@ -41,6 +41,7 @@ public class WebSocketClient {
         if (this.messageHandler != null)
             this.messageHandler.handleMessage(message);
     }
+    
     public void addMessageHandler(MessageHandler msgHandler) {
         this.messageHandler = msgHandler;
     }

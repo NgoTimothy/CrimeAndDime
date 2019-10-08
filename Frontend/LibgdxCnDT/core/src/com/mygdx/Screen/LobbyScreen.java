@@ -41,7 +41,6 @@ public class LobbyScreen implements Screen {
     private Label heading;
     private SpriteBatch batch;
     private CrimeandDime game;
-    private String players[];
     private ArrayList<String> messages;
     private Lobby lobby;
     private WebSocketClient clientEndPoint;
@@ -49,31 +48,29 @@ public class LobbyScreen implements Screen {
     
     public LobbyScreen(CrimeandDime game, Lobby lobby)
     {
+    	this.lobby = lobby;
+    	getLobby();
     	this.game = game;
     	white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
     	batch = new SpriteBatch();
-    	players = new String[4];
-    	for(int i = 0; i < lobby.getNumPlayers() + 1; i++)
-    		players[i] = "player" + Integer.toString(i + 1);
-    	username = "player" + Integer.toString(lobby.getNumPlayers() + 1);
+    	username = "player" + Integer.toString(lobby.getNumPlayers());
     	messages = new ArrayList<String>();
-    	this.lobby = lobby;
     	try {
-			newMethod();
+			connect();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
     	System.out.println(lobby.getLobbyID());
     }
     
-    void newMethod() throws Exception
+    void connect() throws Exception
     {
     	clientEndPoint = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + lobby.getLobbyID() + "/" + username));
         clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
                     public void handleMessage(String message) {
                     	messages.add(message);
-                    	// query database to update
+                    	getLobby();
                     }
                 });
         	
@@ -98,8 +95,8 @@ public class LobbyScreen implements Screen {
         white.draw(batch, lobby.getLobbyName(), 500, 700);
         for(int i = 0; i < 4; i++)
         {
-	        if (players[i] != null)
-	        	white.draw(batch, players[i], i * 200 + 250, 400);
+	        if (i < lobby.getNumPlayers())
+	        	white.draw(batch, "player" + Integer.toString(i + 1), i * 200 + 250, 400);
 	        else
 	        	white.draw(batch, "Open", i * 200 + 250, 400);
         }
@@ -142,6 +139,13 @@ public class LobbyScreen implements Screen {
         
         playButton = new TextButton("Play", TextButtonStyle());
         playButton.setPosition(1100, 50);
+        playButton.addListener(new ClickListener()
+        {
+        	@Override
+            public void clicked(InputEvent event, float x, float y) {
+        		clientEndPoint.sendMessage(username + " is ready.");
+        	}
+        });
         stage.addActor(playButton);
     }
 
@@ -166,7 +170,7 @@ public class LobbyScreen implements Screen {
 
     @Override
     public void dispose () {
-
+    	leaveLobby();
     }
     
     private void leaveLobby()
@@ -211,6 +215,56 @@ public class LobbyScreen implements Screen {
         	catch(Exception e)	{
         		System.out.print(e);
         	}   
+    		System.out.println("lobby left");
+    }
+    
+    private void getLobby()
+    {
+    	String result = "";
+    	try {
+        	String url = "http://coms-309-tc-3.misc.iastate.edu:8080/lobbyInfo?lobbyID=" + lobby.getLobbyID();
+    		
+    		URL obj = new URL(url);
+    		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+    		// optional default is GET
+    		con.setRequestMethod("GET");
+
+    		String USER_AGENT = "Mozilla/5.0";
+    		
+    		//add request header
+    		con.setRequestProperty("User-Agent", USER_AGENT);
+
+    		int responseCode = con.getResponseCode();
+    		System.out.println("\nSending 'GET' request to URL : " + url);
+    		System.out.println("Response Code : " + responseCode);
+
+    		BufferedReader in = new BufferedReader(
+    		new InputStreamReader(con.getInputStream()));
+    		String inputLine;
+    		StringBuffer response = new StringBuffer();
+
+    		while ((inputLine = in.readLine()) != null) {
+    			response.append(inputLine);
+    		}
+    		in.close();
+
+    		result = response.toString();
+    		
+        	}
+        	catch(Exception e)	{
+        		System.out.print(e);
+        	}    	    	
+    	
+    		String delims = "[{}\":,]+";
+    		String[] tokens = result.split(delims);
+    		for(String s : tokens)
+    			System.out.println(s);
+    		
+    		if(tokens[6].equals("false"))
+    			lobby.setNumPlayers(Integer.parseInt(tokens[8]));
+    		else
+    			lobby.setNumPlayers(Integer.parseInt(tokens[10]));
     }
     
     private TextButton.TextButtonStyle TextButtonStyle()
