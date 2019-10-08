@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class InventoryController {
 
     @RequestMapping("/inventory")
-    public String retrieveInventory(@RequestParam(value="storeID", defaultValue="1") String storeID) {
-
+    public String retrieveInventory() {
         try
         {
             //set up variable in while loop
