@@ -4,3 +4,8 @@ sourceCompatibility = 1.7
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]
+
+dependencies {
+    compile files('../Libraries/javax.websocket-client-api-1.1.jar')
+    compile files('../Libraries/tyrus-standalone-client-1.9.jar')
+}
