@@ -1,0 +1,42 @@
+<html>
+<head>
+    <title>Chat</title>
+</head>
+<body>
+
+<table>
+    <tr>
+        <td colspan="2">
+            <input type="text" id="username" placeholder="Username"/>
+            <button type="button" onclick="connect();" >Connect</button>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input type="text" id="lobbyId" placeholder="LobbyID"/>
+            <button type="button" id="lobbyButton" onclick="setLobbyId();" style="display:none;" >Join a Lobby</button>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input type="text" id="money" placeholder="Money"/>
+            <button type="button" id="moneyButton" onclick="setMoney();" style="display:none;" >Set Your Money</button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <textarea readonly="true" rows="10" cols="80" id="log"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" size="51" id="msg" placeholder="Message"/>
+            <button type="button" onclick="send();" >Send</button>
+        </td>
+    </tr>
+</table>
+</body>
+
+<script src="websocket.js"></script>
+
+</html>
