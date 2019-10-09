@@ -3,7 +3,5 @@ Endpoints\Item.class
 Endpoints\WebSocketServer.class
 Endpoints\InventoryController.class
 Endpoints\Lobby.class
-Endpoints\ItemEncoder.class
-Endpoints\User.class
 Endpoints\Application.class
 Endpoints\WebSocketConfig.class
