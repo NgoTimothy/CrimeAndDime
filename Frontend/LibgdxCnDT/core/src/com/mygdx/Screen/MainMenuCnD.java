@@ -1,5 +1,6 @@
 package com.mygdx.Screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -7,10 +8,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.cndt.CrimeandDime;
 
 import java.awt.*;
 
@@ -23,10 +26,17 @@ public class MainMenuCnD implements Screen {
     private Table table;
     private TextButton buttonPlay,  buttonExit;
     private Label heading;
+    private CrimeandDime game;
 
+    public MainMenuCnD(CrimeandDime game)
+    {
+    	this.game = game;
+    	
+    }
 
     @Override
-    public void render(float delta){
+    public void render(float delta)
+    {
 
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -49,6 +59,8 @@ public class MainMenuCnD implements Screen {
         skin = new Skin(atlas);
 
         table = new Table(skin);
+        table.setFillParent(true);
+        stage.addActor(table);
 
         table.setBounds(0,0,Gdx.graphics.getHeight(),Gdx.graphics.getWidth());
 
@@ -73,14 +85,31 @@ public class MainMenuCnD implements Screen {
             }
         });
         buttonPlay = new TextButton("Play", textButtonStyle);
-        buttonPlay.pad(200);
+        buttonPlay.addListener(new InputListener()
+        {
+            @Override
+            public void touchUp(InputEvent event, float x , float y,int pointer, int button){
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new tileMapScreen());
+            }
+            @Override
+            public boolean touchDown(InputEvent event, float x , float y,int pointer, int button){
+              return true;
+            }
+        });
 
+        buttonPlay.pad(200);
+        buttonPlay.addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            	game.setScreen(new Lobbies(game));
+            }
+        });
         table.add(buttonExit);
         table.row();
         buttonExit.moveBy(540,0);
         table.add(buttonPlay);
         buttonPlay.moveBy(540,300);
-
         Label.LabelStyle headingStyle = new Label.LabelStyle(white, Color.WHITE);
         heading = new Label("Crime & Dime", headingStyle);
         heading.moveBy(540,680);
@@ -88,7 +117,7 @@ public class MainMenuCnD implements Screen {
         table.add(heading);
         table.row();
         table.padBottom(50);
-        stage.addActor(table);
+
         stage.addActor(buttonPlay);
         stage.addActor(buttonExit);
         stage.addActor(heading);

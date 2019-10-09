@@ -6,6 +6,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.mygdx.TileMapGame.TileMapGame;
 import com.mygdx.cndt.CrimeandDime;
+import com.mygdx.cndt.ExpTileMapGame;
 
 
 public class DesktopLauncher {
@@ -19,7 +20,7 @@ public class DesktopLauncher {
 		cfg.useGL30 = true;
 		cfg.width = 1280;
 		cfg.height = 720;
-
+		
 		/*
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		new LwjglApplication(new TileMapGame(), cfg);
@@ -29,8 +30,5 @@ public class DesktopLauncher {
 		cfg.width = 1280;
 		cfg.height = 720;
 		*/
-
 	}
-
-
 }

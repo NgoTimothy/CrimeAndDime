@@ -1,15 +1,13 @@
 package com.mygdx.cndt;
 
 import com.badlogic.gdx.Game;
-import com.mygdx.Screen.MainMenuCnD;
-import com.mygdx.Screen.Splash;
-import com.mygdx.Screen.tileMapScreen;
+import com.mygdx.Screen.*;
 
 public class CrimeandDime extends Game {
 
 	@Override
 	public void create () {
-		setScreen(new MainMenuCnD());
+		setScreen(new MainMenuCnD(this));
 	}
 
 	@Override
