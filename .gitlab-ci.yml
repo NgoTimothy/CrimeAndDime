@@ -1,0 +1,37 @@
+# Stages of piepline, should match with stage tag inside each job.
+stages:
+  - maven-build
+  - maven-test
+  - autodeploy
+
+  # tags: "maven_tag" should match tag name provided in runner
+maven-build:
+  stage: maven-build
+  tags:
+    - maven_tag
+  script:
+    - maven_tag
+    - cd spring
+    - mvn package -B
+
+maven-test:
+  stage: maven-test
+  tags:
+    - maven_tag
+  script:
+    - cd spring
+    - mvn test
+  artifacts:
+    paths:
+      - spring/target/*.jar
+
+autoDeploy:
+  stage: autodeploy
+  tags:
+    - maven_tag
+  script:
+    - cd spring
+    - mvn package
+    - sudo mv /usr/bin/target/web-demo.jar
+    - sudo systemctl stop systemd-web-demo
+    - sudo systemctl start system-web-demo
