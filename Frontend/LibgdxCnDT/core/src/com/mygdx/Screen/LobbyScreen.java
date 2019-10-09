@@ -14,10 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.cndt.CrimeandDime;
+import com.mygdx.cndt.*;
 import com.badlogic.gdx.graphics.Color;
-import utility.Lobby;
-import utility.WebSocketClient;
+import utility.*;
 
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -46,11 +45,11 @@ public class LobbyScreen implements Screen {
     private WebSocketClient clientEndPoint;
     private String username;
     
-    public LobbyScreen(CrimeandDime game, Lobby lobby)
+    public LobbyScreen(CrimeandDime newGame, Lobby newLobby)
     {
-    	this.lobby = lobby;
+    	lobby = newLobby;
     	getLobby();
-    	this.game = game;
+    	game = newGame;
     	white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
     	batch = new SpriteBatch();

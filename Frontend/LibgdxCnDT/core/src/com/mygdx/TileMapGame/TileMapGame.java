@@ -1,7 +1,7 @@
 package com.mygdx.TileMapGame;
 
 import com.badlogic.gdx.Game;
-import com.mygdx.Screen.tileMapScreen;
+import com.mygdx.Screen.*;
 
 public class TileMapGame extends Game {
 

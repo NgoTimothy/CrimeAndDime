@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.cndt.CrimeandDime;
+import com.mygdx.cndt.*;
 
 import java.awt.*;
 
@@ -28,10 +28,9 @@ public class MainMenuCnD implements Screen {
     private Label heading;
     private CrimeandDime game;
 
-    public MainMenuCnD(CrimeandDime game)
+    public MainMenuCnD(CrimeandDime newGame)
     {
-    	this.game = game;
-    	
+    	game = newGame;
     }
 
     @Override

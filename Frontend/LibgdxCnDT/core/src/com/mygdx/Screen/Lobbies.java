@@ -17,10 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.mygdx.cndt.CrimeandDime;
+import com.mygdx.cndt.*;
 import com.badlogic.gdx.graphics.Color;
 
-import utility.Lobby;
+import utility.*;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -46,9 +46,9 @@ public class Lobbies implements Screen {
     TextField newLobby;
     Color color;
     
-    public Lobbies(CrimeandDime game)
+    public Lobbies(CrimeandDime newGame)
     {
-    	this.game = game;
+    	game = newGame;
     	white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
     	batch = new SpriteBatch();
@@ -73,7 +73,7 @@ public class Lobbies implements Screen {
         white.draw(batch, "Lobbies", 500, 700);
         
         for(int i = 0; i < 10 && i < lobbyList.size(); i++)
-        {
+		{
         	white.draw(batch, lobbyList.get(i).getLobbyName(), 300, 600 - i * 35);
         	white.draw(batch, lobbyList.get(i).getNumPlayers() + "/4", 600, 600 - i * 35);
         }
