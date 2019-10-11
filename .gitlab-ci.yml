@@ -10,8 +10,7 @@ maven-build:
   tags:
     - maven_tag
   script:
-    - maven_tag
-    - cd spring
+    - cd Backend/src/API/testAPI/test
     - mvn package -B
 
 maven-test:
@@ -19,7 +18,7 @@ maven-test:
   tags:
     - maven_tag
   script:
-    - cd spring
+    - cd Backend/src/API/testAPI/test
     - mvn test
   artifacts:
     paths:
@@ -30,8 +29,8 @@ autoDeploy:
   tags:
     - maven_tag
   script:
-    - cd spring
+    - cd Backend/src/API/testAPI/test
     - mvn package
-    - sudo mv /usr/bin/target/web-demo.jar
-    - sudo systemctl stop systemd-web-demo
+    - sudo mv target/*.jar target/web-demo.jar
+    - sudo systemctl stop system-web-demo
     - sudo systemctl start system-web-demo
