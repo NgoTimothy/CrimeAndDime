@@ -42,10 +42,10 @@ libgdx-build:
   stage: libgdx-build
   before_script:
     - export GRADLE_USER_HOME='pwd'/.gradle
-    - chmod +x ./Frontend/LibgdxCnDT/gradlew
   tags:
     - libgdx_tag
   script:
+    - chmod +x ./Frontend/LibgdxCnDT/gradlew
     - cd Frontend/LibgdxCnDT
     - gradlew assemble
 
