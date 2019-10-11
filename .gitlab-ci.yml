@@ -10,7 +10,7 @@ maven-build:
   tags:
     - maven_tag
   script:
-    - cd spring
+    - cd Backend/src/API/testAPI/test
     - mvn package -B
 
 maven-test:
@@ -18,7 +18,7 @@ maven-test:
   tags:
     - maven_tag
   script:
-    - cd spring
+    - cd Backend/src/API/testAPI/test
     - mvn test
   artifacts:
     paths:
