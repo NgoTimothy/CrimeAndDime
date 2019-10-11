@@ -31,6 +31,6 @@ autoDeploy:
   script:
     - cd Backend/src/API/testAPI/test
     - mvn package
-    - sudo mv target/.*jar /target/web-demo.jar
+    - sudo mv target/*.jar /target/web-demo.jar
     - sudo systemctl stop systemd-web-demo
     - sudo systemctl start system-web-demo
