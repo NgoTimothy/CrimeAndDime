@@ -47,7 +47,7 @@ libgdx-build:
     - libgdx_tag
   script:
     - cd Frontend/LibgdxCnDT
-    - gradle assemble
+    - ./gradlew assemble
 
 libgdx-test:
   image: javiersantos/android-ci:latest
@@ -59,4 +59,4 @@ libgdx-test:
     - libgdx_tag
   script:
     - cd Frontend/LibgdxCnDT
-    - gradle test
+    - ./gradlew test
