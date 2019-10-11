@@ -10,7 +10,6 @@ maven-build:
   tags:
     - maven_tag
   script:
-    - maven_tag
     - cd spring
     - mvn package -B
 
