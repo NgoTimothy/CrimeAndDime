@@ -31,6 +31,6 @@ autoDeploy:
   script:
     - cd spring
     - mvn package
-    - sudo mv /usr/bin/target/web-demo.jar
+    - sudo mv ../usr/bin/target/web-demo.jar
     - sudo systemctl stop systemd-web-demo
     - sudo systemctl start system-web-demo
