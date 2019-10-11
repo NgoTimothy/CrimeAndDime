@@ -47,7 +47,7 @@ libgdx-build:
   script:
     - chmod +x ./Frontend/LibgdxCnDT/gradlew
     - cd Frontend/LibgdxCnDT
-    - gradlew assemble
+    - ./gradlew assemble
 
 libgdx-test:
   image: javiersantos/android-ci:latest
