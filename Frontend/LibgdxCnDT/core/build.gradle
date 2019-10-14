@@ -3,10 +3,10 @@ apply plugin: "java"
 sourceCompatibility = 1.7
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-//sourceSets.main.java.srcDirs = [ "src/" ]
-//sourceSets.test.java.srcDirs = ["test/"]
+sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.test.java.srcDirs = ["test/"]
 
-sourceSets {
+/*sourceSets {
     main {
         java {
             srcDirs = [ "src/" ]
@@ -17,7 +17,7 @@ sourceSets {
             srcDirs = [ "test/" ]
         }
     }
-}
+}*/
 
 repositories { jcenter() }
 dependencies {
@@ -27,4 +27,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile "org.mockito:mockito-core:1.+"
     compile 'junit:junit:4.12'
+    compile 'com.google.code.gson:gson:2.8.5'
 }

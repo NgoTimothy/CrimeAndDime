@@ -1,5 +1,3 @@
-package TestClasses;
-
 import GameClasses.Store;
 import GameClasses.Tile;
 import org.junit.*;
