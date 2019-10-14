@@ -4,21 +4,27 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 public class InventoryController {
 
     @RequestMapping("/inventory")
-    public String retrieveInventory() {
+    public ArrayList<Item> retrieveInventory() {
         try
         {
-            //set up variable in while loop
-            int i = 0;
             //create array list of items
             ArrayList<Item> items = new ArrayList<Item>();
+            //Gson gson = new Gson();
+            //JSONArray array = new JSONArray();
             //query to query the database
             String query = "select * from crime_and_dime.inventory";
 
@@ -33,28 +39,35 @@ public class InventoryController {
             //loop through each line of result and add all items to item list
             while(rs.next()) {
                 //create instance of individual item class
-                Item item = new Item();
-                item.setName(rs.getString("item"));
-                item.setItemId(rs.getInt("itemid"));
-                items.add(item);
-                i++;
+                Item tempItem = new Item();
+                tempItem.setName(rs.getString("item"));
+                tempItem.setPrice(rs.getInt("price"));
+                tempItem.setItemId(rs.getInt("itemid"));
+                items.add(tempItem);
+                /*JSONObject object = new JSONObject();
+                object.put("Item", rs.getString("item"));
+                object.put("ItemID", rs.getInt("itemid"));
+                object.put("Price", rs.getInt("price"));*/
+                //array.put(object);
             }
             con.close();
+            return items;
 //            would return as a json array
 //            JSONArray jsonArray = new JSONArray();
 //            for (int i=0; i < inventories.size(); i++) {
 //                jsonArray.put(inventories.get(i).getJSONObject());
 //            }
             //return inventories as json string
-            Gson gson = new Gson();
-            String jsonString = gson.toJson(items);
-            return jsonString;
+
+            //String string = gson.toJson(array);
+
+            //return string;
         }
         catch(Exception e)
         {
             System.out.println(e);
         }
-        return "Error";
+        return null;
     }
 
     @RequestMapping("/name")
