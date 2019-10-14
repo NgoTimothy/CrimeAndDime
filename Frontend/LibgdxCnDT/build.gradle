@@ -12,6 +12,8 @@ buildscript {
     dependencies {
 
     }
+
+
 }
 
 allprojects {
@@ -35,6 +37,7 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
 
+
 }
 
 project(":desktop") {
@@ -49,6 +52,10 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         compile files('Libraries/javax.websocket-client-api-1.1.jar')
         compile files('Libraries/tyrus-standalone-client-1.9.jar')
+    }
+
+    task wrapper(type: Wrapper) {
+        gradleVersion = '5.4.1'
     }
 }
 
@@ -65,6 +72,11 @@ project(":core") {
         compile files('Libraries/javax.websocket-client-api-1.1.jar')
         compile files('Libraries/tyrus-standalone-client-1.9.jar')
     	testCompile 'junit:junit:4.12'
+        compile "org.mockito:mockito-core:1.+"
         compile 'junit:junit:4.12'
+    }
+
+    task wrapper(type: Wrapper) {
+        gradleVersion = '5.4.1'
     }
 }

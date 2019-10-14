@@ -3,6 +3,8 @@ stages:
   - maven-build
   - maven-test
   - autodeploy
+  - libgdx-build
+  - libgdx-test
 
   # tags: "maven_tag" should match tag name provided in runner
 maven-build:
@@ -34,3 +36,25 @@ autoDeploy:
     - sudo mv target/*.jar target/web-demo.jar
     - sudo systemctl stop system-web-demo
     - sudo systemctl start system-web-demo
+
+libgdx-build:
+  image: javiersantos/android-ci:latest
+  stage: libgdx-build
+  before_script:
+    - export GRADLE_USER_HOME='pwd'/.gradle
+    - chmod +x ./Frontend/LibgdxCnDT/gradlew
+  tags:
+    - libgdx_tag
+  script:
+    - cd Frontend/LibgdxCnDT
+
+libgdx-test:
+  image: javiersantos/android-ci:latest
+  stage: libgdx-test
+  before_script:
+    - export GRADLE_USER_HOME='pwd'/.gradle
+    - chmod +x ./Frontend/LibgdxCnDT/gradlew
+  tags:
+    - libgdx_tag
+  script:
+    - cd Frontend/LibgdxCnDT
