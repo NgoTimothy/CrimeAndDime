@@ -165,10 +165,9 @@ public class LobbyScreen implements Screen {
     	leaveLobby();
     }
     
-    private void leaveLobby()
+    public String leaveLobby()
     {
-    	String result = APIDelete();
-    	System.out.println(result);
+    	return APIDelete();
     }
     
     public void getLobby()
@@ -273,7 +272,7 @@ public class LobbyScreen implements Screen {
 				response.append(inputLine);
 			}
 			in.close();
-			return "Lobby was deleted";
+			return "success";
 		}
 		catch(Exception e)	{
 			System.out.print(e);
