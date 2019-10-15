@@ -41,7 +41,7 @@ public class InventoryController {
                 //create instance of individual item class
                 Item tempItem = new Item();
                 tempItem.setName(rs.getString("item"));
-                tempItem.setPrice(rs.getInt("price"));
+                tempItem.setPrice(rs.getDouble("price"));
                 tempItem.setItemId(rs.getInt("itemid"));
                 items.add(tempItem);
                 /*JSONObject object = new JSONObject();
@@ -53,7 +53,7 @@ public class InventoryController {
             con.close();
             return items;
 //            would return as a json array
-//            JSONArray jsonArray = new JSONArray();
+//            JSONArray jsonArray = new JSONArray();cd
 //            for (int i=0; i < inventories.size(); i++) {
 //                jsonArray.put(inventories.get(i).getJSONObject());
 //            }
