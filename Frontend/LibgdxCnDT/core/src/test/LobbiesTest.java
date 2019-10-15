@@ -38,10 +38,8 @@ public class LobbiesTest {
     }
 
     @Test
-    public void getAllAddsCorrctLobbyId() {
+    public void getAllAddsCorrectLobbyId() {
         mockLobbies.getLobbies();
         assertEquals(15481, mockLobbies.getListOfLobbies().get(0).getLobbyID());
     }
-
-
 }
