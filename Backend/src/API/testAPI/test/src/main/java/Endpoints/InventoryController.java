@@ -40,7 +40,7 @@ public class InventoryController {
             while(rs.next()) {
                 //create instance of individual item class
                 Item tempItem = new Item();
-                tempItem.setName(rs.getString("item"));
+                tempItem.setName(rs.getString("name"));
                 tempItem.setPrice(rs.getDouble("price"));
                 tempItem.setItemId(rs.getInt("itemid"));
                 items.add(tempItem);
