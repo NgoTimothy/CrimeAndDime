@@ -23,7 +23,7 @@ public class DesktopLauncher {
 		
 
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		new LwjglApplication(new TileMapGame(), cfg);
+		new LwjglApplication(new CrimeandDime(), cfg);
 
 		cfg.title = "Crime & Dime";
 		cfg.useGL30 = true;
