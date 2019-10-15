@@ -13,15 +13,15 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 
 
-		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		new LwjglApplication(new CrimeandDime(), cfg);
-		cfg.vSyncEnabled = true;
-		cfg.title = "Crime & Dime";
-		cfg.useGL30 = true;
-		cfg.width = 1280;
-		cfg.height = 720;
+//		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+//		new LwjglApplication(new CrimeandDime(), cfg);
+//		cfg.vSyncEnabled = true;
+//		cfg.title = "Crime & Dime";
+//		cfg.useGL30 = true;
+//		cfg.width = 1280;
+//		cfg.height = 720;
 		
-		/*
+
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		new LwjglApplication(new TileMapGame(), cfg);
 
@@ -29,6 +29,6 @@ public class DesktopLauncher {
 		cfg.useGL30 = true;
 		cfg.width = 1280;
 		cfg.height = 720;
-		*/
+
 	}
 }
