@@ -5,5 +5,7 @@ Endpoints\InventoryController.class
 Endpoints\Lobby.class
 Endpoints\ItemEncoder.class
 Endpoints\User.class
+Endpoints\StoreInfo.class
 Endpoints\Application.class
+Endpoints\StoreInfoController.class
 Endpoints\WebSocketConfig.class
