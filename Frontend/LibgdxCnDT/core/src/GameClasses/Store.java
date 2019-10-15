@@ -106,4 +106,9 @@ public class Store {
             return true;
         }
     }
+    
+    public Inventory getInventory()
+    {
+    	return storeInventory;
+    }
 }

@@ -4,8 +4,6 @@ import GameClasses.Store;
 import GameClasses.Tile;
 import org.junit.*;
 
-import java.math.BigDecimal;
-
 import static org.junit.Assert.*;
 
 public class StoreClass {

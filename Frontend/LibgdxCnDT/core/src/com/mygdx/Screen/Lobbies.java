@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -16,10 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mygdx.cndt.*;
-import com.badlogic.gdx.graphics.Color;
-
 import utility.*;
 
 import java.net.HttpURLConnection;
@@ -28,8 +24,6 @@ import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-
-import java.awt.*;
 
 public class Lobbies implements Screen {
 
@@ -123,7 +117,7 @@ public class Lobbies implements Screen {
 	        stage.addActor(joinButton[i]);
         }
         
-    	newLobby = new TextField("", new TextFieldStyle(white, color.WHITE, new BaseDrawable(), new BaseDrawable(), new BaseDrawable()));
+    	newLobby = new TextField("", new TextFieldStyle(white, Color.WHITE, new BaseDrawable(), new BaseDrawable(), new BaseDrawable()));
     	newLobby.setWidth(300);
         newLobby.setPosition(200, 200);
         stage.addActor(newLobby);

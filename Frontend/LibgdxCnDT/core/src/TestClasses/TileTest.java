@@ -3,7 +3,6 @@ package TestClasses;
 import GameClasses.Item;
 import GameClasses.Tile;
 import GameExceptions.CustomerMovingIntoShelfException;
-import GameExceptions.DirectionWithNoShelfException;
 import GameExceptions.PlacingItemWithNoShelfException;
 import GameExceptions.ShelfWithNoDirectionException;
 import org.junit.*;
