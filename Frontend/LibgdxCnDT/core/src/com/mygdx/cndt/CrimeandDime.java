@@ -7,7 +7,7 @@ public class CrimeandDime extends Game {
 
 	@Override
 	public void create () {
-		setScreen(new ShelfScreen());
+		setScreen(new MainMenuCnD(this));
 	}
 
 	@Override
