@@ -31,9 +31,7 @@ public class LobbyScreen implements Screen {
     private TextureAtlas atlas;
     private Skin skin;
     private BitmapFont white, black;
-    private Table table;
     private TextButton playButton,  exitButton;
-    private Label heading;
     private SpriteBatch batch;
     private CrimeandDime game;
     private ArrayList<String> messages;
@@ -58,8 +56,13 @@ public class LobbyScreen implements Screen {
 		}
     	System.out.println(lobby.getLobbyID());
     }
-    
-    void connect() throws Exception
+
+    //For testing purposes only
+	public LobbyScreen() {
+		lobby = new Lobby(0, "", 0);
+	}
+
+	void connect() throws Exception
     {
     	clientEndPoint = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + lobby.getLobbyID() + "/" + username));
         clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
@@ -162,112 +165,123 @@ public class LobbyScreen implements Screen {
     	leaveLobby();
     }
     
-    private void leaveLobby()
+    public String leaveLobby()
     {
-    	try {
-        	String url = "http://coms-309-tc-3.misc.iastate.edu:8080/deleteUser";
-    		URL obj = new URL(url);
-    		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-    		String USER_AGENT = "Mozilla/5.0";
-    		
-    		//add request header
-    		con.setRequestMethod("POST");
-    		con.setRequestProperty("User-Agent", USER_AGENT);
-    		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
-    		String urlParameters = "lobbyID=" + lobby.getLobbyID();
-    		
-    		// Send post request
-    		con.setDoOutput(true);
-    		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-    		wr.writeBytes(urlParameters);
-    		wr.flush();
-    		wr.close();
-
-    		int responseCode = con.getResponseCode();
-    		System.out.println("\nSending 'POST' request to URL : " + url);
-    		System.out.println("Post parameters : " + urlParameters);
-    		System.out.println("Response Code : " + responseCode);
-
-    		BufferedReader in = new BufferedReader(
-    		        new InputStreamReader(con.getInputStream()));
-    		String inputLine;
-    		StringBuffer response = new StringBuffer();
-
-    		while ((inputLine = in.readLine()) != null) {
-    			response.append(inputLine);
-    		}
-    		in.close();
-    		
-        	}
-        	catch(Exception e)	{
-        		System.out.print(e);
-        	}   
-    		System.out.println("lobby left");
+    	return APIDelete();
     }
     
-    private void getLobby()
+    public void getLobby()
     {
-    	String result = "";
-    	try {
-        	String url = "http://coms-309-tc-3.misc.iastate.edu:8080/lobbyInfo?lobbyID=" + lobby.getLobbyID();
+    	String result = callAPIGet();
+    	String delims = "[{}\":,]+";
+    	String[] tokens = result.split(delims);
+    	for(String s : tokens)
+    		System.out.println(s);
     		
-    		URL obj = new URL(url);
-    		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-    		// optional default is GET
-    		con.setRequestMethod("GET");
-
-    		String USER_AGENT = "Mozilla/5.0";
-    		
-    		//add request header
-    		con.setRequestProperty("User-Agent", USER_AGENT);
-
-    		int responseCode = con.getResponseCode();
-    		System.out.println("\nSending 'GET' request to URL : " + url);
-    		System.out.println("Response Code : " + responseCode);
-
-    		BufferedReader in = new BufferedReader(
-    		new InputStreamReader(con.getInputStream()));
-    		String inputLine;
-    		StringBuffer response = new StringBuffer();
-
-    		while ((inputLine = in.readLine()) != null) {
-    			response.append(inputLine);
-    		}
-    		in.close();
-
-    		result = response.toString();
-    		
-        	}
-        	catch(Exception e)	{
-        		System.out.print(e);
-        	}    	    	
-    	
-    		String delims = "[{}\":,]+";
-    		String[] tokens = result.split(delims);
-    		for(String s : tokens)
-    			System.out.println(s);
-    		
-    		if(tokens[6].equals("false"))
-    			lobby.setNumPlayers(Integer.parseInt(tokens[8]));
-    		else
-    			lobby.setNumPlayers(Integer.parseInt(tokens[10]));
+    	if(tokens[6].equals("false"))
+    		lobby.setNumPlayers(Integer.parseInt(tokens[8]));
+    	else
+    		lobby.setNumPlayers(Integer.parseInt(tokens[10]));
     }
     
-    private TextButton.TextButtonStyle TextButtonStyle()
-    {
-    	atlas = new TextureAtlas("ui/button.pack");
-        skin = new Skin(atlas);
-    	
-    	TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.getDrawable("button.up.9");
-        textButtonStyle.down = skin.getDrawable("button.down");
-        textButtonStyle.pressedOffsetX = 1;
-        textButtonStyle.pressedOffsetY = -1;
-        textButtonStyle.font = black;
+    private TextButton.TextButtonStyle TextButtonStyle() {
+		atlas = new TextureAtlas("ui/button.pack");
+		skin = new Skin(atlas);
+
+		TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+		textButtonStyle.up = skin.getDrawable("button.up.9");
+		textButtonStyle.down = skin.getDrawable("button.down");
+		textButtonStyle.pressedOffsetX = 1;
+		textButtonStyle.pressedOffsetY = -1;
+		textButtonStyle.font = black;
 		return textButtonStyle;
-    }	
+	}
+
+	public String callAPIGet() {
+		String result = "";
+		try {
+			String url = "http://coms-309-tc-3.misc.iastate.edu:8080/lobbyInfo?lobbyID=" + lobby.getLobbyID();
+
+			URL obj = new URL(url);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+			// optional default is GET
+			con.setRequestMethod("GET");
+
+			String USER_AGENT = "Mozilla/5.0";
+
+			//add request header
+			con.setRequestProperty("User-Agent", USER_AGENT);
+
+			int responseCode = con.getResponseCode();
+			System.out.println("\nSending 'GET' request to URL : " + url);
+			System.out.println("Response Code : " + responseCode);
+
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+
+			result = response.toString();
+			return result;
+		}
+		catch(Exception e)	{
+			System.out.print(e);
+		}
+    	return "failure";
+	}
+
+	public String APIDelete() {
+		try {
+			String url = "http://coms-309-tc-3.misc.iastate.edu:8080/deleteUser";
+			URL obj = new URL(url);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+			String USER_AGENT = "Mozilla/5.0";
+
+			//add request header
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", USER_AGENT);
+			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+			String urlParameters = "lobbyID=" + lobby.getLobbyID();
+
+			// Send post request
+			con.setDoOutput(true);
+			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+			wr.writeBytes(urlParameters);
+			wr.flush();
+			wr.close();
+
+			int responseCode = con.getResponseCode();
+			System.out.println("\nSending 'POST' request to URL : " + url);
+			System.out.println("Post parameters : " + urlParameters);
+			System.out.println("Response Code : " + responseCode);
+
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+			return "success";
+		}
+		catch(Exception e)	{
+			System.out.print(e);
+		}
+		return "failure";
+	}
+
+	public Lobby returnCurrentLobby() {
+    	return lobby;
+	}
     
 }

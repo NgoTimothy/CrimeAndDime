@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -16,9 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mygdx.cndt.*;
-import com.badlogic.gdx.graphics.Color;
 
 import utility.*;
 
@@ -28,8 +25,6 @@ import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-
-import java.awt.*;
 
 public class Lobbies implements Screen {
 
@@ -56,6 +51,11 @@ public class Lobbies implements Screen {
     	stage = new Stage();
     	color = new Color();
     }
+
+    //For testing purposes only
+    public Lobbies() {
+    	lobbyList = new ArrayList<Lobby>();
+	}
     
     @Override
     public void render(float delta){
@@ -179,156 +179,173 @@ public class Lobbies implements Screen {
 		return textButtonStyle;
     }
     
-    private ArrayList<Lobby> getLobbies()
+    public ArrayList<Lobby> getLobbies()
     {
     	//Get a string of lobby info from the API
-    	String result = "";
-    	try {
-        	String url = "http://coms-309-tc-3.misc.iastate.edu:8080/lobbyList";
-    		
-    		URL obj = new URL(url);
-    		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-    		// optional default is GET
-    		con.setRequestMethod("GET");
-
-    		String USER_AGENT = "Mozilla/5.0";
-    		
-    		//add request header
-    		con.setRequestProperty("User-Agent", USER_AGENT);
-
-    		int responseCode = con.getResponseCode();
-    		System.out.println("\nSending 'GET' request to URL : " + url);
-    		System.out.println("Response Code : " + responseCode);
-
-    		BufferedReader in = new BufferedReader(
-    		new InputStreamReader(con.getInputStream()));
-    		String inputLine;
-    		StringBuffer response = new StringBuffer();
-
-    		while ((inputLine = in.readLine()) != null) {
-    			response.append(inputLine);
-    		}
-    		in.close();
-
-    		result = response.toString();
-    		
-        	}
-        	catch(Exception e)	{
-        		System.out.print(e);
-        	}    	    	
-    	
-    		String delims = "[{}\":,]+";
-    		String[] tokens = result.split(delims);
+    	String result = APIGetAllLobbies();
+    	String delims = "[{}\":,]+";
+    	String[] tokens = result.split(delims);
     		
     		//Parse the string
-    		Lobby lobby;
-    		for (int i = 1; i < tokens.length - 8; i += 8)
-    		{
-    			if(tokens[i + 5].equals("false"))
-    				lobby = new Lobby(Integer.parseInt(tokens[i + 1]), tokens[i + 3], Integer.parseInt(tokens[i + 7]));
-    			else
-    			{
-    				lobby = new Lobby(Integer.parseInt(tokens[i + 1]), tokens[i + 3], Integer.parseInt(tokens[i + 9]));
-    				i += 2;
-    			}
-    			lobbyList.add(lobby);
-    		}
+		Lobby lobby;
+		for (int i = 1; i < tokens.length - 8; i += 8) {
+			if(tokens[i + 5].equals("false"))
+				lobby = new Lobby(Integer.parseInt(tokens[i + 1]), tokens[i + 3], Integer.parseInt(tokens[i + 7]));
+			else {
+				lobby = new Lobby(Integer.parseInt(tokens[i + 1]), tokens[i + 3], Integer.parseInt(tokens[i + 9]));
+				i += 2;
+			}
+			lobbyList.add(lobby);
+		}
     		
-    		return lobbyList;
+		return lobbyList;
     }   
     
-    private void addLobby(String lobbyName)
-    {
-    	try {
-    	String url = "http://coms-309-tc-3.misc.iastate.edu:8080/addLobby";
-		URL obj = new URL(url);
-		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-		String USER_AGENT = "Mozilla/5.0";
-		
-		//add request header
-		con.setRequestMethod("POST");
-		con.setRequestProperty("User-Agent", USER_AGENT);
-		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
-		String urlParameters = "lobbyName=" + lobbyName;
-		
-		// Send post request
-		con.setDoOutput(true);
-		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-		wr.writeBytes(urlParameters);
-		wr.flush();
-		wr.close();
-
-		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + urlParameters);
-		System.out.println("Response Code : " + responseCode);
-
-		BufferedReader in = new BufferedReader(
-		        new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
-		
-		//print result
-		System.out.println(response.toString());
-    	}
-    	catch(Exception e)	{
-    		System.out.print(e);
-    	}   
-    	
+    public String addLobby(String lobbyName) {
+    	String result = APIAddLobby(lobbyName);
     	getLobbies();
+    	System.out.println(result);
+    	return result;
     }
     
-    private void joinLobby(int lobbyID)
-    {
-    	try {
-        	String url = "http://coms-309-tc-3.misc.iastate.edu:8080/addToLobby";
-    		URL obj = new URL(url);
-    		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-    		String USER_AGENT = "Mozilla/5.0";
-    		
-    		//add request header
-    		con.setRequestMethod("POST");
-    		con.setRequestProperty("User-Agent", USER_AGENT);
-    		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
-    		String urlParameters = "lobbyID=" + lobbyID;
-    		
-    		// Send post request
-    		con.setDoOutput(true);
-    		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-    		wr.writeBytes(urlParameters);
-    		wr.flush();
-    		wr.close();
-
-    		int responseCode = con.getResponseCode();
-    		System.out.println("\nSending 'POST' request to URL : " + url);
-    		System.out.println("Post parameters : " + urlParameters);
-    		System.out.println("Response Code : " + responseCode);
-
-    		BufferedReader in = new BufferedReader(
-    		        new InputStreamReader(con.getInputStream()));
-    		String inputLine;
-    		StringBuffer response = new StringBuffer();
-
-    		while ((inputLine = in.readLine()) != null) {
-    			response.append(inputLine);
-    		}
-    		in.close();
-    		
-    		//print result
-    		System.out.println(response.toString());
-        	}
-        	catch(Exception e)	{
-        		System.out.print(e);
-        	}   
+    public String joinLobby(int lobbyID) {
+		String result = APIJoinALobby(lobbyID);
+		System.out.println(result);
+		return result;
     }
+
+    public String APIGetAllLobbies() {
+    	String result = "failure";
+		try {
+			String url = "http://coms-309-tc-3.misc.iastate.edu:8080/lobbyList";
+
+			URL obj = new URL(url);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+			// optional default is GET
+			con.setRequestMethod("GET");
+
+			String USER_AGENT = "Mozilla/5.0";
+
+			//add request header
+			con.setRequestProperty("User-Agent", USER_AGENT);
+
+			int responseCode = con.getResponseCode();
+			System.out.println("\nSending 'GET' request to URL : " + url);
+			System.out.println("Response Code : " + responseCode);
+
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+
+			result = response.toString();
+
+		}
+		catch(Exception e)	{
+			System.out.print(e);
+		}
+		return result;
+	}
+
+	public String APIAddLobby(String lobbyName) {
+		try {
+			String url = "http://coms-309-tc-3.misc.iastate.edu:8080/addLobby";
+			URL obj = new URL(url);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+			String USER_AGENT = "Mozilla/5.0";
+
+			//add request header
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", USER_AGENT);
+			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+			String urlParameters = "lobbyName=" + lobbyName;
+
+			// Send post request
+			con.setDoOutput(true);
+			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+			wr.writeBytes(urlParameters);
+			wr.flush();
+			wr.close();
+
+			int responseCode = con.getResponseCode();
+			System.out.println("\nSending 'POST' request to URL : " + url);
+			System.out.println("Post parameters : " + urlParameters);
+			System.out.println("Response Code : " + responseCode);
+
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+
+			return response.toString();
+		}
+		catch(Exception e)	{
+			System.out.print(e);
+		}
+		return "failure";
+	}
+
+	public String APIJoinALobby(int lobbyID) {
+		try {
+			String url = "http://coms-309-tc-3.misc.iastate.edu:8080/addToLobby";
+			URL obj = new URL(url);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+			String USER_AGENT = "Mozilla/5.0";
+
+			//add request header
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", USER_AGENT);
+			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+			String urlParameters = "lobbyID=" + lobbyID;
+
+			// Send post request
+			con.setDoOutput(true);
+			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+			wr.writeBytes(urlParameters);
+			wr.flush();
+			wr.close();
+
+			int responseCode = con.getResponseCode();
+			System.out.println("\nSending 'POST' request to URL : " + url);
+			System.out.println("Post parameters : " + urlParameters);
+			System.out.println("Response Code : " + responseCode);
+
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+
+			return response.toString();
+		}
+		catch(Exception e)	{
+			System.out.print(e);
+		}
+		return "failure";
+	}
+
+	public ArrayList<Lobby> getListOfLobbies() {
+    	return lobbyList;
+	}
+
+
 }
