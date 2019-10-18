@@ -59,3 +59,4 @@ libgdx-test:
     - libgdx_tag
   script:
     - cd Frontend/LibgdxCnDT
+    - ./gradlew test
