@@ -36,12 +36,12 @@ public class Lobbies implements Screen {
     private TextButton playButton, exitButton, joinButton[];
     private Label heading;
     private SpriteBatch batch;
-    private CrimeandDime game;
+    private CrimeAndDime game;
     ArrayList<Lobby> lobbyList;
     TextField newLobby;
     Color color;
     
-    public Lobbies(CrimeandDime newGame)
+    public Lobbies(CrimeAndDime newGame)
     {
     	game = newGame;
     	white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
@@ -95,7 +95,7 @@ public class Lobbies implements Screen {
         {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	game.setScreen(new MainMenuCnD(game));
+            	game.setScreen(new Splash(game));
             }
         });
         stage.addActor(exitButton);

@@ -1,5 +1,6 @@
 package com.mygdx.Screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.cndt.CrimeAndDime;
 //import sun.applet.Main;
 
 //import javax.xml.soap.Text;
@@ -18,8 +20,18 @@ public class Splash implements Screen {
 
     private SpriteBatch batch;
     private Sprite splashImg;
-    private Image shelfImage;
+    private Image playImg;
+    private Image exitImg;
     private Stage stage;
+    private CrimeAndDime curGame;
+
+    public Splash(CrimeAndDime crimeAndDime) {
+        curGame = crimeAndDime;
+    }
+
+    public Splash() {
+
+    }
 
     @Override
     public void show ()
@@ -33,23 +45,33 @@ public class Splash implements Screen {
         splashImg.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         Texture texture = new Texture(Gdx.files.internal("img/transparentPicture.png"));
-        shelfImage = new Image(texture);
-        shelfImage.setPosition(290,314);
-        shelfImage.setSize(700,75);
-        shelfImage.addListener(new ClickListener()
-        {
+        playImg = new Image(texture);
+        playImg.setPosition(290,314);
+        playImg.setSize(700,75);
+        playImg.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Lobbies(curGame));
             }
         });
 
-        stage.addActor(shelfImage);
+        exitImg = new Image(texture);
+        exitImg.setPosition(290, 50);
+        exitImg.setSize(700, 75);
+        exitImg.addListener(new ClickListener() {
+           @Override
+           public void clicked(InputEvent event, float x, float y) {
+               Gdx.app.exit();
+           }
+        });
+
+        stage.addActor(playImg);
+        stage.addActor(exitImg);
         batch.begin();
 
         batch.end();
 
-        System.out.println(shelfImage.getX());
+        System.out.println(playImg.getX());
     }
 
     @Override
@@ -59,7 +81,8 @@ public class Splash implements Screen {
 
         batch.begin();
         splashImg.draw(batch);
-        shelfImage.setColor(0,0,0,0);
+        playImg.setColor(0,0,0,0);
+        exitImg.setColor(0, 0, 0, 0);
         batch.end();
 
         stage.draw();

@@ -15,8 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.cndt.*;
 
-import java.awt.*;
-
 public class MainMenuCnD implements Screen {
 
     private com.badlogic.gdx.scenes.scene2d.Stage stage;
@@ -26,9 +24,9 @@ public class MainMenuCnD implements Screen {
     private Table table;
     private TextButton buttonPlay,  buttonExit;
     private Label heading;
-    private CrimeandDime game;
+    private CrimeAndDime game;
 
-    public MainMenuCnD(CrimeandDime newGame)
+    public MainMenuCnD(CrimeAndDime newGame)
     {
     	game = newGame;
     }

@@ -1,12 +1,10 @@
 package com.mygdx.cndt.desktop;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.mygdx.TileMapGame.TileMapGame;
-import com.mygdx.cndt.CrimeandDime;
-import com.mygdx.cndt.ExpTileMapGame;
+import com.mygdx.cndt.CrimeAndDime;
 
 
 public class DesktopLauncher {
@@ -14,7 +12,7 @@ public class DesktopLauncher {
 
 
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		new LwjglApplication(new TileMapGame(), cfg);
+		new LwjglApplication(new CrimeAndDime(), cfg);
 		cfg.vSyncEnabled = true;
 		cfg.title = "Crime & Dime";
 		cfg.useGL30 = true;

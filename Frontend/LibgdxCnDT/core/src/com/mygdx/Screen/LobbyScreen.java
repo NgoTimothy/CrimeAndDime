@@ -8,12 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.cndt.CrimeandDime;
+import com.mygdx.cndt.CrimeAndDime;
 import utility.Lobby;
 import utility.WebSocketClient;
 
@@ -33,13 +31,13 @@ public class LobbyScreen implements Screen {
     private BitmapFont white, black;
     private TextButton playButton,  exitButton;
     private SpriteBatch batch;
-    private CrimeandDime game;
+    private CrimeAndDime game;
     private ArrayList<String> messages;
     private Lobby lobby;
     private WebSocketClient clientEndPoint;
     private String username;
     
-    public LobbyScreen(CrimeandDime newGame, Lobby newLobby)
+    public LobbyScreen(CrimeAndDime newGame, Lobby newLobby)
     {
     	lobby = newLobby;
     	getLobby();
