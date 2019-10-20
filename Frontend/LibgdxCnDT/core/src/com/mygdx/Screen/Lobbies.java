@@ -39,9 +39,9 @@ public class Lobbies implements Screen {
     private Label heading;
     private SpriteBatch batch;
     private CrimeAndDime game;
-    ArrayList<Lobby> lobbyList;
-    TextField newLobby;
-    Color color;
+    private ArrayList<Lobby> lobbyList;
+    private TextField newLobby;
+    private Color color;
     
     public Lobbies(CrimeAndDime newGame)
     {

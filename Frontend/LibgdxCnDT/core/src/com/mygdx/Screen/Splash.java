@@ -38,44 +38,45 @@ public class Splash implements Screen {
     }
 
     @Override
-    public void show ()
-    {
+    public void show() {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         batch = new SpriteBatch();
-
+        Texture texture = new Texture(Gdx.files.internal("img/transparentPicture.png"));
         Texture splashTexture = new Texture(Gdx.files.internal("img/CnD-MainMenu.png"));
         splashImg = new Sprite(splashTexture);
         splashImg.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        Texture texture = new Texture(Gdx.files.internal("img/transparentPicture.png"));
-        playImg = new Image(texture);//Will add a method to instantiate this
-        playImg.setPosition(290,314);
-        playImg.setSize(700,75);
-        playImg.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Lobbies(curGame));
-            }
-        });
+        playImg = setImage(texture, 290, 314, 700, 75, nextScreen.LOBBY);
         stage.addActor(playImg);
-
-        exitImg = new Image(texture);
-        exitImg.setPosition(290, 50);
-        exitImg.setSize(700, 75);
-        exitImg.addListener(new ClickListener() {
-           @Override
-           public void clicked(InputEvent event, float x, float y) {
-               Gdx.app.exit();
-           }
-        });
+        exitImg = setImage(texture, 290, 50, 700, 75, nextScreen.EXIT);
         stage.addActor(exitImg);
-
         batch.begin();
-
         batch.end();
-
         System.out.println(playImg.getX());
+    }
+
+    private Image setImage(Texture newTexture, int positionX, int positionY, int width, int height, nextScreen newScreen) {
+        Image returnImg = new Image(newTexture);
+        returnImg.setPosition(positionX, positionY);
+        returnImg.setSize(width, height);
+        if(newScreen == nextScreen.EXIT) {
+            returnImg.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.app.exit();
+                }
+            });
+        }
+        else if(newScreen == nextScreen.LOBBY) {
+            returnImg.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new Lobbies(curGame));
+                }
+            });
+        }
+        return returnImg;
     }
 
     @Override
