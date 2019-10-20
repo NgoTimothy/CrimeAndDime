@@ -170,12 +170,12 @@ public class LobbyScreen implements Screen {
     
     public String leaveLobby()
     {
-    	return APIDelete();
+    	return lobbyScreenService.APIDelete(lobby.getLobbyID());
     }
     
     public void getLobby()
     {
-    	String result = callAPIGet();
+    	String result = lobbyScreenService.callAPIGet(lobby.getLobbyID());
     	String delims = "[{}\":,]+";
     	String[] tokens = result.split(delims);
     	for(String s : tokens)
