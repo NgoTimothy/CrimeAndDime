@@ -106,4 +106,8 @@ public class Store {
             return true;
         }
     }
+
+    public ArrayList<Item> getInventory() {
+        return storeInventory.getInventory();
+    }
 }

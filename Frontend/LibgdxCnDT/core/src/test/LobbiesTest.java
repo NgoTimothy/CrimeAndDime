@@ -1,3 +1,4 @@
+import Services.LobbyService;
 import com.mygdx.Screen.Lobbies;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,15 +8,16 @@ import static org.mockito.Mockito.*;
 
 public class LobbiesTest {
     private Lobbies mockLobbies;
-    private Lobbies testLobbies;
+    private LobbyService mockLobbyService;
     private String expectedJson;
 
     @Before
     public void setup() {
-        testLobbies = new Lobbies();
-        mockLobbies = spy(testLobbies);
         expectedJson = "[{\"lobbyId\":15481,\"lobbyName\":\"Iowa State Lobby\",\"hasPassword\":false,\"numberOfPlayers\":1}]";
-        when(mockLobbies.APIGetAllLobbies()).thenReturn(expectedJson);
+        mockLobbyService = mock(LobbyService.class);
+        when(mockLobbyService.APIGetAllLobbies()).thenReturn(expectedJson);
+        when(mockLobbyService.APIAddLobby("Fake Lobby")).thenReturn("");
+        mockLobbies = new Lobbies(mockLobbyService);
     }
 
     @Test

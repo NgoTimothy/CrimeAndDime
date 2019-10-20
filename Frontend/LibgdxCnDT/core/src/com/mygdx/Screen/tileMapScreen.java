@@ -91,9 +91,9 @@ public class tileMapScreen implements Screen {
         int stringNumber = 1;
         int y = 0;
 
-        shelfTileArray = new ArrayList<tempTile>(0);
+        shelfTileArray = new ArrayList<tempTile>();
         int x = 1;
-        for (MapObject shelfObjects : shelfMapObject )
+        for (MapObject shelfObjects : shelfMapObject)
         {
             if (shelfObjects instanceof RectangleMapObject){
                 if (shelfObjects.getName().equals("Shelf")) {

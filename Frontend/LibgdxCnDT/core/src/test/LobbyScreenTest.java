@@ -1,3 +1,4 @@
+import Services.LobbyScreenService;
 import com.mygdx.Screen.LobbyScreen;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,11 +13,14 @@ public class LobbyScreenTest {
     private LobbyScreen realScreen;
     private String expectedJson;
     private Lobby testLobby;
+    private LobbyScreenService mockLobbyScreenService;
 
     @Before
     public void setup() {
-        realScreen = new LobbyScreen();
-        mockScreen = spy(realScreen);
+        mockLobbyScreenService = mock(LobbyScreenService.class);
+        //realScreen = new LobbyScreen();
+        //mockScreen = spy(realScreen);
+        mockScreen = new LobbyScreen(mockLobbyScreenService);
         //mockScreen = mock(LobbyScreen.class, CALLS_REAL_METHODS);
         expectedJson = "[{\"lobbyId\":15481,\"lobbyName\":\"Iowa State Lobby\",\"hasPassword\":false,\"numberOfPlayers\":1}]";
         when(mockScreen.callAPIGet()).thenReturn(expectedJson);

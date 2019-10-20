@@ -1,5 +1,6 @@
 package com.mygdx.Screen;
 
+import Services.LobbyScreenService;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -37,6 +38,7 @@ public class LobbyScreen implements Screen {
     private Lobby lobby;
     private WebSocketClient clientEndPoint;
     private String username;
+    private LobbyScreenService lobbyScreenService;
     
     public LobbyScreen(CrimeAndDime newGame, Lobby newLobby)
     {
@@ -48,6 +50,7 @@ public class LobbyScreen implements Screen {
     	batch = new SpriteBatch();
     	username = "player" + Integer.toString(lobby.getNumPlayers());
     	messages = new ArrayList<String>();
+    	lobbyScreenService = new LobbyScreenService();
     	try {
 			connect();
 		} catch (Exception e) {
@@ -57,8 +60,9 @@ public class LobbyScreen implements Screen {
     }
 
     //For testing purposes only
-	public LobbyScreen() {
+	public LobbyScreen(LobbyScreenService newLobbyScreenService) {
 		lobby = new Lobby(0, "", 0);
+		lobbyScreenService = newLobbyScreenService;
 	}
 
 	void connect() throws Exception

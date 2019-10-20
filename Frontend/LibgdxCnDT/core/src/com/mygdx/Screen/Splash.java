@@ -12,9 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.cndt.CrimeAndDime;
-//import sun.applet.Main;
-
-//import javax.xml.soap.Text;
 
 enum nextScreen {
     EXIT, LOBBY;
