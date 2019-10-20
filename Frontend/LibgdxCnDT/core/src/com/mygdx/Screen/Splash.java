@@ -16,6 +16,10 @@ import com.mygdx.cndt.CrimeAndDime;
 
 //import javax.xml.soap.Text;
 
+enum nextScreen {
+    EXIT, LOBBY;
+}
+
 public class Splash implements Screen {
 
     private SpriteBatch batch;
@@ -45,7 +49,7 @@ public class Splash implements Screen {
         splashImg.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         Texture texture = new Texture(Gdx.files.internal("img/transparentPicture.png"));
-        playImg = new Image(texture);
+        playImg = new Image(texture);//Will add a method to instantiate this
         playImg.setPosition(290,314);
         playImg.setSize(700,75);
         playImg.addListener(new ClickListener() {
@@ -54,6 +58,7 @@ public class Splash implements Screen {
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Lobbies(curGame));
             }
         });
+        stage.addActor(playImg);
 
         exitImg = new Image(texture);
         exitImg.setPosition(290, 50);
@@ -64,9 +69,8 @@ public class Splash implements Screen {
                Gdx.app.exit();
            }
         });
-
-        stage.addActor(playImg);
         stage.addActor(exitImg);
+
         batch.begin();
 
         batch.end();

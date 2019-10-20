@@ -50,7 +50,6 @@ public class tileMapScreen implements Screen {
         camera.update();
         render.setView(camera);
         render.render();
-
         stage.setDebugAll(true);
         stage.draw();
     }
@@ -60,8 +59,7 @@ public class tileMapScreen implements Screen {
     public void resize(int width, int height){
         camera.viewportWidth = width;
         camera.viewportHeight = height;
-
-       camera.update();
+        camera.update();
     }
 
     @Override
@@ -111,6 +109,7 @@ public class tileMapScreen implements Screen {
                     shelfImage.addListener(new ClickListener() {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
+                            dispose();
                             ((Game) Gdx.app.getApplicationListener()).setScreen(new Splash());
                         }
                     });
@@ -161,20 +160,20 @@ public class tileMapScreen implements Screen {
 
 
     @Override
-    public void pause(){
+    public void pause() {
 
     }
     @Override
-    public void resume(){
+    public void resume() {
 
     }
     @Override
-    public void hide(){
+    public void hide() {
         maps.dispose();
     }
 
     @Override
-    public void dispose () {
+    public void dispose() {
         maps.dispose();
         render.dispose();
     }

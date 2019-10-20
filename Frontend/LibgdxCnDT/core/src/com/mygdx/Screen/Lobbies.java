@@ -1,5 +1,6 @@
 package com.mygdx.Screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.TileMapGame.TileMapGame;
 import com.mygdx.cndt.*;
 
 import utility.*;
@@ -91,8 +93,7 @@ public class Lobbies implements Screen {
         exitButton.setPosition(1100, 600);
         exitButton.setWidth(50);
         exitButton.setHeight(50);
-        exitButton.addListener(new ClickListener()
-        {
+        exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
             	game.setScreen(new Splash(game));
@@ -102,6 +103,12 @@ public class Lobbies implements Screen {
         
         playButton = new TextButton("Play", TextButtonStyle());
         playButton.setPosition(1100, 50);
+        playButton.addListener(new ClickListener() {
+        	@Override
+			public void clicked(InputEvent event, float x, float y) {
+        		game.setScreen(new tileMapScreen());
+			}
+        });
         stage.addActor(playButton);
         
         getLobbies();
