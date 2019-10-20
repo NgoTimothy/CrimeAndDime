@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.Objects.tempTile;
+import com.mygdx.cndt.CrimeAndDime;
 
 import java.util.ArrayList;
 
@@ -39,7 +40,15 @@ public class tileMapScreen implements Screen {
     private Stage stage;
     private TextureAtlas shelfButtonAtlas;
     private ArrayList<tempTile> shelfTileArray;
+    private CrimeAndDime game;
 
+    public tileMapScreen(CrimeAndDime newGame) {
+        game = newGame;
+    }
+
+    public tileMapScreen() {
+
+    }
 
     @Override
     public void render(float delta){
@@ -176,6 +185,7 @@ public class tileMapScreen implements Screen {
     public void dispose() {
         maps.dispose();
         render.dispose();
+        game = null;
     }
 }
 

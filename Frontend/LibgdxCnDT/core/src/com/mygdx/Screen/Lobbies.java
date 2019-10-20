@@ -108,7 +108,7 @@ public class Lobbies implements Screen {
         playButton.addListener(new ClickListener() {
         	@Override
 			public void clicked(InputEvent event, float x, float y) {
-        		game.setScreen(new tileMapScreen());
+        		game.setScreen(new tileMapScreen(game));
 			}
         });
         stage.addActor(playButton);
