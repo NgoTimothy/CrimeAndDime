@@ -24,9 +24,9 @@ public class MainMenuCnD implements Screen {
     private Table table;
     private TextButton buttonPlay,  buttonExit;
     private Label heading;
-    private CrimeandDime game;
+    private CrimeAndDime game;
 
-    public MainMenuCnD(CrimeandDime newGame)
+    public MainMenuCnD(CrimeAndDime newGame)
     {
     	game = newGame;
     }

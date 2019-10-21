@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.Objects.tempTile;
+import com.mygdx.cndt.CrimeAndDime;
 
 import java.util.ArrayList;
 
@@ -37,7 +38,15 @@ public class tileMapScreen implements Screen {
     private Stage stage;
     private TextureAtlas shelfButtonAtlas;
     private ArrayList<tempTile> shelfTileArray;
+    private CrimeAndDime game;
 
+    public tileMapScreen(CrimeAndDime newGame) {
+        game = newGame;
+    }
+
+    public tileMapScreen() {
+
+    }
 
     @Override
     public void render(float delta){
@@ -48,7 +57,6 @@ public class tileMapScreen implements Screen {
         camera.update();
         render.setView(camera);
         render.render();
-
         stage.setDebugAll(true);
         stage.draw();
     }
@@ -58,8 +66,7 @@ public class tileMapScreen implements Screen {
     public void resize(int width, int height){
         camera.viewportWidth = width;
         camera.viewportHeight = height;
-
-       camera.update();
+        camera.update();
     }
 
     @Override
@@ -91,9 +98,9 @@ public class tileMapScreen implements Screen {
         int stringNumber = 1;
         int y = 0;
 
-        shelfTileArray = new ArrayList<tempTile>(0);
+        shelfTileArray = new ArrayList<tempTile>();
         int x = 1;
-        for (MapObject shelfObjects : shelfMapObject )
+        for (MapObject shelfObjects : shelfMapObject)
         {
             if (shelfObjects instanceof RectangleMapObject){
                 if (shelfObjects.getName().equals("Shelf")) {
@@ -109,6 +116,7 @@ public class tileMapScreen implements Screen {
                     shelfImage.addListener(new ClickListener() {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
+                            dispose();
                             ((Game) Gdx.app.getApplicationListener()).setScreen(new Splash());
                         }
                     });
@@ -159,22 +167,23 @@ public class tileMapScreen implements Screen {
 
 
     @Override
-    public void pause(){
+    public void pause() {
 
     }
     @Override
-    public void resume(){
+    public void resume() {
 
     }
     @Override
-    public void hide(){
+    public void hide() {
         maps.dispose();
     }
 
     @Override
-    public void dispose () {
+    public void dispose() {
         maps.dispose();
         render.dispose();
+        game = null;
     }
 }
 

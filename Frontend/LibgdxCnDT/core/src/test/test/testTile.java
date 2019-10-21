@@ -13,10 +13,4 @@ public class testTile {
         assertTrue(true);
     }
 
-    @Test
-    public void badTest()
-    {
-        fail();
-    }
-
 }

@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.cndt.CrimeandDime;
+import com.mygdx.cndt.CrimeAndDime;
 
 import GameClasses.Item;
 import GameClasses.Tile;
@@ -25,14 +25,14 @@ public class ShelfScreen implements Screen {
 
 	private BitmapFont white, black;
 	private Stage stage;
-	private CrimeandDime game;
+	private CrimeAndDime game;
 	private TextButton exitButton, addButton[];
 	private TextureAtlas atlas;
     private Skin skin;
     private SpriteBatch batch;
     private Tile shelfTile;
 	
-    public ShelfScreen(CrimeandDime game, Tile shelfTile)
+    public ShelfScreen(CrimeAndDime game, Tile shelfTile)
 	{
 		white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
@@ -42,7 +42,7 @@ public class ShelfScreen implements Screen {
 		batch = new SpriteBatch();
 	}
     
-	public ShelfScreen(CrimeandDime game, Item itemsOnShelf)
+	public ShelfScreen(CrimeAndDime game, Item itemsOnShelf)
 	{
 		white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
