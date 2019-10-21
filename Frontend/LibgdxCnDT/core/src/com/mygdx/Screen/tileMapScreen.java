@@ -1,5 +1,6 @@
 package com.mygdx.Screen;
 
+import GameClasses.Tile;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -117,7 +118,7 @@ public class tileMapScreen implements Screen {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
                             dispose();
-                            ((Game) Gdx.app.getApplicationListener()).setScreen(new Splash());
+                            ((Game) Gdx.app.getApplicationListener()).setScreen(new ShelfScreen(game, new Tile()));
                         }
                     });
                 }
