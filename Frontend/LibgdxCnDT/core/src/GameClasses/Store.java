@@ -107,8 +107,8 @@ public class Store {
         }
     }
     
-    public Inventory getInventory()
+    public ArrayList<Item> getInventory()
     {
-    	return storeInventory;
+    	return storeInventory.getInventory();
     }
 }

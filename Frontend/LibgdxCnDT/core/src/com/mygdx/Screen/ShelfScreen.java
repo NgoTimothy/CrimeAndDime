@@ -18,24 +18,35 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.cndt.CrimeandDime;
 
 import GameClasses.Item;
+import GameClasses.Tile;
+import utility.Lobby;
 
 public class ShelfScreen implements Screen {
 
 	private BitmapFont white, black;
 	private Stage stage;
 	private CrimeandDime game;
-	private Item itemsOnShelf;
-	private TextButton exitButton;
+	private TextButton exitButton, addButton[];
 	private TextureAtlas atlas;
     private Skin skin;
     private SpriteBatch batch;
+    private Tile shelfTile;
 	
+    public ShelfScreen(CrimeandDime game, Tile shelfTile)
+	{
+		white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
+    	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
+		stage = new Stage();
+		this.shelfTile = shelfTile;
+		this.game = game;
+		batch = new SpriteBatch();
+	}
+    
 	public ShelfScreen(CrimeandDime game, Item itemsOnShelf)
 	{
 		white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
 		stage = new Stage();
-		this.itemsOnShelf = itemsOnShelf;
 		this.game = game;
 		batch = new SpriteBatch();
 	}
@@ -67,6 +78,25 @@ public class ShelfScreen implements Screen {
         shelfImage = new Image(texture);
         shelfImage.setSize(75, 75);
         stage.addActor(shelfImage);
+        
+        if (shelfTile.getItem() == null || shelfTile.getItem().getQuantity() == 0)
+        {
+        	addButton = new TextButton[game.gameStore.getInventory().size()];
+        	for (int i = 0; i < game.gameStore.getInventory().size() && i < 12; i++)
+        	{
+        		addButton[i] = new TextButton("Add", TextButtonStyle());
+        		addButton[i].setPosition(1200, 525 - i * 35);
+	        	addButton[i].addListener(new ClickListener()
+	        	{
+		            @Override
+		            public void clicked(InputEvent event, float x, float y) {	
+		            	//game.gameStore.getInventory().get(i);
+		            }
+		        });
+		        stage.addActor(addButton[i]);
+	        }
+        }
+        
 	}
 
 	@Override
@@ -76,15 +106,15 @@ public class ShelfScreen implements Screen {
         stage.draw();
         
         batch.begin();
-        white.draw(batch, String.format("%-12s %-7s %s", "Item", "Quantity", "Price"), 700, 585);
-        for (int i = 0; i < game.gameStore.getInventory().getInventory().size(); i++)
+        white.draw(batch, String.format("%-12s %-8s %s", "Item", "Quantity", "Price"), 650, 585);
+        for (int i = 0; i < game.gameStore.getInventory().size(); i++)
         {
-        	String s = String.format("%-12s %-7d $%.2f", game.gameStore.getInventory().getInventory().get(i).getName(), game.gameStore.getInventory().getInventory().get(i).getQuantity(), game.gameStore.getInventory().getInventory().get(i).getWholesaleCost());
+        	String s = String.format("%-12s %-8d $%.2f", game.gameStore.getInventory().get(i).getName(), game.gameStore.getInventory().get(i).getQuantity(), game.gameStore.getInventory().get(i).getWholesaleCost());
         	//String s = game.gameStore.getInventory().getInventory().get(i).getName() + " " + game.gameStore.getInventory().getInventory().get(i).getQuantity() + " $" + game.gameStore.getInventory().getInventory().get(i).getWholesaleCost();
-        	white.draw(batch, s, 700, 550 - i * 35);
+        	white.draw(batch, s, 650, 550 - i * 35);
         }
         
-        white.draw(batch, game.gameStore.getInventory().getInventory().get(0).getName(), 100, 100);
+        white.draw(batch, game.gameStore.getInventory().get(0).getName(), 100, 100);
         batch.end();
 	}
 

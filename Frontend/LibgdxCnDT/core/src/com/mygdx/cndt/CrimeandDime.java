@@ -20,6 +20,7 @@ import com.mygdx.Screen.*;
 
 import GameClasses.Item;
 import GameClasses.Store;
+import GameClasses.Tile;
 
 public class CrimeandDime extends Game {
 
@@ -47,13 +48,13 @@ public class CrimeandDime extends Game {
 //        gameStore.purchaseItemToInventory(items.get(6));
 //        gameStore.purchaseItemToInventory(items.get(6));
 //        gameStore.purchaseItemToInventory(items.get(7));
-        gameStore.getInventory().getInventory().add(items.get(0));
-        gameStore.getInventory().getInventory().get(0).addQuantity(10);
-        gameStore.getInventory().getInventory().add(items.get(6));
-        gameStore.getInventory().getInventory().get(1).addQuantity(5);
-        gameStore.getInventory().getInventory().add(items.get(7));
-        gameStore.getInventory().getInventory().get(2).addQuantity(3);
-		setScreen(new ShelfScreen(this, items.get(0)));
+        gameStore.getInventory().add(items.get(0));
+        gameStore.getInventory().get(0).addQuantity(10);
+        gameStore.getInventory().add(items.get(6));
+        gameStore.getInventory().get(1).addQuantity(5);
+        gameStore.getInventory().add(items.get(7));
+        gameStore.getInventory().get(2).addQuantity(3);
+		setScreen(new ShelfScreen(this, new Tile()));
 	}
 
 	@Override
@@ -71,7 +72,7 @@ public class CrimeandDime extends Game {
 		super.resize(width,height);
 	}
 	
-	private void loadItems() throws JsonParseException, JsonMappingException, IOException
+	private ArrayList<Item> loadItems() throws JsonParseException, JsonMappingException, IOException
 	{
 		String result = "";
     	try {
@@ -117,5 +118,7 @@ public class CrimeandDime extends Game {
 			System.out.println(i.getName());
 		}
 		System.out.println("***");
+		
+		return items;
 	}
 }
