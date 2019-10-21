@@ -1,8 +1,8 @@
-import com.google.gson.GsonBuilder;
+package test;
+
 import org.junit.*;
 import org.mockito.Mock;
 import utility.Lobby;
-import com.google.gson.Gson;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
