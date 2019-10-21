@@ -19,8 +19,7 @@ public class InventoryController {
 
     @RequestMapping("/inventory")
     public ArrayList<Item> retrieveInventory() {
-        try
-        {
+        try {
             //create array list of items
             ArrayList<Item> items = new ArrayList<Item>();
             //Gson gson = new Gson();
@@ -30,18 +29,18 @@ public class InventoryController {
 
             //connect to the database and execute query
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con= DriverManager.getConnection(
+            Connection con = DriverManager.getConnection(
                     //"jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","root","");
                     "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
             PreparedStatement prst = con.prepareStatement(query);
-            Statement stmt=con.createStatement();
+            Statement stmt = con.createStatement();
             ResultSet rs = prst.executeQuery();
             //loop through each line of result and add all items to item list
-            while(rs.next()) {
+            while (rs.next()) {
                 //create instance of individual item class
                 Item tempItem = new Item();
-                tempItem.setName(rs.getString("item"));
-                tempItem.setPrice(rs.getInt("price"));
+                tempItem.setName(rs.getString("name"));
+                tempItem.setPrice(rs.getDouble("price"));
                 tempItem.setItemId(rs.getInt("itemid"));
                 items.add(tempItem);
                 /*JSONObject object = new JSONObject();
@@ -53,7 +52,7 @@ public class InventoryController {
             con.close();
             return items;
 //            would return as a json array
-//            JSONArray jsonArray = new JSONArray();
+//            JSONArray jsonArray = new JSONArray();cd
 //            for (int i=0; i < inventories.size(); i++) {
 //                jsonArray.put(inventories.get(i).getJSONObject());
 //            }
@@ -62,17 +61,9 @@ public class InventoryController {
             //String string = gson.toJson(array);
 
             //return string;
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e);
         }
         return null;
     }
-
-    @RequestMapping("/name")
-    public String testCall(@RequestParam(value="name", defaultValue="World") String name) {
-        return "Hello, " + name;
-    }
-
 }

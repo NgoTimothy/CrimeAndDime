@@ -1,5 +1,3 @@
-package TestClasses;
-
 import GameClasses.Item;
 import GameClasses.Tile;
 import GameExceptions.CustomerMovingIntoShelfException;

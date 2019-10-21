@@ -1,5 +1,3 @@
-package TestClasses;
-
 import GameClasses.Inventory;
 import GameClasses.Item;
 import org.junit.Before;

@@ -1,12 +1,10 @@
-package TestClasses;
-
 import GameClasses.Store;
 import GameClasses.Tile;
 import org.junit.*;
 
 import static org.junit.Assert.*;
 
-public class StoreClass {
+public class StoreTest {
     private Store testStore;
 
     @Before

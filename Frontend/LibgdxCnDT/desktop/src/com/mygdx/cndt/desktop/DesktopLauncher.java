@@ -10,7 +10,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		new LwjglApplication(new CrimeandDime(), cfg);
+		new LwjglApplication(new TileMapGame(), cfg);
 		cfg.vSyncEnabled = true;
 		cfg.title = "Crime & Dime";
 		cfg.useGL30 = true;

@@ -13,7 +13,7 @@ public class Lobby {
 		this.numPlayers = numPlayers;
 	}
 	
-	public void setlobbyID(int lobbyID)
+	public void setLobbyID(int lobbyID)
 	{
 		this.lobbyID = lobbyID;
 	}
