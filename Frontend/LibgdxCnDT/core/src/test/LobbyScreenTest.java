@@ -1,3 +1,5 @@
+package test;
+
 import com.mygdx.Screen.LobbyScreen;
 import org.junit.Before;
 import org.junit.Test;

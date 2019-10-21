@@ -2,9 +2,12 @@ package GameClasses;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Item implements Comparable<Item> {
     private String name;
     private int quantity;
+    @JsonProperty("price")
     private BigDecimal wholesaleCost;
     private BigDecimal retailCost;
 
@@ -103,8 +106,8 @@ public class Item implements Comparable<Item> {
         int smallestLengthString = Math.min(originalStringLength, compareStringLength);
 
         for (int i = 0; i < smallestLengthString; i++) {
-            int originalCharValue = (int)originalString.charAt(i);
-            int compareCharValue = (int)compareString.charAt(i);
+            int originalCharValue = originalString.charAt(i);
+            int compareCharValue = compareString.charAt(i);
 
             if(originalCharValue != compareCharValue) {
                 return originalCharValue - compareCharValue;

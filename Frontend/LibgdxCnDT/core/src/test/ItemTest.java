@@ -1,3 +1,5 @@
+package test;
+
 import GameClasses.Item;
 import org.junit.*;
 

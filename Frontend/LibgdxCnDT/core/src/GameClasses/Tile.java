@@ -1,7 +1,6 @@
 package GameClasses;
 
 import GameExceptions.CustomerMovingIntoShelfException;
-import GameExceptions.DirectionWithNoShelfException;
 import GameExceptions.PlacingItemWithNoShelfException;
 import GameExceptions.ShelfWithNoDirectionException;
 

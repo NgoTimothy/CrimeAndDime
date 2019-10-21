@@ -66,7 +66,8 @@ public class LobbyScreen implements Screen {
     {
     	clientEndPoint = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + lobby.getLobbyID() + "/" + username));
         clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
-                    public void handleMessage(String message) {
+                    @Override
+					public void handleMessage(String message) {
                     	messages.add(message);
                     	getLobby();
                     }

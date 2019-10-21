@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.cndt.*;
-
 import utility.*;
 
 import java.net.HttpURLConnection;
@@ -123,7 +122,7 @@ public class Lobbies implements Screen {
 	        stage.addActor(joinButton[i]);
         }
         
-    	newLobby = new TextField("", new TextFieldStyle(white, color.WHITE, new BaseDrawable(), new BaseDrawable(), new BaseDrawable()));
+    	newLobby = new TextField("", new TextFieldStyle(white, Color.WHITE, new BaseDrawable(), new BaseDrawable(), new BaseDrawable()));
     	newLobby.setWidth(300);
         newLobby.setPosition(200, 200);
         stage.addActor(newLobby);

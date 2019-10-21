@@ -1,17 +1,14 @@
 package com.mygdx.cndt.desktop;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.mygdx.TileMapGame.TileMapGame;
 import com.mygdx.cndt.CrimeandDime;
-import com.mygdx.cndt.ExpTileMapGame;
 
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-
 
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		new LwjglApplication(new TileMapGame(), cfg);
