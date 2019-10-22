@@ -45,8 +45,8 @@ public class CrimeAndDime extends Game {
 		gameStore.getInventory().get(1).addQuantity(5);
 		gameStore.getInventory().add(items.get(7));
 		gameStore.getInventory().get(2).addQuantity(3);
-		setScreen(new Splash(this));
-		//setScreen(new ShelfScreen(this, new Tile()));
+		//setScreen(new Splash(this));
+		setScreen(new ShelfScreen(this, new Tile()));
 	}
 
 	@Override

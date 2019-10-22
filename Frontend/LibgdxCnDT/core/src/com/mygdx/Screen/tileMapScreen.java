@@ -118,7 +118,8 @@ public class tileMapScreen implements Screen {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
                             dispose();
-                            ((Game) Gdx.app.getApplicationListener()).setScreen(new ShelfScreen(game, new Tile()));
+                            game.setScreen(new ShelfScreen(game, new Tile()));
+                            //((Game) Gdx.app.getApplicationListener()).setScreen(new ShelfScreen(game, new Tile()));
                         }
                     });
                 }
