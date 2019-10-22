@@ -49,6 +49,19 @@ public class Customer {
         }
 
     }
+
+    public void buyItems(ArrayList<Inventory> inventories){
+        if (hasBought == false){
+            for (int i = 0; i < inventories.size(); i++){
+                for (int j = 0; j < inventories.get(j).getSize(); j++){
+                    if(inventories.get(j).getItem(item) == item){
+                        inventories.get(j).removeItem(item);
+                        hasBought = true;
+                    }
+                }
+            }
+        }
+    }
 //    public void setBudget(){
 //        budget = Math.floor(Math.random() * 495) +5;
 //    }
