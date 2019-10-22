@@ -17,7 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.cndt.CrimeandDime;
+import com.mygdx.cndt.CrimeAndDime;
 
 import GameClasses.Item;
 import GameExceptions.PlacingItemWithNoShelfException;
@@ -25,7 +25,7 @@ import GameExceptions.PlacingItemWithNoShelfException;
 public class InventoryScreen implements Screen {
 
 	private BitmapFont white, black;
-	private CrimeandDime game;
+	private CrimeAndDime game;
 	private Stage stage;
 	private TextButton exitButton, buyButton[];
 	private TextureAtlas atlas;
@@ -33,7 +33,7 @@ public class InventoryScreen implements Screen {
     private SpriteBatch batch;
     private Stage itemsStage;
 	
-	public InventoryScreen(CrimeandDime game)
+	public InventoryScreen(CrimeAndDime game)
 	{
 		white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);

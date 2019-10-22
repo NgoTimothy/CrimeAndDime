@@ -1,5 +1,7 @@
 package com.mygdx.Screen;
 
+import Services.LobbyScreenService;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -8,12 +10,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.cndt.CrimeandDime;
+import com.mygdx.cndt.CrimeAndDime;
 import utility.Lobby;
 import utility.WebSocketClient;
 
@@ -33,13 +33,14 @@ public class LobbyScreen implements Screen {
     private BitmapFont white, black;
     private TextButton playButton,  exitButton;
     private SpriteBatch batch;
-    private CrimeandDime game;
+    private CrimeAndDime game;
     private ArrayList<String> messages;
     private Lobby lobby;
     private WebSocketClient clientEndPoint;
     private String username;
+    private LobbyScreenService lobbyScreenService;
     
-    public LobbyScreen(CrimeandDime newGame, Lobby newLobby)
+    public LobbyScreen(CrimeAndDime newGame, Lobby newLobby)
     {
     	lobby = newLobby;
     	getLobby();
@@ -49,6 +50,7 @@ public class LobbyScreen implements Screen {
     	batch = new SpriteBatch();
     	username = "player" + Integer.toString(lobby.getNumPlayers());
     	messages = new ArrayList<String>();
+    	lobbyScreenService = new LobbyScreenService();
     	try {
 			connect();
 		} catch (Exception e) {
@@ -58,8 +60,9 @@ public class LobbyScreen implements Screen {
     }
 
     //For testing purposes only
-	public LobbyScreen() {
+	public LobbyScreen(LobbyScreenService newLobbyScreenService) {
 		lobby = new Lobby(0, "", 0);
+		lobbyScreenService = newLobbyScreenService;
 	}
 
 	void connect() throws Exception
@@ -168,12 +171,12 @@ public class LobbyScreen implements Screen {
     
     public String leaveLobby()
     {
-    	return APIDelete();
+    	return lobbyScreenService.APIDelete(lobby.getLobbyID());
     }
     
     public void getLobby()
     {
-    	String result = callAPIGet();
+    	String result = lobbyScreenService.callAPIGet(lobby.getLobbyID());
     	String delims = "[{}\":,]+";
     	String[] tokens = result.split(delims);
     	for(String s : tokens)

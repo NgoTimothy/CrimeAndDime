@@ -1,5 +1,6 @@
-package test;
+package test.test;
 
+import Services.LobbyScreenService;
 import com.mygdx.Screen.LobbyScreen;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,19 +12,16 @@ import static org.mockito.Mockito.*;
 
 public class LobbyScreenTest {
     private LobbyScreen mockScreen;
-    private LobbyScreen realScreen;
     private String expectedJson;
-    private Lobby testLobby;
+    private LobbyScreenService mockLobbyScreenService;
 
     @Before
     public void setup() {
-        realScreen = new LobbyScreen();
-        mockScreen = spy(realScreen);
-        //mockScreen = mock(LobbyScreen.class, CALLS_REAL_METHODS);
         expectedJson = "[{\"lobbyId\":15481,\"lobbyName\":\"Iowa State Lobby\",\"hasPassword\":false,\"numberOfPlayers\":1}]";
-        when(mockScreen.callAPIGet()).thenReturn(expectedJson);
-        when(mockScreen.APIDelete()).thenReturn("success");
-        testLobby = new Lobby(0, "", 0);
+        mockLobbyScreenService = mock(LobbyScreenService.class);
+        when(mockLobbyScreenService.callAPIGet(anyInt())).thenReturn(expectedJson);
+        when(mockLobbyScreenService.APIDelete(anyInt())).thenReturn("success");
+        mockScreen = new LobbyScreen(mockLobbyScreenService);
     }
 
     @Test

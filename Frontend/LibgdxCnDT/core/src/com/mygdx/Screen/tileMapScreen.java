@@ -1,5 +1,6 @@
 package com.mygdx.Screen;
 
+import GameClasses.Tile;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -20,11 +21,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.Objects.tempTile;
-import com.mygdx.cndt.CrimeandDime;
-
+import com.mygdx.cndt.CrimeAndDime;
 import GameClasses.Tile;
 import GameExceptions.ShelfWithNoDirectionException;
-
+import com.mygdx.cndt.CrimeAndDime;
 import java.util.ArrayList;
 
 public class tileMapScreen implements Screen {
@@ -40,11 +40,11 @@ public class tileMapScreen implements Screen {
     private Stage stage;
     private TextureAtlas shelfButtonAtlas;
     public ArrayList<Tile> shelfTileArray;
-    private CrimeandDime game;
+    private CrimeAndDime game;
     private MapObjects shelfMapObject;
 
     
-    public tileMapScreen(CrimeandDime game)
+    public tileMapScreen(CrimeAndDime game)
     {
     	this.game = game;
         maps = new TmxMapLoader().load("img/StoreTileMap.tmx");
@@ -76,7 +76,6 @@ public class tileMapScreen implements Screen {
         camera.update();
         render.setView(camera);
         render.render();
-
         stage.setDebugAll(true);
         stage.draw();
     }
@@ -86,8 +85,7 @@ public class tileMapScreen implements Screen {
     public void resize(int width, int height){
         camera.viewportWidth = width;
         camera.viewportHeight = height;
-
-       camera.update();
+        camera.update();
     }
 
     @Override
@@ -112,8 +110,8 @@ public class tileMapScreen implements Screen {
         camera.update();
         int stringNumber = 1;
         int y = 0;
-        int x = 1;
         int i = 0;
+        int x = 1;
         for (MapObject shelfObjects : shelfMapObject)
         {
             if (shelfObjects instanceof RectangleMapObject){
@@ -198,11 +196,11 @@ public class tileMapScreen implements Screen {
 
 
     @Override
-    public void pause(){
+    public void pause() {
 
     }
     @Override
-    public void resume(){
+    public void resume() {
 
     }
     @Override
@@ -211,9 +209,10 @@ public class tileMapScreen implements Screen {
     }
 
     @Override
-    public void dispose () {
+    public void dispose() {
         maps.dispose();
         render.dispose();
+        game = null;
     }
 }
 

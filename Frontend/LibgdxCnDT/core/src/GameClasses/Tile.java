@@ -22,7 +22,6 @@ public class Tile {
         curTileType = tileType.EMPTY;
         stockedItem = null;
         curShelfDirection = shelfDirection.NONE;
-        stockedItem = null;
     }
 
     /**
@@ -112,7 +111,7 @@ public class Tile {
             stockedItem = passedItem.copy();
             stockedItem.clearQuantity();
             if(stockNum > shelfMax)
-                addToFirstItemSubToSecondItem(stockedItem, passedItem, shelfMax);
+                addToFirstItemSubToSecondItem(stockedItem, passedItem, shelfMax);//I am passing the same fucking item
             else
                 addToFirstItemSubToSecondItem(stockedItem, passedItem, stockNum);
         }

@@ -1,4 +1,4 @@
-package test;
+package test.test;
 
 import org.junit.Test;
 
@@ -11,12 +11,6 @@ public class testTile {
     public void LobbiesTest()
     {
         assertTrue(true);
-    }
-
-    @Test
-    public void badTest()
-    {
-        fail();
     }
 
 }

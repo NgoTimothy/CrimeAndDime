@@ -20,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.cndt.CrimeandDime;
+import com.mygdx.cndt.CrimeAndDime;
 
 import GameClasses.Item;
 import GameClasses.Tile;
@@ -31,7 +31,7 @@ public class ShelfScreen implements Screen {
 
 	private BitmapFont white, black;
 	private Stage stage;
-	private CrimeandDime game;
+	private CrimeAndDime game;
 	private TextButton exitButton, addButton[];
 	private TextureAtlas atlas;
     private Skin skin;
@@ -39,11 +39,11 @@ public class ShelfScreen implements Screen {
     private Tile shelfTile;
     private Stage itemsStage;
     private TextField price;
-	
-    public ShelfScreen(CrimeandDime game, int shelfIndex)
+
+	public ShelfScreen(CrimeAndDime game, int shelfIndex)
 	{
 		white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
-    	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
+		black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
 		stage = new Stage();
 		shelfTile = game.tileMap.shelfTileArray.get(shelfIndex);
 		this.game = game;
@@ -54,10 +54,8 @@ public class ShelfScreen implements Screen {
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-		
-		
 		Gdx.input.setInputProcessor(stage);
-		
+
 		exitButton = new TextButton("X", TextButtonStyle());
         exitButton.setPosition(1150, 650);
         exitButton.setWidth(50);
@@ -168,45 +166,45 @@ public class ShelfScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private TextButton.TextButtonStyle TextButtonStyle()
-    {
-    	atlas = new TextureAtlas("ui/button.pack");
-        skin = new Skin(atlas);
-    	
-    	TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.getDrawable("button.up.9");
-        textButtonStyle.down = skin.getDrawable("button.down");
-        textButtonStyle.pressedOffsetX = 1;
-        textButtonStyle.pressedOffsetY = -1;
-        textButtonStyle.font = black;
+	{
+		atlas = new TextureAtlas("ui/button.pack");
+		skin = new Skin(atlas);
+
+		TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+		textButtonStyle.up = skin.getDrawable("button.up.9");
+		textButtonStyle.down = skin.getDrawable("button.down");
+		textButtonStyle.pressedOffsetX = 1;
+		textButtonStyle.pressedOffsetY = -1;
+		textButtonStyle.font = black;
 		return textButtonStyle;
-    }
-	
+	}
+
 }

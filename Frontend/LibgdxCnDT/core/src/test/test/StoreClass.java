@@ -1,4 +1,4 @@
-package test;
+package test.test;
 
 import GameClasses.Store;
 import GameClasses.Tile;
@@ -6,7 +6,7 @@ import org.junit.*;
 
 import static org.junit.Assert.*;
 
-public class StoreTest {
+public class StoreClass {
     private Store testStore;
 
     @Before
