@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 public class Customer {
 
-    private double budget;
-    private ArrayList<Item> preferences; // must be within budget
+    //private double budget;
+    private Item item;
+   // private ArrayList<Item> preferences; // must be within budget
 
     public Customer(){
         preferences = new ArrayList<Item>();
