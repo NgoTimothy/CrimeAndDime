@@ -7,7 +7,7 @@ public class TileMapGame extends Game {
 
     @Override
     public void create (){
-        setScreen(new tileMapScreen());
+        setScreen(new Splash());
     }
 
     @Override

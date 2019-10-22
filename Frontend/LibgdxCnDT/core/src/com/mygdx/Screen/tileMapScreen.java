@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -24,6 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.Objects.tempTile;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class tileMapScreen implements Screen {
 
@@ -39,6 +42,17 @@ public class tileMapScreen implements Screen {
     private Stage stage;
     private TextureAtlas shelfButtonAtlas;
     private ArrayList<tempTile> shelfTileArray;
+    private Label.LabelStyle textStyle;
+
+    //Test Var
+    private Double money;
+    private SpriteBatch batch;
+    private Sprite sprite;
+    private float xPosition = 180;
+    private float yPosition = 640;
+
+    private int randomWant;
+    private int testInt = 0;
 
 
     @Override
@@ -50,6 +64,29 @@ public class tileMapScreen implements Screen {
         camera.update();
         render.setView(camera);
         render.render();
+
+        // Test Code:
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        sprite.draw(batch);
+        batch.end();
+
+        switch (randomWant) {
+            case 0:
+                yPosition = yPosition - (20 * (Gdx.graphics.getDeltaTime()));
+                sprite.setPosition(xPosition,yPosition);
+                break;
+            case 1:
+               // xPosition = xPosition + (20 * (Gdx.graphics.getDeltaTime()));
+                sprite.setPosition(xPosition,yPosition);
+                break;
+            case 2:
+                xPosition = xPosition + (20 * (Gdx.graphics.getDeltaTime()));
+                sprite.setPosition(xPosition,yPosition);
+                break;
+            default:
+                break;
+        }
 
         stage.setDebugAll(true);
         stage.draw();
@@ -90,11 +127,10 @@ public class tileMapScreen implements Screen {
         render = new OrthogonalTiledMapRenderer(maps);
 
         MapObjects shelfMapObject = maps.getLayers().get("Shelf Object Layer").getObjects();
-        int stringNumber = 1;
-        int y = 0;
 
         shelfTileArray = new ArrayList<tempTile>(0);
-        int x = 1;
+        int opponentIter = 2;
+        int uiIter = 1;
         for (MapObject shelfObjects : shelfMapObject )
         {
             if (shelfObjects instanceof RectangleMapObject){
@@ -111,14 +147,12 @@ public class tileMapScreen implements Screen {
                     shelfImage.addListener(new ClickListener() {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
-                            ((Game) Gdx.app.getApplicationListener()).setScreen(new Splash());
+                            ((Game) Gdx.app.getApplicationListener()).setScreen(new ShelfScreen());
                         }
                     });
                 }
                 if (shelfObjects.getName().equals("Player Info")){
                     Label playerInfo;
-                    Label.LabelStyle textStyle;
-                    BitmapFont font = new BitmapFont();
 
                     textStyle = new Label.LabelStyle();
                     textStyle.font = font;
@@ -131,32 +165,58 @@ public class tileMapScreen implements Screen {
             if (shelfObjects.getName().equals("UI"))
             {
                 Label UI;
-                Label.LabelStyle textStyle;
-                BitmapFont font = new BitmapFont();
-
                 textStyle = new Label.LabelStyle();
                 textStyle.font = font;
-
-                UI = new Label(Integer.toString(x),textStyle);
+                UI = new Label(Integer.toString(uiIter),textStyle);
 
                 UI.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                 stage.addActor(UI);
-                x = x + 1;
+                UI.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        ((Game) Gdx.app.getApplicationListener()).setScreen(new Splash());
+                    }
+                });
+                uiIter = uiIter + 1;
             }
             if (shelfObjects.getName().equals("Opponent Info")){
-                Label playerInfo;
-                Label.LabelStyle textStyle;
-                BitmapFont font = new BitmapFont();
+                    Label OpponentInfo;
+                    textStyle = new Label.LabelStyle();
+                    textStyle.font = font;
+                    Double OpponentMoney = 100.00;
 
-                textStyle = new Label.LabelStyle();
-                textStyle.font = font;
-                Double playerMoney = 100.00;
-                playerInfo = new Label("Opponent 1 :" + playerMoney,textStyle);
-                playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
-                stage.addActor(playerInfo);
+                    OpponentInfo = new Label("Opponent " + opponentIter + " :" + OpponentMoney,textStyle);
+                    OpponentInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                    stage.addActor(OpponentInfo);
+                    opponentIter = opponentIter + 1;
             }
 
         }
+
+        // Test Code
+        batch = new SpriteBatch();
+        sprite = new Sprite(new Texture("img/apple.jpg"));
+        sprite.setSize(30,30);
+        sprite.setPosition(xPosition,yPosition);
+
+        setRandomWant();
+        testInt++;
+            switch (randomWant) {
+                case 0:
+                    System.out.println("Customer is just looking.");
+                    break;
+                case 1:
+                    System.out.println("Customer wants bannanas.");
+                    System.out.println("Bannanas are located near the cash register");
+                    break;
+                case 2:
+                    System.out.println("Customer Wants Apples");
+                    System.out.println("Apples are located on the middle left");
+                    break;
+                default:
+                    break;
+            }
+
     }
 
 
@@ -177,6 +237,11 @@ public class tileMapScreen implements Screen {
     public void dispose () {
         maps.dispose();
         render.dispose();
+    }
+
+    public void setRandomWant(){
+        Random rn = new Random();
+        randomWant = rn.nextInt(3);
     }
 }
 
