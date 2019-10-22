@@ -86,7 +86,7 @@ public class MainMenuCnD implements Screen {
         {
             @Override
             public void touchUp(InputEvent event, float x , float y,int pointer, int button){
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new tileMapScreen());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new tileMapScreen(game));
             }
             @Override
             public boolean touchDown(InputEvent event, float x , float y,int pointer, int button){

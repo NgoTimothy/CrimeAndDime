@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,11 +16,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.cndt.CrimeandDime;
 
 import GameClasses.Item;
 import GameClasses.Tile;
+import GameExceptions.PlacingItemWithNoShelfException;
 import utility.Lobby;
 
 public class ShelfScreen implements Screen {
@@ -31,29 +37,24 @@ public class ShelfScreen implements Screen {
     private Skin skin;
     private SpriteBatch batch;
     private Tile shelfTile;
+    private Stage itemsStage;
+    private TextField price;
 	
-    public ShelfScreen(CrimeandDime game, Tile shelfTile)
+    public ShelfScreen(CrimeandDime game, int shelfIndex)
 	{
 		white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
 		stage = new Stage();
-		this.shelfTile = shelfTile;
+		shelfTile = game.tileMap.shelfTileArray.get(shelfIndex);
 		this.game = game;
 		batch = new SpriteBatch();
-	}
-    
-	public ShelfScreen(CrimeandDime game, Item itemsOnShelf)
-	{
-		white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
-    	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
-		stage = new Stage();
-		this.game = game;
-		batch = new SpriteBatch();
+		itemsStage = new Stage();
 	}
 
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
+		
 		
 		Gdx.input.setInputProcessor(stage);
 		
@@ -65,7 +66,7 @@ public class ShelfScreen implements Screen {
         {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	game.setScreen(new tileMapScreen());
+            	game.setScreen(game.tileMap);
             }
         });
         stage.addActor(exitButton);
@@ -74,49 +75,95 @@ public class ShelfScreen implements Screen {
         Image shelfImage = new Image(texture);
         shelfImage.setPosition(0, 200);
         stage.addActor(shelfImage);
-        texture = new Texture(Gdx.files.internal("img/banana.png"));
-        shelfImage = new Image(texture);
-        shelfImage.setSize(75, 75);
-        stage.addActor(shelfImage);
         
-        if (shelfTile.getItem() == null || shelfTile.getItem().getQuantity() == 0)
-        {
         	addButton = new TextButton[game.gameStore.getInventory().size()];
         	for (int i = 0; i < game.gameStore.getInventory().size() && i < 12; i++)
         	{
         		addButton[i] = new TextButton("Add", TextButtonStyle());
         		addButton[i].setPosition(1200, 525 - i * 35);
+        		final int index = i;
 	        	addButton[i].addListener(new ClickListener()
 	        	{
 		            @Override
 		            public void clicked(InputEvent event, float x, float y) {	
-		            	//game.gameStore.getInventory().get(i);
+		            	try {
+		            		if (game.gameStore.getInventory().get(index).getQuantity() > 0)
+		            		{
+		            			if (shelfTile.getItem() != null && !shelfTile.getItem().getName().equals(game.gameStore.getInventory().get(index).getName()))
+		            				game.gameStore.storeInventory.addItem(shelfTile.getItem());            				
+		            			shelfTile.setItemOnShelf(game.gameStore.getInventory().get(index), 1);
+		            		}
+						} catch (PlacingItemWithNoShelfException e) {
+							e.printStackTrace();
+						}
 		            }
 		        });
 		        stage.addActor(addButton[i]);
-	        }
-        }
-        
+	        }  
+        	
+        	price = new TextField("", new TextFieldStyle(white, Color.WHITE, new BaseDrawable(), new BaseDrawable(), new BaseDrawable()));
+        	price.setWidth(150);
+            price.setPosition(75, 30);
+            stage.addActor(price);
+            
+            TextButton setPrice = new TextButton("Set", TextButtonStyle());
+            setPrice.setPosition(250, 30);
+            setPrice.addListener(new ClickListener()
+    	        {
+    	            @Override
+    	            public void clicked(InputEvent event, float x, float y) {
+    	            	shelfTile.getItem().setRetailCost(Math.round(Double.valueOf(price.getText()) * 100D) / 100D);
+    	            }
+    	        });
+            stage.addActor(setPrice);
 	}
 
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.setDebugAll(true);
+		itemsStage.setDebugAll(true);
+		itemsStage.clear();
+		
+		if (shelfTile.getItem() != null)
+		{
+			Texture texture = new Texture(Gdx.files.internal("img/" + shelfTile.getItem().getName() + ".png"));
+			for (int i = 0; i < shelfTile.getItem().getQuantity(); i++)
+			{
+		        Image image = new Image(texture);
+		        if (i < 5)
+		        	image.setPosition(i * 100 + 60, (i / 5) * 100 + 480);
+		        else
+		        {
+		        	int k = i - 5;
+		        	image.setPosition(k * 100 + 60, (k / 5) * 100 + 380);
+		        }
+		        itemsStage.addActor(image);
+			}
+		}
+		
+		
         stage.draw();
+        itemsStage.draw();
         
         batch.begin();
         white.draw(batch, String.format("%-12s %-8s %s", "Item", "Quantity", "Price"), 650, 585);
         for (int i = 0; i < game.gameStore.getInventory().size(); i++)
         {
         	String s = String.format("%-12s %-8d $%.2f", game.gameStore.getInventory().get(i).getName(), game.gameStore.getInventory().get(i).getQuantity(), game.gameStore.getInventory().get(i).getWholesaleCost());
-        	//String s = game.gameStore.getInventory().getInventory().get(i).getName() + " " + game.gameStore.getInventory().getInventory().get(i).getQuantity() + " $" + game.gameStore.getInventory().getInventory().get(i).getWholesaleCost();
         	white.draw(batch, s, 650, 550 - i * 35);
         }
         
-        white.draw(batch, game.gameStore.getInventory().get(0).getName(), 100, 100);
+        if (shelfTile.getItem() != null)
+        {
+        	black.draw(batch, Integer.toString(shelfTile.getItem().getQuantity()) + "/10", 270, 300);        
+        	white.draw(batch, String.format("Price: $%.2f", shelfTile.getItem().getRetailCost()), 75, 100);
+        }
         batch.end();
 	}
+	
+	
 
 	@Override
 	public void resize(int width, int height) {

@@ -21,15 +21,20 @@ import com.mygdx.Screen.*;
 import GameClasses.Item;
 import GameClasses.Store;
 import GameClasses.Tile;
+import GameExceptions.PlacingItemWithNoShelfException;
+import GameExceptions.ShelfWithNoDirectionException;
 
 public class CrimeandDime extends Game {
 
 	public Store gameStore;
 	public ArrayList<Item> items;
+	public tileMapScreen tileMap;
+	public ArrayList<Tile> shelves;
 	
 	@Override
 	public void create () {
 		gameStore = new Store("My Store");
+		tileMap = new tileMapScreen(this);
 		try {
 			loadItems();
 		} catch (JsonParseException e) {
@@ -39,22 +44,21 @@ public class CrimeandDime extends Game {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-//        gameStore.purchaseItemToInventory(items.get(0));
-//        gameStore.purchaseItemToInventory(items.get(0));
-//        gameStore.purchaseItemToInventory(items.get(0));
-//        gameStore.purchaseItemToInventory(items.get(0));
-//        gameStore.purchaseItemToInventory(items.get(0));
-//        gameStore.purchaseItemToInventory(items.get(0));
-//        gameStore.purchaseItemToInventory(items.get(6));
-//        gameStore.purchaseItemToInventory(items.get(6));
-//        gameStore.purchaseItemToInventory(items.get(7));
-        gameStore.getInventory().add(items.get(0));
-        gameStore.getInventory().get(0).addQuantity(10);
-        gameStore.getInventory().add(items.get(6));
-        gameStore.getInventory().get(1).addQuantity(5);
-        gameStore.getInventory().add(items.get(7));
-        gameStore.getInventory().get(2).addQuantity(3);
-		setScreen(new ShelfScreen(this, new Tile()));
+		Tile tile = new Tile();
+		try {
+			tile.setShelfTile(Tile.shelfDirection.NORTH);
+		} catch (ShelfWithNoDirectionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Item item = new Item(items.get(0).copy());
+		try {
+			tile.setItemOnShelf(item, 10);
+		} catch (PlacingItemWithNoShelfException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		setScreen(tileMap);
 	}
 
 	@Override
@@ -118,6 +122,9 @@ public class CrimeandDime extends Game {
 			System.out.println(i.getName());
 		}
 		System.out.println("***");
+		
+		for (Item item : items)
+			item.setRetailCost(item.getWholesaleCost() + 0.1 * item.getWholesaleCost());
 		
 		return items;
 	}
