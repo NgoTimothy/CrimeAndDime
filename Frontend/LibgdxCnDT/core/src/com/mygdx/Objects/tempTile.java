@@ -17,4 +17,8 @@ public class tempTile {
         curTileType = tileType.SHELF;
         curShelfDirection = shelfDirection.NONE;
     }
+
+    public String toString(){
+        return "Shelf";
+    }
 }

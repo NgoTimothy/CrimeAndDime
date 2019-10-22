@@ -95,8 +95,8 @@ public class tileMapScreen implements Screen {
 
     @Override
     public void resize(int width, int height){
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
+       camera.viewportWidth = width;
+       camera.viewportHeight = height;
 
        camera.update();
     }
@@ -174,7 +174,8 @@ public class tileMapScreen implements Screen {
                 UI.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        ((Game) Gdx.app.getApplicationListener()).setScreen(new Splash());
+                        //((Game) Gdx.app.getApplicationListener()).setScreen(new Splash());
+                        System.out.println(shelfTileArray.get(randomWant).toString());
                     }
                 });
                 uiIter = uiIter + 1;
