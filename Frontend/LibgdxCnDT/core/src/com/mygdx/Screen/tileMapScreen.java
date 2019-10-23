@@ -24,9 +24,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.Objects.tempTile;
+import com.mygdx.cndt.CrimeandDime;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 
 public class tileMapScreen implements Screen {
 
@@ -54,6 +56,13 @@ public class tileMapScreen implements Screen {
     private int randomWant;
     private int testInt = 0;
 
+    private CrimeandDime game;
+
+    //Testing Purposes
+    public tileMapScreen(CrimeandDime newGame, ArrayList<tempTile> newTileArrayList){
+        game = newGame;
+        shelfTileArray = newTileArrayList;
+    }
 
     @Override
     public void render(float delta){
@@ -217,7 +226,6 @@ public class tileMapScreen implements Screen {
                 default:
                     break;
             }
-
     }
 
 
