@@ -1,7 +1,5 @@
 package com.mygdx.Screen;
 
-import GameClasses.Tile;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,40 +11,47 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.Objects.tempTile;
+import com.mygdx.Objects.Tile;
 import com.mygdx.cndt.CrimeAndDime;
+import org.json.JSONArray;
+import utility.WebSocketClient;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 public class tileMapScreen implements Screen {
 
     private TiledMap maps;
-    private TiledMapTileLayer layer;
     private OrthogonalTiledMapRenderer render;
     private OrthographicCamera camera;
-    private tempTile shelfTile;
-    private TextButton shelfButton;
     private TextButton.TextButtonStyle shelfButtonStyle;
     private Skin skin;
     private BitmapFont font;
     private Stage stage;
     private TextureAtlas shelfButtonAtlas;
-    private ArrayList<tempTile> shelfTileArray;
+    private ArrayList<Tile> shelfTileArray;
     private CrimeAndDime game;
+    private WebSocketClient socketClient;
 
     public tileMapScreen(CrimeAndDime newGame) {
         game = newGame;
+        shelfTileArray = new ArrayList<Tile>();
+        try {
+            socketClient = new WebSocketClient(new URI("ws://localhost:8080/websocket/"));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     public tileMapScreen() {
-
+        shelfTileArray = new ArrayList<Tile>();
     }
 
     @Override
@@ -96,16 +101,12 @@ public class tileMapScreen implements Screen {
         render = new OrthogonalTiledMapRenderer(maps);
 
         MapObjects shelfMapObject = maps.getLayers().get("Shelf Object Layer").getObjects();
-        int stringNumber = 1;
-        int y = 0;
-
-        shelfTileArray = new ArrayList<tempTile>();
         int x = 1;
         for (MapObject shelfObjects : shelfMapObject)
         {
             if (shelfObjects instanceof RectangleMapObject){
                 if (shelfObjects.getName().equals("Shelf")) {
-                    shelfTileArray.add(new tempTile());
+                    shelfTileArray.add(new Tile());
 
                     Texture texture = new Texture(Gdx.files.internal("img/transparentPicture.png"));
                     Image shelfImage = new Image(texture);
@@ -118,7 +119,7 @@ public class tileMapScreen implements Screen {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
                             dispose();
-                            game.setScreen(new ShelfScreen(game, new Tile()));
+                            game.setScreen(new ShelfScreen(game, new GameClasses.Tile()));
                             //((Game) Gdx.app.getApplicationListener()).setScreen(new ShelfScreen(game, new Tile()));
                         }
                     });
@@ -167,6 +168,15 @@ public class tileMapScreen implements Screen {
         }
     }
 
+    private void sendShelfListToServer() {
+        JSONArray sendToServerArray = listToJSON();
+        socketClient.sendMessage(sendToServerArray.toString());
+    }
+
+    private JSONArray listToJSON() {
+        JSONArray jsArray = new JSONArray(shelfTileArray);
+        return jsArray;
+    }
 
     @Override
     public void pause() {

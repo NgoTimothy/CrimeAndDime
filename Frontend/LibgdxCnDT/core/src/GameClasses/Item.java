@@ -8,19 +8,26 @@ public class Item implements Comparable<Item> {
     private String name;
     private int quantity;
     @JsonProperty("price")
-    private BigDecimal wholesaleCost;
-    private BigDecimal retailCost;
+    private Double wholesaleCost;
+    private Double retailCost;
 
     public Item() {
         name = "";
-        wholesaleCost = BigDecimal.valueOf(0);
-        retailCost = BigDecimal.valueOf(0);
+        wholesaleCost = 0.0;
+        retailCost = 0.0;
     }
 
     public Item(String initName) {
         name = initName;
-        wholesaleCost = BigDecimal.valueOf(0);
-        retailCost = BigDecimal.valueOf(0);
+        wholesaleCost =  0.0;
+        retailCost = 0.0;
+    }
+
+    public Item(String initName, double initWholesaleCost, double initRetailCost, int initQuantity) {
+        name = initName;
+        wholesaleCost = initWholesaleCost;
+        retailCost = initRetailCost;
+        quantity = initQuantity;
     }
 
     public Item(Item originalItem) {
@@ -60,7 +67,7 @@ public class Item implements Comparable<Item> {
         quantity -= subtractedItems;
     }
 
-    public BigDecimal getWholesaleCost() {
+    public double getWholesaleCost() {
         return wholesaleCost;
     }
 
@@ -68,10 +75,10 @@ public class Item implements Comparable<Item> {
         if(newWholesaleCost < 0) {
             return;
         }
-        wholesaleCost = BigDecimal.valueOf(newWholesaleCost);
+        wholesaleCost = newWholesaleCost;
     }
 
-    public BigDecimal getRetailCost() {
+    public double getRetailCost() {
         return retailCost;
     }
 
@@ -79,7 +86,7 @@ public class Item implements Comparable<Item> {
         if(newRetailCost < 0) {
             return;
         }
-        retailCost = BigDecimal.valueOf(newRetailCost);
+        retailCost = newRetailCost;
     }
 
     public void clearQuantity() {
@@ -127,5 +134,16 @@ public class Item implements Comparable<Item> {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder()
+                .append("{\"name\":" + "\"" + name + "\"" + ",")
+                .append("\"quantity\":" + quantity + ",")
+                .append("\"wholesaleCost\":" + wholesaleCost +  ",")
+                .append("\"retailCost\":" + retailCost + "}")
+                .toString();
+        //return "\"name\":" + name + " quantity: " + quantity + " wholesaleCost: " + wholesaleCost + " retailCost " + retailCost;
     }
 }

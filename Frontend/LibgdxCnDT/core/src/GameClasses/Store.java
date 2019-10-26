@@ -96,7 +96,7 @@ public class Store {
         if (item == null || item.getQuantity() <= 0) {
             return false;
         }
-        Double totalWholesaleCost = item.getWholesaleCost().doubleValue() * item.getQuantity();
+        Double totalWholesaleCost = item.getWholesaleCost() * item.getQuantity();
         if(totalWholesaleCost > balance) {
             return false;
         }

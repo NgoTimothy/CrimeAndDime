@@ -3,21 +3,23 @@ apply plugin: "java"
 sourceCompatibility = 1.7
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-sourceSets.main.java.srcDirs = [ "src/" ]
-sourceSets.test.java.srcDirs = ["test/"]
+//sourceSets.main.java.srcDirs = [ "src/" ]
+//sourceSets.test.test.java.srcDirs = ["test/"]
 
-/*sourceSets {
+sourceSets {
     main {
         java {
             srcDirs = [ "src/" ]
         }
     }
     test {
-        java {
-            srcDirs = [ "test/" ]
+        test {
+            java {
+                srcDirs = [ "test/" ]
+            }
         }
     }
-}*/
+}
 
 repositories { jcenter() }
 dependencies {

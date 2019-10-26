@@ -1,5 +1,3 @@
-package test;
-
 import Services.LobbyService;
 import com.mygdx.Screen.Lobbies;
 import org.junit.Before;
