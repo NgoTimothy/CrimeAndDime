@@ -53,6 +53,10 @@ public class Item implements Comparable<Item> {
         return  quantity;
     }
 
+    public void setQuantity(int newQuantity) {
+        quantity = newQuantity;
+    }
+
     public void addQuantity(int addedItems) {
         if(addedItems < 0) {
             return;
@@ -146,4 +150,6 @@ public class Item implements Comparable<Item> {
                 .toString();
         //return "\"name\":" + name + " quantity: " + quantity + " wholesaleCost: " + wholesaleCost + " retailCost " + retailCost;
     }
+
+
 }

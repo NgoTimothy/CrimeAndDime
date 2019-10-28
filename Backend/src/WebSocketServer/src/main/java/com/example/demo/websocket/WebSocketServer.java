@@ -14,6 +14,7 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import com.example.demo.GameLogicClasses.Item;
+import com.example.demo.GameLogicClasses.StoreInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,8 @@ public class WebSocketServer {
     private static Map<String, Session> usernameSessionMap = new HashMap<>();
     private static Map<Integer, Session> lobbyIDSessionMap = new HashMap<>();
     private static Map<Session, Integer> sessionLobbyIDMap = new HashMap<>();
+    private static Map<StoreInfo, Session> storeInfoSessionMap = new HashMap<>();
+    private static Map<Session, StoreInfo> sessionStoreInfoMap = new HashMap<>();
     
     private final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     
@@ -57,6 +60,7 @@ public class WebSocketServer {
     	logger.info("Entered into Message: Got Message:"+message);
     	if(message.length() >= 9 && message.substring(0, 9) == "storeInfo") {
             Item newItem = new Item();
+            StoreInfo newStore = new StoreInfo();
             String[] tokens = message.split("}");
             for(int i = 0; i < tokens.length; i++) {
                 if (tokens[i].length() > 5) { //Do something here
@@ -68,11 +72,28 @@ public class WebSocketServer {
                     String[] itemFields = tokens[i].split(",");
                     for (int j = 0; j < itemFields.length; j++) {
                         if(itemFields[j].contains("name")) {
-
+                            newItem = new Item();
+                            itemFields[j].substring(7).replace("\"", "");
+                            newItem.setName(itemFields[j]);
+                        }
+                        else if(itemFields[j].contains("quantity")) {
+                            itemFields[j] = itemFields[j].substring(11);
+                            newItem.setQuantity(Integer.parseInt(itemFields[j]));
+                        }
+                        else if(itemFields[j].contains("wholesaleCost")) {
+                            itemFields[j] = itemFields[j].substring(16);
+                            newItem.setWholesaleCost(Double.parseDouble(itemFields[j]));
+                        }
+                        else if(itemFields[j].contains("retailCost")) {
+                            itemFields[j] = itemFields[j].substring(13);
+                            newItem.setRetailCost(Double.parseDouble(itemFields[j]));
+                            newStore.getInventory().addItem(newItem);
                         }
                     }
                 }
             }
+            sessionStoreInfoMap.put(session, newStore);
+            storeInfoSessionMap.put(newStore, session);
         }
     	//"name":"apples","quantity":10,"wholesaleCost":1.02,"retailCost":2.0
         //"name":"orange juice","quantity":10,"wholesaleCost":1.75,"retailCost":3.0

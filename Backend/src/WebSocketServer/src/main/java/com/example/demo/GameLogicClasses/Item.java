@@ -41,6 +41,10 @@ public class Item implements Comparable<Item> {
         return  quantity;
     }
 
+    public void setQuantity(int newQuantity) {
+        quantity = newQuantity;
+    }
+
     public void addQuantity(int addedItems) {
         if(addedItems < 0) {
             return;
@@ -71,7 +75,7 @@ public class Item implements Comparable<Item> {
     }
 
     public void setRetailCost(double newRetailCost) {
-        if(newRetailCost < 0) {
+        if (newRetailCost < 0) {
             return;
         }
         retailCost = newRetailCost;

@@ -33,9 +33,10 @@ public class webSocketClientTest {
         JSONArray returnJSONArray = new JSONArray(fakeShelfArray);
         //returnJSONArray.toString();
         Item item = new Item();
+        ArrayList<Item> itemArr = new ArrayList<>();
         String fakeStr = returnJSONArray.toString().replace("\\", "");
         fakeStr = fakeStr.replace("[", "");
-        System.out.println(fakeStr);
+        //System.out.println(fakeStr);
         String[] tokens = fakeStr.split("}");
         for(int i = 0; i < tokens.length; i++) {
             if(tokens[i].length() > 5) { //Do something here
@@ -47,13 +48,39 @@ public class webSocketClientTest {
                 String[] itemFields = tokens[i].split(",");
                 for(int j = 0; j < itemFields.length; j++) {
                     if(itemFields[j].contains("name")) {
+                        item = new Item();
                         item.setName(itemFields[j].substring(7).replace("\"", ""));
-                        System.out.println(item.getName());
+                        //System.out.println(item.getName());
+
                     }
-                    System.out.println(itemFields[j]);
+                    else if(itemFields[j].contains("quantity")) {
+                        item.setQuantity(Integer.parseInt(itemFields[j].substring(11)));
+                        //System.out.println(item.getQuantity());
+                    }
+                    else if(itemFields[j].contains("wholesaleCost")) {
+                        item.setWholesaleCost(Double.parseDouble(itemFields[j].substring(16)));
+                        //System.out.println(item.getWholesaleCost());
+                    }
+                    else if(itemFields[j].contains("retailCost")) {
+                        item.setRetailCost(Double.parseDouble(itemFields[j].substring(13)));
+                        //System.out.println(item.getRetailCost());
+                        itemArr.add(item);
+                    }
+
+                    //System.out.println(itemFields[j]);
                 }
+
                 //System.out.println(tokens[i]);
             }
+        }
+        printArr(itemArr);
+    }
+
+    private void printArr(ArrayList<Item> printableArr) {
+        System.out.println(printableArr.size());
+        for(int i = 0; i < printableArr.size(); i++) {
+            System.out.println(printableArr.get(i).getName() + " " + printableArr.get(i).getQuantity() + " " +
+                    printableArr.get(i).getWholesaleCost() + " " + printableArr.get(i).getRetailCost());
         }
     }
 }
