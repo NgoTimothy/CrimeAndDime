@@ -1,7 +1,5 @@
 package GameClasses;
 
-import java.math.BigDecimal;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Item implements Comparable<Item> {
@@ -13,12 +11,18 @@ public class Item implements Comparable<Item> {
 
     public Item() {
         name = "";
+<<<<<<< HEAD
         wholesaleCost = 0.0;
         retailCost = 0.0;
+=======
+        wholesaleCost = Double.valueOf(0);
+        retailCost = Double.valueOf(0);
+>>>>>>> d32591f691e0eb17c91c88071f951bbbf6aca60e
     }
 
     public Item(String initName) {
         name = initName;
+<<<<<<< HEAD
         wholesaleCost =  0.0;
         retailCost = 0.0;
     }
@@ -28,6 +32,10 @@ public class Item implements Comparable<Item> {
         wholesaleCost = initWholesaleCost;
         retailCost = initRetailCost;
         quantity = initQuantity;
+=======
+        wholesaleCost = Double.valueOf(0);
+        retailCost = Double.valueOf(0);
+>>>>>>> d32591f691e0eb17c91c88071f951bbbf6aca60e
     }
 
     public Item(Item originalItem) {
@@ -53,10 +61,17 @@ public class Item implements Comparable<Item> {
         return  quantity;
     }
 
+<<<<<<< HEAD
     public void setQuantity(int newQuantity) {
         quantity = newQuantity;
     }
 
+=======
+    public void setQuantity(int numItems) {
+        quantity = numItems;
+    }
+    
+>>>>>>> d32591f691e0eb17c91c88071f951bbbf6aca60e
     public void addQuantity(int addedItems) {
         if(addedItems < 0) {
             return;
@@ -71,7 +86,11 @@ public class Item implements Comparable<Item> {
         quantity -= subtractedItems;
     }
 
+<<<<<<< HEAD
     public double getWholesaleCost() {
+=======
+    public Double getWholesaleCost() {
+>>>>>>> d32591f691e0eb17c91c88071f951bbbf6aca60e
         return wholesaleCost;
     }
 
@@ -79,10 +98,17 @@ public class Item implements Comparable<Item> {
         if(newWholesaleCost < 0) {
             return;
         }
+<<<<<<< HEAD
         wholesaleCost = newWholesaleCost;
     }
 
     public double getRetailCost() {
+=======
+        wholesaleCost = Double.valueOf(newWholesaleCost);
+    }
+
+    public Double getRetailCost() {
+>>>>>>> d32591f691e0eb17c91c88071f951bbbf6aca60e
         return retailCost;
     }
 
@@ -90,7 +116,11 @@ public class Item implements Comparable<Item> {
         if(newRetailCost < 0) {
             return;
         }
+<<<<<<< HEAD
         retailCost = newRetailCost;
+=======
+        retailCost = Double.valueOf(newRetailCost);
+>>>>>>> d32591f691e0eb17c91c88071f951bbbf6aca60e
     }
 
     public void clearQuantity() {

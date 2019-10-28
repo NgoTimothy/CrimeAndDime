@@ -1,5 +1,7 @@
 package com.mygdx.Screen;
 
+import GameClasses.Tile;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,47 +13,65 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.Objects.Tile;
 import com.mygdx.cndt.CrimeAndDime;
-import org.json.JSONArray;
-import utility.WebSocketClient;
+import GameClasses.Tile;
+import GameExceptions.ShelfWithNoDirectionException;
+import com.mygdx.cndt.CrimeAndDime;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import utility.WebSocketClient;
+
 public class tileMapScreen implements Screen {
 
     private TiledMap maps;
+    private TiledMapTileLayer layer;
     private OrthogonalTiledMapRenderer render;
     private OrthographicCamera camera;
+    private TextButton shelfButton;
     private TextButton.TextButtonStyle shelfButtonStyle;
     private Skin skin;
     private BitmapFont font;
     private Stage stage;
     private TextureAtlas shelfButtonAtlas;
-    private ArrayList<Tile> shelfTileArray;
+    public ArrayList<Tile> shelfTileArray;
     private CrimeAndDime game;
+    private MapObjects shelfMapObject;
     private WebSocketClient socketClient;
 
-    public tileMapScreen(CrimeAndDime newGame) {
-        game = newGame;
-        shelfTileArray = new ArrayList<Tile>();
-        try {
-            socketClient = new WebSocketClient(new URI("ws://localhost:8080/websocket/"));
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public tileMapScreen() {
-        shelfTileArray = new ArrayList<Tile>();
+
+    public tileMapScreen(CrimeAndDime game) throws URISyntaxException {
+    	this.game = game;
+        maps = new TmxMapLoader().load("img/StoreTileMap.tmx");
+        render = new OrthogonalTiledMapRenderer(maps);
+        shelfMapObject = maps.getLayers().get("Shelf Object Layer").getObjects();
+        shelfTileArray = new ArrayList<Tile>(0);
+    	for (MapObject shelfObjects : shelfMapObject)
+        {
+    		if (shelfObjects instanceof RectangleMapObject){
+                if (shelfObjects.getName().equals("Shelf")) {
+                	final Tile shelfTile = new Tile();
+                	try {
+                		shelfTile.setShelfTile(Tile.shelfDirection.NORTH);
+                	} catch (ShelfWithNoDirectionException e) {
+						e.printStackTrace();
+					}
+		            shelfTileArray.add(shelfTile);
+                }
+    		}
+        }
+        socketClient = new WebSocketClient(new URI("ws://localhost:8080/websocket/"));
     }
 
     @Override
@@ -95,34 +115,29 @@ public class tileMapScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
         camera.update();
-
-        maps = new TmxMapLoader().load("img/StoreTileMap.tmx");
-
-        render = new OrthogonalTiledMapRenderer(maps);
-
-        MapObjects shelfMapObject = maps.getLayers().get("Shelf Object Layer").getObjects();
+        int stringNumber = 1;
+        int y = 0;
+        int i = 0;
         int x = 1;
         for (MapObject shelfObjects : shelfMapObject)
         {
             if (shelfObjects instanceof RectangleMapObject){
                 if (shelfObjects.getName().equals("Shelf")) {
-                    shelfTileArray.add(new Tile());
 
                     Texture texture = new Texture(Gdx.files.internal("img/transparentPicture.png"));
                     Image shelfImage = new Image(texture);
                     shelfImage.setPosition(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY());
                     shelfImage.setSize(((RectangleMapObject) shelfObjects).getRectangle().getWidth(), ((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                     shelfImage.setColor(0, 0, 0, 0);
-
                     stage.addActor(shelfImage);
+                    final int index = i;
                     shelfImage.addListener(new ClickListener() {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
-                            dispose();
-                            game.setScreen(new ShelfScreen(game, new GameClasses.Tile()));
-                            //((Game) Gdx.app.getApplicationListener()).setScreen(new ShelfScreen(game, new Tile()));
+                            game.setScreen(new ShelfScreen(game, index));
                         }
                     });
+                    i++;
                 }
                 if (shelfObjects.getName().equals("Player Info")){
                     Label playerInfo;
@@ -132,7 +147,7 @@ public class tileMapScreen implements Screen {
                     textStyle = new Label.LabelStyle();
                     textStyle.font = font;
                     Double playerMoney = 100.00;
-                    playerInfo = new Label("Player 1 :" + playerMoney,textStyle);
+                    playerInfo = new Label("Player 1 :" + game.gameStore.getBalance(),textStyle);
                     playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                     stage.addActor(playerInfo);
                 }
@@ -164,8 +179,47 @@ public class tileMapScreen implements Screen {
                 playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                 stage.addActor(playerInfo);
             }
+            
+            Label playerInfo;
+            Label.LabelStyle textStyle;
+            BitmapFont font = new BitmapFont();
+            textStyle = new Label.LabelStyle();
+            textStyle.font = font;            
+            textStyle = new Label.LabelStyle();
+            textStyle.font = font;
+            Double playerMoney = 100.00;
+            playerInfo = new Label("Inventory",textStyle);
+            playerInfo.setBounds(1100, 20, 100, 50);
+            stage.addActor(playerInfo);
+            playerInfo.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    game.setScreen(new InventoryScreen(game));
+                }
+            });
 
         }
+    }
+
+
+    @Override
+    public void pause() {
+
+    }
+    @Override
+    public void resume() {
+
+    }
+    @Override
+    public void hide(){
+        //maps.dispose();
+    }
+
+    @Override
+    public void dispose() {
+        maps.dispose();
+        render.dispose();
+        game = null;
     }
 
     private void sendShelfListToServer() {
@@ -179,25 +233,4 @@ public class tileMapScreen implements Screen {
         JSONArray jsArray = new JSONArray(shelfTileArray);
         return jsArray;
     }
-
-    @Override
-    public void pause() {
-
-    }
-    @Override
-    public void resume() {
-
-    }
-    @Override
-    public void hide() {
-        maps.dispose();
-    }
-
-    @Override
-    public void dispose() {
-        maps.dispose();
-        render.dispose();
-        game = null;
-    }
 }
-

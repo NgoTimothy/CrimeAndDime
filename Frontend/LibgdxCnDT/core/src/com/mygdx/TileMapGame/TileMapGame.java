@@ -2,12 +2,13 @@ package com.mygdx.TileMapGame;
 
 import com.badlogic.gdx.Game;
 import com.mygdx.Screen.*;
+import com.mygdx.cndt.CrimeAndDime;
 
 public class TileMapGame extends Game {
 
     @Override
     public void create (){
-        setScreen(new tileMapScreen());
+        setScreen(new tileMapScreen(new CrimeAndDime()));
     }
 
     @Override

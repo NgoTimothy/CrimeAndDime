@@ -1,3 +1,8 @@
+<<<<<<< HEAD:Frontend/LibgdxCnDT/core/src/test/LobbyScreenTest.java
+=======
+package test.test;
+
+>>>>>>> d32591f691e0eb17c91c88071f951bbbf6aca60e:Frontend/LibgdxCnDT/core/src/test/test/LobbyScreenTest.java
 import Services.LobbyScreenService;
 import com.mygdx.Screen.LobbyScreen;
 import org.junit.Before;
