@@ -52,6 +52,11 @@ public class WebSocketServer {
     {
         // Handle new messages
     	logger.info("Entered into Message: Got Message:"+message);
+    	if(message.length() >= 9 && message.substring(0, 9) == "storeInfo") {
+
+        }
+    	//"name":"apples","quantity":10,"wholesaleCost":1.02,"retailCost":2.0
+        //"name":"orange juice","quantity":10,"wholesaleCost":1.75,"retailCost":3.0
     	String username = sessionUsernameMap.get(session);
     	Integer lobbyID = sessionLobbyIDMap.get(session);
     	System.out.println(username);
