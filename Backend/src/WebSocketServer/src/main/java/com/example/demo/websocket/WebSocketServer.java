@@ -2,6 +2,7 @@ package com.example.demo.websocket;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -95,6 +96,7 @@ public class WebSocketServer {
             }
             sessionStoreInfoMap.put(session, newStore);
             storeInfoSessionMap.put(newStore, session);
+            printArr(newStore.getList());
             //"name":"apples","quantity":10,"wholesaleCost":1.02,"retailCost":2.0
             //"name":"orange juice","quantity":10,"wholesaleCost":1.75,"retailCost":3.0
         }
@@ -127,7 +129,7 @@ public class WebSocketServer {
     	logger.info("Entered into Error");
     }
     
-	private void sendMessageToPArticularUser(String username, String message) 
+	private void sendMessageToParticularUser(String username, String message)
     {	
     	try {
     		usernameSessionMap.get(username).getBasicRemote().sendText(message);
@@ -154,5 +156,13 @@ public class WebSocketServer {
 	        }
 	    });
 	}
+
+    private void printArr(ArrayList<Item> printableArr) {
+        System.out.println(printableArr.size());
+        for(int i = 0; i < printableArr.size(); i++) {
+            System.out.println(printableArr.get(i).getName() + " " + printableArr.get(i).getQuantity() + " " +
+                    printableArr.get(i).getWholesaleCost() + " " + printableArr.get(i).getRetailCost());
+        }
+    }
 }
 

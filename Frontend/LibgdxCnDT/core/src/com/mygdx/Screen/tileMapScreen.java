@@ -170,7 +170,9 @@ public class tileMapScreen implements Screen {
 
     private void sendShelfListToServer() {
         JSONArray sendToServerArray = listToJSON();
-        socketClient.sendMessage(sendToServerArray.toString());
+        String msg = "storeInfo" + sendToServerArray.toString().replace("\"", "");
+        msg = msg.replace("[", "");
+        socketClient.sendMessage(msg);
     }
 
     private JSONArray listToJSON() {

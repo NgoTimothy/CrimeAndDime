@@ -1,5 +1,7 @@
 package com.example.demo.GameLogicClasses;
 
+import java.util.ArrayList;
+
 public class StoreInfo {
     private String storeName;
     private Double cash;
@@ -47,6 +49,8 @@ public class StoreInfo {
     }
 
     public Inventory getInventory() { return inventory; }
+
+    public ArrayList<Item> getList() { return inventory.getInventory(); }
 
     public void setStoreName(String storeName) {
         this.storeName = storeName;
