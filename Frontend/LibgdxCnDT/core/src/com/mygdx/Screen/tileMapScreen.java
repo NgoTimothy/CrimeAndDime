@@ -127,7 +127,13 @@ public class tileMapScreen implements Screen {
                     shelfImage.addListener(new ClickListener() {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
+<<<<<<< Frontend/LibgdxCnDT/core/src/com/mygdx/Screen/tileMapScreen.java
                             game.setScreen(new ShelfScreen(game, index));
+=======
+                            dispose();
+                            game.setScreen(new ShelfScreen(game, new Tile()));
+                            //((Game) Gdx.app.getApplicationListener()).setScreen(new ShelfScreen(game, new Tile()));
+>>>>>>> Frontend/LibgdxCnDT/core/src/com/mygdx/Screen/tileMapScreen.java
                         }
                     });
                     i++;
