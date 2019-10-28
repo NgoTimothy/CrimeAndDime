@@ -1,4 +1,4 @@
-package GameClasses;
+package com.example.demo.GameLogicClasses;
 
 public class Item implements Comparable<Item> {
     private String name;

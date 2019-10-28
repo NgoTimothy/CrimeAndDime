@@ -13,9 +13,12 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import com.example.demo.GameLogicClasses.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+
 /**
  * 
  * @author Vamsi Krishna Calpakkam
@@ -53,7 +56,23 @@ public class WebSocketServer {
         // Handle new messages
     	logger.info("Entered into Message: Got Message:"+message);
     	if(message.length() >= 9 && message.substring(0, 9) == "storeInfo") {
+            Item newItem = new Item();
+            String[] tokens = message.split("}");
+            for(int i = 0; i < tokens.length; i++) {
+                if (tokens[i].length() > 5) { //Do something here
+                    if (i != 0) {
+                        tokens[i] = tokens[i].substring(3);
+                    }
+                    tokens[i] = tokens[i].replace("\"{", "");
+                    tokens[i] = tokens[i].replace("{", "");
+                    String[] itemFields = tokens[i].split(",");
+                    for (int j = 0; j < itemFields.length; j++) {
+                        if(itemFields[j].contains("name")) {
 
+                        }
+                    }
+                }
+            }
         }
     	//"name":"apples","quantity":10,"wholesaleCost":1.02,"retailCost":2.0
         //"name":"orange juice","quantity":10,"wholesaleCost":1.75,"retailCost":3.0

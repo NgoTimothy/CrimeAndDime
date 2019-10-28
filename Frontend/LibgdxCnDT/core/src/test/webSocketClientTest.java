@@ -32,6 +32,7 @@ public class webSocketClientTest {
     public void testJSONArray() {
         JSONArray returnJSONArray = new JSONArray(fakeShelfArray);
         //returnJSONArray.toString();
+        Item item = new Item();
         String fakeStr = returnJSONArray.toString().replace("\\", "");
         fakeStr = fakeStr.replace("[", "");
         System.out.println(fakeStr);
@@ -45,6 +46,10 @@ public class webSocketClientTest {
                 tokens[i] = tokens[i].replace("{", "");
                 String[] itemFields = tokens[i].split(",");
                 for(int j = 0; j < itemFields.length; j++) {
+                    if(itemFields[j].contains("name")) {
+                        item.setName(itemFields[j].substring(7).replace("\"", ""));
+                        System.out.println(item.getName());
+                    }
                     System.out.println(itemFields[j]);
                 }
                 //System.out.println(tokens[i]);
