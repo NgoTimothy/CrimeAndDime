@@ -61,6 +61,7 @@ public class WebSocketServer {
     	if(message.length() >= 9 && message.substring(0, 9) == "storeInfo") {
             Item newItem = new Item();
             StoreInfo newStore = new StoreInfo();
+            message.replace("storeInfo", "");
             String[] tokens = message.split("}");
             for(int i = 0; i < tokens.length; i++) {
                 if (tokens[i].length() > 5) { //Do something here
@@ -94,15 +95,16 @@ public class WebSocketServer {
             }
             sessionStoreInfoMap.put(session, newStore);
             storeInfoSessionMap.put(newStore, session);
+            //"name":"apples","quantity":10,"wholesaleCost":1.02,"retailCost":2.0
+            //"name":"orange juice","quantity":10,"wholesaleCost":1.75,"retailCost":3.0
         }
-    	//"name":"apples","quantity":10,"wholesaleCost":1.02,"retailCost":2.0
-        //"name":"orange juice","quantity":10,"wholesaleCost":1.75,"retailCost":3.0
-    	String username = sessionUsernameMap.get(session);
-    	Integer lobbyID = sessionLobbyIDMap.get(session);
-    	System.out.println(username);
-    	System.out.println(lobbyID);
-    	
-	    	broadcast(message, lobbyID);
+    	else {
+            String username = sessionUsernameMap.get(session);
+            Integer lobbyID = sessionLobbyIDMap.get(session);
+            System.out.println(username);
+            System.out.println(lobbyID);
+            broadcast(message, lobbyID);
+        }
     }
  
     @OnClose

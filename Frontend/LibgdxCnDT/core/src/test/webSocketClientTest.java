@@ -35,7 +35,7 @@ public class webSocketClientTest {
         Item item = new Item();
         ArrayList<Item> itemArr = new ArrayList<>();
         String fakeStr = returnJSONArray.toString().replace("\\", "");
-        fakeStr = fakeStr.replace("[", "");
+        fakeStr = fakeStr.replace("[", "");//We will do up to this point for the server
         //System.out.println(fakeStr);
         String[] tokens = fakeStr.split("}");
         for(int i = 0; i < tokens.length; i++) {
