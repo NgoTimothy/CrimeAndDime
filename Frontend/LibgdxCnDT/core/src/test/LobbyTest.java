@@ -1,8 +1,3 @@
-<<<<<<< HEAD:Frontend/LibgdxCnDT/core/src/test/LobbyTest.java
-=======
-package test.test;
-
->>>>>>> d32591f691e0eb17c91c88071f951bbbf6aca60e:Frontend/LibgdxCnDT/core/src/test/test/LobbyTest.java
 import org.junit.*;
 import org.mockito.Mock;
 import utility.Lobby;

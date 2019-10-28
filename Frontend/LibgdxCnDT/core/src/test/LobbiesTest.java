@@ -1,8 +1,3 @@
-<<<<<<< HEAD:Frontend/LibgdxCnDT/core/src/test/LobbiesTest.java
-=======
-package test.test;
-
->>>>>>> d32591f691e0eb17c91c88071f951bbbf6aca60e:Frontend/LibgdxCnDT/core/src/test/test/LobbiesTest.java
 import Services.LobbyService;
 import com.mygdx.Screen.Lobbies;
 import org.junit.Before;
