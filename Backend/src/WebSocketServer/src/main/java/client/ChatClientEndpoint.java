@@ -75,7 +75,7 @@ public class ChatClientEndpoint {
     /**
      * register message handler
      * 
-     * @param message
+     * @param msgHandler
      */
     public void addMessageHandler(MessageHandler msgHandler) {
         this.messageHandler = msgHandler;
@@ -83,8 +83,7 @@ public class ChatClientEndpoint {
  
     /**
      * Send a message.
-     * 
-     * @param user
+     *
      * @param message
      */
     public void sendMessage(String message) {
