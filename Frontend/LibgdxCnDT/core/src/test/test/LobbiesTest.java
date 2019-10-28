@@ -1,4 +1,4 @@
-package test;
+package test.test;
 
 import Services.LobbyService;
 import com.mygdx.Screen.Lobbies;

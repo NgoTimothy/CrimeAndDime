@@ -1,26 +1,24 @@
 package GameClasses;
 
-import java.math.BigDecimal;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Item implements Comparable<Item> {
     private String name;
     private int quantity;
     @JsonProperty("price")
-    private BigDecimal wholesaleCost;
-    private BigDecimal retailCost;
+    private Double wholesaleCost;
+    private Double retailCost;
 
     public Item() {
         name = "";
-        wholesaleCost = BigDecimal.valueOf(0);
-        retailCost = BigDecimal.valueOf(0);
+        wholesaleCost = Double.valueOf(0);
+        retailCost = Double.valueOf(0);
     }
 
     public Item(String initName) {
         name = initName;
-        wholesaleCost = BigDecimal.valueOf(0);
-        retailCost = BigDecimal.valueOf(0);
+        wholesaleCost = Double.valueOf(0);
+        retailCost = Double.valueOf(0);
     }
 
     public Item(Item originalItem) {
@@ -46,6 +44,10 @@ public class Item implements Comparable<Item> {
         return  quantity;
     }
 
+    public void setQuantity(int numItems) {
+        quantity = numItems;
+    }
+    
     public void addQuantity(int addedItems) {
         if(addedItems < 0) {
             return;
@@ -60,7 +62,7 @@ public class Item implements Comparable<Item> {
         quantity -= subtractedItems;
     }
 
-    public BigDecimal getWholesaleCost() {
+    public Double getWholesaleCost() {
         return wholesaleCost;
     }
 
@@ -68,10 +70,10 @@ public class Item implements Comparable<Item> {
         if(newWholesaleCost < 0) {
             return;
         }
-        wholesaleCost = BigDecimal.valueOf(newWholesaleCost);
+        wholesaleCost = Double.valueOf(newWholesaleCost);
     }
 
-    public BigDecimal getRetailCost() {
+    public Double getRetailCost() {
         return retailCost;
     }
 
@@ -79,7 +81,7 @@ public class Item implements Comparable<Item> {
         if(newRetailCost < 0) {
             return;
         }
-        retailCost = BigDecimal.valueOf(newRetailCost);
+        retailCost = Double.valueOf(newRetailCost);
     }
 
     public void clearQuantity() {

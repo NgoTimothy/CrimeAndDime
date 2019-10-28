@@ -1,4 +1,4 @@
-package test;
+package test.test;
 
 import GameClasses.Item;
 import GameClasses.Tile;

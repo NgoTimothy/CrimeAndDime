@@ -9,12 +9,12 @@ public class Store {
     private List<List<Tile>> storeMap;
     private String name;
     private double balance;
-    private Inventory storeInventory;
+    public Inventory storeInventory;
 
     public Store(String initName) {
         name = initName;
         storeMap = new ArrayList<List<Tile>>();
-        balance = 0;
+        balance = 9999.99;
         storeInventory = new Inventory();
         initStore();
     }
@@ -109,5 +109,10 @@ public class Store {
 
     public ArrayList<Item> getInventory() {
         return storeInventory.getInventory();
+    }
+    
+    public double getBalance()
+    {
+    	return balance;
     }
 }
