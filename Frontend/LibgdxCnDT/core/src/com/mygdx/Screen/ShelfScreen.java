@@ -88,8 +88,9 @@ public class ShelfScreen implements Screen {
 		            		if (game.gameStore.getInventory().get(index).getQuantity() > 0)
 		            		{
 		            			if (shelfTile.getItem() != null && !shelfTile.getItem().getName().equals(game.gameStore.getInventory().get(index).getName()))
-		            				game.gameStore.storeInventory.addItem(shelfTile.getItem());            				
+		            				game.gameStore.storeInventory.addItem(shelfTile.getItem());
 		            			shelfTile.setItemOnShelf(game.gameStore.getInventory().get(index), 1);
+		            			game.setShelfChanged(true);
 		            		}
 						} catch (PlacingItemWithNoShelfException e) {
 							e.printStackTrace();

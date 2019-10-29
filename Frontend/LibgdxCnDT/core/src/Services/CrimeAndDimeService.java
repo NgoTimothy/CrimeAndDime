@@ -66,7 +66,7 @@ public class CrimeAndDimeService {
 
 		for (Item item : items)
 		{
-			item.setRetailCost(item.getWholesaleCost() + item.getWholesaleCost() * 0.1);
+			item.setRetailCost(Math.round(item.getWholesaleCost() * 1.1 * 100D) / 100D);
 		}
 		
 		return items;

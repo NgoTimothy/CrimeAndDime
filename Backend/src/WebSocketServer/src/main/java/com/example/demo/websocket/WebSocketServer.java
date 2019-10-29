@@ -59,10 +59,14 @@ public class WebSocketServer {
     {
         // Handle new messages
     	logger.info("Entered into Message: Got Message:"+message);
-    	if(message.length() >= 9 && message.substring(0, 9) == "storeInfo") {
+    	System.out.println(message);
+    	if(message.length() >= 9 && message.contains("storeInfo")) {
             Item newItem = new Item();
             StoreInfo newStore = new StoreInfo();
-            message.replace("storeInfo", "");
+            message = message.replace("storeInfo", "");
+            message = message.replace("]", "");
+            message = message.substring(2);
+            //System.out.println(message);
             String[] tokens = message.split("}");
             for(int i = 0; i < tokens.length; i++) {
                 if (tokens[i].length() > 5) { //Do something here
@@ -75,8 +79,9 @@ public class WebSocketServer {
                     for (int j = 0; j < itemFields.length; j++) {
                         if(itemFields[j].contains("name")) {
                             newItem = new Item();
-                            itemFields[j].substring(7).replace("\"", "");
+                            itemFields[j] = itemFields[j].substring(7).replace("\"", "");
                             newItem.setName(itemFields[j]);
+                            System.out.println(newItem.getName());
                         }
                         else if(itemFields[j].contains("quantity")) {
                             itemFields[j] = itemFields[j].substring(11);
@@ -139,9 +144,7 @@ public class WebSocketServer {
         }
     }
     
-    private static void broadcast(String message, Integer lobbyID) 
-    	      throws IOException 
-    {	  
+    private static void broadcast(String message, Integer lobbyID) {
     	sessionUsernameMap.forEach((session, username) -> {
     		synchronized (session) {
     			try {

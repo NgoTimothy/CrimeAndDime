@@ -28,6 +28,7 @@ import com.mygdx.cndt.CrimeAndDime;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.json.JSONArray;
 import utility.WebSocketClient;
@@ -49,9 +50,7 @@ public class tileMapScreen implements Screen {
     private MapObjects shelfMapObject;
     private WebSocketClient socketClient;
 
-
-
-    public tileMapScreen(CrimeAndDime game) throws URISyntaxException {
+    public tileMapScreen(CrimeAndDime game) {
     	this.game = game;
         maps = new TmxMapLoader().load("img/StoreTileMap.tmx");
         render = new OrthogonalTiledMapRenderer(maps);
@@ -61,7 +60,7 @@ public class tileMapScreen implements Screen {
         {
     		if (shelfObjects instanceof RectangleMapObject){
                 if (shelfObjects.getName().equals("Shelf")) {
-                	final Tile shelfTile = new Tile();
+                    Tile shelfTile = new Tile();
                 	try {
                 		shelfTile.setShelfTile(Tile.shelfDirection.NORTH);
                 	} catch (ShelfWithNoDirectionException e) {
@@ -71,7 +70,11 @@ public class tileMapScreen implements Screen {
                 }
     		}
         }
-        socketClient = new WebSocketClient(new URI("ws://localhost:8080/websocket/"));
+    	try {
+    	    socketClient = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + 25 + "/" + "Tim"));
+        } catch (Exception e) {
+    	    e.printStackTrace();
+        }
     }
 
     @Override
@@ -115,8 +118,6 @@ public class tileMapScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
         camera.update();
-        int stringNumber = 1;
-        int y = 0;
         int i = 0;
         int x = 1;
         for (MapObject shelfObjects : shelfMapObject)
@@ -197,7 +198,10 @@ public class tileMapScreen implements Screen {
                     game.setScreen(new InventoryScreen(game));
                 }
             });
-
+            if(game.isShelfChanged()) {
+                game.setShelfChanged(false);
+                sendShelfListToServer();
+            }
         }
     }
 
@@ -224,13 +228,19 @@ public class tileMapScreen implements Screen {
 
     private void sendShelfListToServer() {
         JSONArray sendToServerArray = listToJSON();
-        String msg = "storeInfo" + sendToServerArray.toString().replace("\"", "");
+        String msg = "storeInfo" + sendToServerArray.toString().replace("\\", "");
         msg = msg.replace("[", "");
         socketClient.sendMessage(msg);
     }
 
     private JSONArray listToJSON() {
-        JSONArray jsArray = new JSONArray(shelfTileArray);
+        ArrayList<Tile> tileArr = new ArrayList<>();
+        for(int i = 0; i < shelfTileArray.size(); i++) {
+            if(shelfTileArray.get(i).getItem() != null) {
+                tileArr.add(shelfTileArray.get(i));
+            }
+        }
+        JSONArray jsArray = new JSONArray(tileArr);
         return jsArray;
     }
 }

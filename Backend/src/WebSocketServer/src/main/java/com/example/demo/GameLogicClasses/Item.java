@@ -113,8 +113,14 @@ public class Item implements Comparable<Item> {
             }
         }
 
-        if(originalString != compareString) {
+        if(!originalString.equals(compareString)) {
             return originalStringLength - compareStringLength;
+        }
+        if(this.getRetailCost() > o.getRetailCost()) {
+            return 1;
+        }
+        else if(this.getRetailCost() < o.getRetailCost()) {
+            return -1;
         }
         return 0;
     }
@@ -122,7 +128,7 @@ public class Item implements Comparable<Item> {
     @Override
     public boolean equals(Object object) {
         Item compareObject = (Item) object;
-        if(this.getName().toLowerCase() == compareObject.getName().toLowerCase()) {
+        if(this.getName().toLowerCase() == compareObject.getName().toLowerCase() && this.getRetailCost() == compareObject.getRetailCost()) {
             return true;
         }
         return false;
