@@ -7,9 +7,12 @@ import utility.Lobby;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
+
 public class StoreScreenTest {
-    private tileMapScreen mockScreen;
-    private tileMapScreen realScreen;
+    /*
+
+   // private tileMapScreen mockScreen;
+   // private tileMapScreen realScreen;
 
     @Before
     public void setup() {
@@ -17,7 +20,7 @@ public class StoreScreenTest {
         mockScreen = spy(realScreen);
 
         assertEquals(0,mockScreen);
-        
+
         List mockedList = Mockito.mock(ArrayList.class);
 
         mockedList.add("one");
@@ -25,5 +28,5 @@ public class StoreScreenTest {
 
         assertEquals(0, mockedList.size());
     }
-
+*/
 }

@@ -25,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.Objects.tempTile;
 import com.mygdx.cndt.CrimeandDime;
+import com.mygdx.entities.Customer;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -58,11 +59,14 @@ public class tileMapScreen implements Screen {
 
     private CrimeandDime game;
 
+    private Customer customer;
+/*
     //Testing Purposes
     public tileMapScreen(CrimeandDime newGame, ArrayList<tempTile> newTileArrayList){
         game = newGame;
         shelfTileArray = newTileArrayList;
     }
+*/
 
     @Override
     public void render(float delta){
@@ -77,21 +81,21 @@ public class tileMapScreen implements Screen {
         // Test Code:
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        sprite.draw(batch);
+        customer.draw(batch);
         batch.end();
 
         switch (randomWant) {
             case 0:
                 yPosition = yPosition - (20 * (Gdx.graphics.getDeltaTime()));
-                sprite.setPosition(xPosition,yPosition);
+                customer.setPosition(xPosition,yPosition);
                 break;
             case 1:
                // xPosition = xPosition + (20 * (Gdx.graphics.getDeltaTime()));
-                sprite.setPosition(xPosition,yPosition);
+                customer.setPosition(xPosition,yPosition);
                 break;
             case 2:
                 xPosition = xPosition + (20 * (Gdx.graphics.getDeltaTime()));
-                sprite.setPosition(xPosition,yPosition);
+                customer.setPosition(xPosition,yPosition);
                 break;
             default:
                 break;
@@ -203,11 +207,15 @@ public class tileMapScreen implements Screen {
 
         }
 
+
         // Test Code
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture("img/apple.jpg"));
-        sprite.setSize(30,30);
-        sprite.setPosition(xPosition,yPosition);
+        customer = new Customer(sprite,(TiledMapTileLayer) maps.getLayers().get(0));
+
+
+        customer.setSize(30,30);
+        customer.setPosition(xPosition,yPosition);
 
         setRandomWant();
         testInt++;
