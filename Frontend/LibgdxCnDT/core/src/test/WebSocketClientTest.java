@@ -7,9 +7,12 @@ import org.junit.Test;
 
 import java.util.*;
 
-public class webSocketClientTest {
+import static org.junit.Assert.assertEquals;
+
+public class WebSocketClientTest {
     private JSONArray testJsonArray;
     private ArrayList<Tile> fakeShelfArray;
+    private String expectedString;
 
     @Before
     public void setup() {
@@ -18,6 +21,8 @@ public class webSocketClientTest {
         Tile tileFake2 = new Tile(Tile.shelfDirection.SOUTH);
         Item itemFake1 = new Item("apples", 1.02, 2.00, 10);
         Item itemFake2 = new Item("orange juice", 1.75, 3.00, 10);
+        expectedString = "\"{\"name\":\"apples\",\"quantity\":10,\"wholesaleCost\":1.02,\"retailCost\":2.0}\"," +
+                "\"{\"name\":\"orange juice\",\"quantity\":10,\"wholesaleCost\":1.75,\"retailCost\":3.0}\"]";
         try {
             tileFake1.setItemOnShelf(itemFake1, 10);
             tileFake2.setItemOnShelf(itemFake2, 10);
@@ -29,15 +34,16 @@ public class webSocketClientTest {
     }
 
     @Test
-    public void testJSONArray() {
+    public void testJSONArrayConvertsCorrectly() {
         JSONArray returnJSONArray = new JSONArray(fakeShelfArray);
         //returnJSONArray.toString();
         Item item = new Item();
         ArrayList<Item> itemArr = new ArrayList<>();
         String fakeStr = returnJSONArray.toString().replace("\\", "");
         fakeStr = fakeStr.replace("[", "");//We will do up to this point for the server
-        //System.out.println(fakeStr);
-        String[] tokens = fakeStr.split("}");
+        System.out.println(fakeStr);
+        assertEquals(expectedString, fakeStr);
+        /*String[] tokens = fakeStr.split("}");
         for(int i = 0; i < tokens.length; i++) {
             if(tokens[i].length() > 5) { //Do something here
                 if(i != 0) {
@@ -73,7 +79,7 @@ public class webSocketClientTest {
                 //System.out.println(tokens[i]);
             }
         }
-        printArr(itemArr);
+        printArr(itemArr);*/
     }
 
     private void printArr(ArrayList<Item> printableArr) {
