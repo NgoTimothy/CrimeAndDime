@@ -3,12 +3,8 @@
  * http://programmingforliving.com
  */
 package client;
- 
-import java.io.StringReader;
+
 import java.net.URI;
- 
-import javax.json.Json;
-import javax.json.JsonObject;
  
 /**
  * ChatBot

@@ -30,6 +30,7 @@ public class CrimeAndDime extends Game {
 	public Store gameStore;
 	public ArrayList<Item> items;
 	public tileMapScreen tileMap;
+	private Boolean shelfChanged;
 	
 	@Override
 	public void create () {
@@ -38,6 +39,7 @@ public class CrimeAndDime extends Game {
 		CrimeAndDimeService newService = new CrimeAndDimeService();
 		createItems(newService);
 		setScreen(new Splash(this));
+		shelfChanged = false;
 		//setScreen(new ShelfScreen(this, new Tile()));
 	}
 
@@ -72,5 +74,9 @@ public class CrimeAndDime extends Game {
 	{
 		return items;
 	}
+
+	public boolean isShelfChanged() { return shelfChanged; }
+
+	public void setShelfChanged(boolean shelfChanged) { this.shelfChanged = shelfChanged; }
 }
 

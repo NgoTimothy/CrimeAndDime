@@ -1,11 +1,8 @@
-package GameClasses;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+package com.example.demo.GameLogicClasses;
 
 public class Item implements Comparable<Item> {
     private String name;
     private int quantity;
-    @JsonProperty("price")
     private Double wholesaleCost;
     private Double retailCost;
 
@@ -13,21 +10,12 @@ public class Item implements Comparable<Item> {
         name = "";
         wholesaleCost = 0.0;
         retailCost = 0.0;
-        quantity = 0;
     }
 
     public Item(String initName) {
         name = initName;
-        wholesaleCost =  0.0;
+        wholesaleCost = 0.0;
         retailCost = 0.0;
-        quantity = 0;
-    }
-
-    public Item(String initName, double initWholesaleCost, double initRetailCost, int initQuantity) {
-        name = initName;
-        wholesaleCost = initWholesaleCost;
-        retailCost = initRetailCost;
-        quantity = initQuantity;
     }
 
     public Item(Item originalItem) {
@@ -71,7 +59,7 @@ public class Item implements Comparable<Item> {
         quantity -= subtractedItems;
     }
 
-    public double getWholesaleCost() {
+    public Double getWholesaleCost() {
         return wholesaleCost;
     }
 
@@ -82,13 +70,12 @@ public class Item implements Comparable<Item> {
         wholesaleCost = newWholesaleCost;
     }
 
-    public double getRetailCost() {
+    public Double getRetailCost() {
         return retailCost;
     }
 
-
     public void setRetailCost(double newRetailCost) {
-        if(newRetailCost < 0) {
+        if (newRetailCost < 0) {
             return;
         }
         retailCost = newRetailCost;
@@ -118,16 +105,22 @@ public class Item implements Comparable<Item> {
         int smallestLengthString = Math.min(originalStringLength, compareStringLength);
 
         for (int i = 0; i < smallestLengthString; i++) {
-            int originalCharValue = originalString.charAt(i);
-            int compareCharValue = compareString.charAt(i);
+            int originalCharValue = (int)originalString.charAt(i);
+            int compareCharValue = (int)compareString.charAt(i);
 
             if(originalCharValue != compareCharValue) {
                 return originalCharValue - compareCharValue;
             }
         }
 
-        if(originalString != compareString) {
+        if(!originalString.equals(compareString)) {
             return originalStringLength - compareStringLength;
+        }
+        if(this.getRetailCost() > o.getRetailCost()) {
+            return 1;
+        }
+        else if(this.getRetailCost() < o.getRetailCost()) {
+            return -1;
         }
         return 0;
     }
@@ -135,22 +128,9 @@ public class Item implements Comparable<Item> {
     @Override
     public boolean equals(Object object) {
         Item compareObject = (Item) object;
-        if(this.getName().toLowerCase() == compareObject.getName().toLowerCase()) {
+        if(this.getName().toLowerCase() == compareObject.getName().toLowerCase() && this.getRetailCost() == compareObject.getRetailCost()) {
             return true;
         }
         return false;
     }
-
-    @Override
-    public String toString() {
-        return new StringBuilder()
-                .append("{\"name\":" + "\"" + name + "\"" + ",")
-                .append("\"quantity\":" + quantity + ",")
-                .append("\"wholesaleCost\":" + wholesaleCost +  ",")
-                .append("\"retailCost\":" + retailCost + "}")
-                .toString();
-        //return "\"name\":" + name + " quantity: " + quantity + " wholesaleCost: " + wholesaleCost + " retailCost " + retailCost;
-    }
-
-
 }

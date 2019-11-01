@@ -134,4 +134,12 @@ public class Tile {
         increaseItem.addQuantity(quantity);
         decreaseItem.subtractQuantity(quantity);
     }
+
+    @Override
+    public String toString() {
+        if(stockedItem == null) {
+            return "";
+        }
+        return stockedItem.toString();
+    }
 }

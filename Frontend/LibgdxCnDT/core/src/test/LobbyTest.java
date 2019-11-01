@@ -1,5 +1,3 @@
-package test.test;
-
 import org.junit.*;
 import org.mockito.Mock;
 import utility.Lobby;

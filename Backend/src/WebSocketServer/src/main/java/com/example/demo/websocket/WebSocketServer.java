@@ -2,6 +2,7 @@ package com.example.demo.websocket;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,9 +14,13 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import com.example.demo.GameLogicClasses.Item;
+import com.example.demo.GameLogicClasses.StoreInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+
 /**
  * 
  * @author Vamsi Krishna Calpakkam
@@ -30,6 +35,8 @@ public class WebSocketServer {
     private static Map<String, Session> usernameSessionMap = new HashMap<>();
     private static Map<Integer, Session> lobbyIDSessionMap = new HashMap<>();
     private static Map<Session, Integer> sessionLobbyIDMap = new HashMap<>();
+    private static Map<StoreInfo, Session> storeInfoSessionMap = new HashMap<>();
+    private static Map<Session, StoreInfo> sessionStoreInfoMap = new HashMap<>();
     
     private final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     
@@ -52,12 +59,61 @@ public class WebSocketServer {
     {
         // Handle new messages
     	logger.info("Entered into Message: Got Message:"+message);
-    	String username = sessionUsernameMap.get(session);
-    	Integer lobbyID = sessionLobbyIDMap.get(session);
-    	System.out.println(username);
-    	System.out.println(lobbyID);
-    	
-	    	broadcast(message, lobbyID);
+    	System.out.println(message);
+    	if(message.length() >= 9 && message.contains("storeInfo")) {
+            Item newItem = new Item();
+            StoreInfo newStore = new StoreInfo();
+            message = message.replace("storeInfo", "");
+            message = message.replace("]", "");
+            message = message.substring(2);
+            //System.out.println(message);
+            String[] tokens = message.split("}");
+            for(int i = 0; i < tokens.length; i++) {
+                if (tokens[i].length() > 5) { //Do something here
+                    if (i != 0) {
+                        tokens[i] = tokens[i].substring(3);
+                    }
+                    tokens[i] = tokens[i].replace("\"{", "");
+                    tokens[i] = tokens[i].replace("{", "");
+                    String[] itemFields = tokens[i].split(",");
+                    for (int j = 0; j < itemFields.length; j++) {
+                        if(itemFields[j].contains("name")) {
+                            newItem = new Item();
+                            itemFields[j] = itemFields[j].substring(7).replace("\"", "");
+                            newItem.setName(itemFields[j]);
+                            System.out.println(newItem.getName());
+                        }
+                        else if(itemFields[j].contains("quantity")) {
+                            itemFields[j] = itemFields[j].substring(11);
+                            newItem.setQuantity(Integer.parseInt(itemFields[j]));
+                        }
+                        else if(itemFields[j].contains("wholesaleCost")) {
+                            itemFields[j] = itemFields[j].substring(16);
+                            newItem.setWholesaleCost(Double.parseDouble(itemFields[j]));
+                        }
+                        else if(itemFields[j].contains("retailCost")) {
+                            itemFields[j] = itemFields[j].substring(13);
+                            newItem.setRetailCost(Double.parseDouble(itemFields[j]));
+                            newStore.getInventory().addItem(newItem);
+                        }
+                    }
+                }
+            }
+            sessionStoreInfoMap.put(session, newStore);
+            storeInfoSessionMap.put(newStore, session);
+            String usr = sessionUsernameMap.get(session);
+            printArr(newStore.getList());
+            System.out.println(usr);
+            //"name":"apples","quantity":10,"wholesaleCost":1.02,"retailCost":2.0
+            //"name":"orange juice","quantity":10,"wholesaleCost":1.75,"retailCost":3.0
+        }
+    	else {
+            String username = sessionUsernameMap.get(session);
+            Integer lobbyID = sessionLobbyIDMap.get(session);
+            System.out.println(username);
+            System.out.println(lobbyID);
+            broadcast(message, lobbyID);
+        }
     }
  
     @OnClose
@@ -80,7 +136,7 @@ public class WebSocketServer {
     	logger.info("Entered into Error");
     }
     
-	private void sendMessageToPArticularUser(String username, String message) 
+	private void sendMessageToParticularUser(String username, String message)
     {	
     	try {
     		usernameSessionMap.get(username).getBasicRemote().sendText(message);
@@ -90,9 +146,7 @@ public class WebSocketServer {
         }
     }
     
-    private static void broadcast(String message, Integer lobbyID) 
-    	      throws IOException 
-    {	  
+    private static void broadcast(String message, Integer lobbyID) {
     	sessionUsernameMap.forEach((session, username) -> {
     		synchronized (session) {
     			try {
@@ -107,5 +161,13 @@ public class WebSocketServer {
 	        }
 	    });
 	}
+
+    private void printArr(ArrayList<Item> printableArr) {
+        System.out.println(printableArr.size());
+        for(int i = 0; i < printableArr.size(); i++) {
+            System.out.println(printableArr.get(i).getName() + " " + printableArr.get(i).getQuantity() + " " +
+                    printableArr.get(i).getWholesaleCost() + " " + printableArr.get(i).getRetailCost());
+        }
+    }
 }
 
