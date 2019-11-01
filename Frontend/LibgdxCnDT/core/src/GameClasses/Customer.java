@@ -1,7 +1,6 @@
 package GameClasses;
 
-import java.util.ArrayList;
-import GameClasses.Inventory;
+import java.util.*;
 
 
 public class Customer {
