@@ -89,10 +89,7 @@ fabric.properties
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
-<<<<<<< HEAD
 /.metadata/
 /.recommenders/
-=======
-
 **/.idea/workspace.xml
->>>>>>> 0f406729bd516e0cc51fe42dafd86a3a33ee96cd
+

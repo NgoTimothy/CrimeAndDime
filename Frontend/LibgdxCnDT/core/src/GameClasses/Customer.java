@@ -1,9 +1,7 @@
 package GameClasses;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import GameClasses.Inventory;
-import com.sun.tools.javac.jvm.Items;
+import java.util.*;
+
 
 
 public class Customer {
