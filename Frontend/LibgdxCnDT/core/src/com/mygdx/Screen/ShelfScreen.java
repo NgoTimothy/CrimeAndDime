@@ -112,6 +112,7 @@ public class ShelfScreen implements Screen {
     	            @Override
     	            public void clicked(InputEvent event, float x, float y) {
     	            	shelfTile.getItem().setRetailCost(Math.round(Double.valueOf(price.getText()) * 100D) / 100D);
+    	            	game.setShelfChanged(true);
     	            }
     	        });
             stage.addActor(setPrice);

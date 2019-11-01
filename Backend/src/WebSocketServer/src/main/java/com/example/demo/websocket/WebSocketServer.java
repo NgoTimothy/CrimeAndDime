@@ -101,7 +101,9 @@ public class WebSocketServer {
             }
             sessionStoreInfoMap.put(session, newStore);
             storeInfoSessionMap.put(newStore, session);
+            String usr = sessionUsernameMap.get(session);
             printArr(newStore.getList());
+            System.out.println(usr);
             //"name":"apples","quantity":10,"wholesaleCost":1.02,"retailCost":2.0
             //"name":"orange juice","quantity":10,"wholesaleCost":1.75,"retailCost":3.0
         }
