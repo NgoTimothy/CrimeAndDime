@@ -95,11 +95,11 @@ public class Customer {
         for(int i =0; i < preferences.size(); i++){
             if(item.getName() == preferences.get(i).getName()){
                 preferences.get(i).subtractQuantity(1);
-                budget = budget - item.getRetailCost();
+                budget -= item.getRetailCost();
             }
         }
         for(int i =0; i< preferences.size(); i++){
-            if(preferences.get(i).getRetailCost() == budget){
+            if(preferences.get(i).getRetailCost() > budget){
                 preferences.get(i).subtractQuantity(10);
             }
         }
