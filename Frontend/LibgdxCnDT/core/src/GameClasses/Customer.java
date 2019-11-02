@@ -99,7 +99,7 @@ public class Customer {
             }
         }
         for(int i =0; i< preferences.size(); i++){
-            if(preferences.get(i).getRetailCost().compareTo(budget) == 1){
+            if(preferences.get(i).getRetailCost() == budget){
                 preferences.get(i).subtractQuantity(10);
             }
         }
