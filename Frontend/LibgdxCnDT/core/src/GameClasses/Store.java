@@ -5,6 +5,10 @@ import GameExceptions.PlacingItemWithNoShelfException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Store class is the map for the main game screen and keeps track of
+ * all the individual tiles in the game
+ */
 public class Store {
     private List<List<Tile>> storeMap;
     private String name;
@@ -63,10 +67,22 @@ public class Store {
         }
     }
 
+    /**
+     * Returns the tile of a given cell in the list of lists
+     * @param row
+     * @param col
+     * @return
+     */
     public Tile getTile(int row, int col) {
         return storeMap.get(row).get(col);
     }
 
+    /**
+     * Removes an item from the shelf based off position in map
+     * @param row
+     * @param col
+     * @return
+     */
     public boolean removeItemFromShelf(int row, int col) {
         Tile adjustedTile = getTile(row, col);
         if(!adjustedTile.getTileType().equals(Tile.tileType.SHELF)) {
@@ -77,6 +93,14 @@ public class Store {
         return true;
     }
 
+    /**
+     * Places item on the shelf based on cell parameter passed in
+     * @param row
+     * @param col
+     * @param quantity
+     * @param itemToBePlacedOnShelf
+     * @return
+     */
     public boolean placeItemOnShelf(int row, int col, int quantity, String itemToBePlacedOnShelf) {
         Tile adjustedTile = getTile(row, col);
         if(!adjustedTile.getTileType().equals(Tile.tileType.SHELF)) {
@@ -92,6 +116,11 @@ public class Store {
         return true;
     }
 
+    /**
+     * Allows customers to buy an item from the shelf
+     * @param item
+     * @return
+     */
     public boolean purchaseItemToInventory(Item item) {
         if (item == null || item.getQuantity() <= 0) {
             return false;
@@ -107,10 +136,18 @@ public class Store {
         }
     }
 
+    /**
+     * Returns the ArrayList of items in the store
+     * @return
+     */
     public ArrayList<Item> getInventory() {
         return storeInventory.getInventory();
     }
-    
+
+    /**
+     * Returns the current total of money that a store has
+     * @return
+     */
     public double getBalance()
     {
     	return balance;

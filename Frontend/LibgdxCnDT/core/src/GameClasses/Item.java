@@ -2,6 +2,11 @@ package GameClasses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * The Item represents the main object of the game.
+ * An Item has a quantity, name, wholesale and retail cost.
+ * Players order and add Items, while customers can buy Items.
+ */
 public class Item implements Comparable<Item> {
     private String name;
     private int quantity;
@@ -37,10 +42,19 @@ public class Item implements Comparable<Item> {
         quantity = originalItem.getQuantity();
     }
 
+    /**
+     * This returns the name of the item
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * This sets the name of the item
+     * @param newName
+     * @return
+     */
     public boolean setName(String newName) {
         if(newName == null || newName.trim().isEmpty()) {
             return  false;
@@ -49,14 +63,26 @@ public class Item implements Comparable<Item> {
         return true;
     }
 
+    /**
+     * Returns the current quantity of the item
+     * @return
+     */
     public int getQuantity() {
         return  quantity;
     }
 
+    /**
+     * Sets the quantity of the item
+     * @param newQuantity
+     */
     public void setQuantity(int newQuantity) {
         quantity = newQuantity;
     }
 
+    /**
+     * Add onto the current quantity of the item
+     * @param addedItems
+     */
     public void addQuantity(int addedItems) {
         if(addedItems < 0) {
             return;
@@ -64,6 +90,10 @@ public class Item implements Comparable<Item> {
         quantity += addedItems;
     }
 
+    /**
+     * Subtracts some number of quantity from the item
+     * @param subtractedItems
+     */
     public void subtractQuantity(int subtractedItems) {
         if(subtractedItems > quantity) {
             return;
@@ -71,10 +101,18 @@ public class Item implements Comparable<Item> {
         quantity -= subtractedItems;
     }
 
+    /**
+     * Gets and returns the wholesale cost of the item
+     * @return
+     */
     public double getWholesaleCost() {
         return wholesaleCost;
     }
 
+    /**
+     * Sets the wholesale cost of the item
+     * @param newWholesaleCost
+     */
     public void setWholesaleCost(double newWholesaleCost) {
         if(newWholesaleCost < 0) {
             return;
@@ -82,11 +120,18 @@ public class Item implements Comparable<Item> {
         wholesaleCost = newWholesaleCost;
     }
 
+    /**
+     * Gets and returns the retail cost of an item
+     * @return
+     */
     public double getRetailCost() {
         return retailCost;
     }
 
-
+    /**
+     * Sets the retail cost of an item.
+     * @param newRetailCost
+     */
     public void setRetailCost(double newRetailCost) {
         if(newRetailCost < 0) {
             return;
@@ -94,18 +139,27 @@ public class Item implements Comparable<Item> {
         retailCost = newRetailCost;
     }
 
+    /**
+     * Clears quantity from item
+     */
     public void clearQuantity() {
         quantity = 0;
     }
 
+    /**
+     * Returns a deep copy of the item
+     * This means that a new item is created in a different memory
+     * space and returned.
+     * @return
+     */
     public Item copy() {
         return new Item(this);
     }
 
     /**
-     * If the original object is larger on the alphabet scale then it will return num > 0
+     * If the original object is larger on the alphabet scale then it will return num greater than 0
      * If the same object based on name return 0
-     * If smaller return num < 0
+     * If smaller return num less than 0
      * @param o
      * @return
      */
@@ -132,6 +186,11 @@ public class Item implements Comparable<Item> {
         return 0;
     }
 
+    /**
+     * This returns true if two items are equal based off of the name of the two items
+     * @param object
+     * @return
+     */
     @Override
     public boolean equals(Object object) {
         Item compareObject = (Item) object;
@@ -141,6 +200,10 @@ public class Item implements Comparable<Item> {
         return false;
     }
 
+    /**
+     * Overrides toString method to return parsable JSON string
+     * @return
+     */
     @Override
     public String toString() {
         return new StringBuilder()
@@ -149,8 +212,6 @@ public class Item implements Comparable<Item> {
                 .append("\"wholesaleCost\":" + wholesaleCost +  ",")
                 .append("\"retailCost\":" + retailCost + "}")
                 .toString();
-        //return "\"name\":" + name + " quantity: " + quantity + " wholesaleCost: " + wholesaleCost + " retailCost " + retailCost;
     }
-
 
 }

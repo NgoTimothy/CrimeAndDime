@@ -31,7 +31,10 @@ public class CrimeAndDime extends Game {
 	public ArrayList<Item> items;
 	public tileMapScreen tileMap;
 	private Boolean shelfChanged;
-	
+	private long nanosPerLogicTick = 250000000; // ~ dt
+	private long currentTime = System.nanoTime();
+	private long accumulator = 0;
+
 	@Override
 	public void create () {
 		gameStore = new Store("My Store");
@@ -46,7 +49,41 @@ public class CrimeAndDime extends Game {
 	@Override
 	public void render () {
 		super.render();
+		long newTime = System.nanoTime();
+		long frameTime = newTime - currentTime;
+
+		if(frameTime > 250000000)
+			frameTime = 250000000;
+
+		currentTime = newTime;
+
+		while(accumulator >= nanosPerLogicTick) {
+			accumulator-= nanosPerLogicTick;
+		}
 	}
+
+	/*final float TIME_STEP      = 1 / 30f; // 30 times a second
+	final int   MAX_FRAMESKIPS = 5;       // Make 5 updates mostly without a render
+
+	float accumulator;
+	int   skippedFrames;
+
+	void render()
+	{
+		accumulator += Gdx.graphics.getDeltaTime();
+
+		skippedFrames = 0;
+
+		while (accumulator >= TIME_STEP && skippedFrames <= MAX_FRAMESKIPS)
+		{
+			accumulator -= TIME_STEP;
+			screen.update(TIME_STEP);
+
+			skippedFrames++;
+		}
+
+		screen.render();
+	}*/
 
 	@Override
 	public void dispose () {
