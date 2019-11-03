@@ -8,9 +8,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Lobby controller handles all API call and queries to the Lobby and Lobby_group tables.
+ *
+ */
 @RestController
 public class LobbyController {
 
+    /**
+     * Queries the database for all lobbies from the lobby table
+     * @return A json string of an ArrayList of lobbies
+     * @throws SQLException
+     */
     @RequestMapping("/lobbyList")
     public String getAllLobbies() throws SQLException {
         Connection con = null;
@@ -46,6 +55,12 @@ public class LobbyController {
         return "Error";
     }
 
+    /**
+     * Queries the database for an lobbies players based on its lobby ID in the lobby table
+     * @param lobbyID
+     * @return A json string of an ArrayList of players containing their usernames
+     * @throws SQLException
+     */
     @RequestMapping("/individualLobby")
     public String getlobby(@RequestParam(value = "lobbyID", defaultValue = "15481") Integer lobbyID) throws SQLException {
         Connection con = null;
@@ -76,6 +91,13 @@ public class LobbyController {
         return "Error";
     }
 
+    /**
+     * Adds a user to a lobby using lobbyID and username
+     * @param lobbyID
+     * @param username
+     * @return Returns an error message or a welcome to lobby!
+     * @throws SQLException
+     */
     @RequestMapping("/addToLobby2")
     public String addUser2(@RequestParam(value = "lobbyID", defaultValue = "15601") Integer lobbyID, @RequestParam(value = "username", defaultValue = "laknoll") String username) throws SQLException {
         Connection con = null;
@@ -105,6 +127,13 @@ public class LobbyController {
         }
         return "Error";
     }
+
+    /**
+     * Adds a basic user to a lobby using LobbyID
+     * @param lobbyID
+     * @return Error message or Welcome to the lobby!
+     * @throws SQLException
+     */
     @RequestMapping("/addToLobby")
     public String addUser(@RequestParam(value = "lobbyID", defaultValue = "15601") Integer lobbyID/*, @RequestParam(value = "username", defaultValue = "laknoll") String username*/) throws SQLException {
         Connection con = null;
@@ -131,6 +160,12 @@ public class LobbyController {
         return "Error";
     }
 
+    /**
+     * Removes a lobby from the lobby list using lobbyID
+     * @param lobbyID
+     * @return an Error message or Lobby successfully removed
+     * @throws SQLException
+     */
     @RequestMapping("/deleteLobby")
     public String deleteLobby(@RequestParam(value = "lobbyID") Integer lobbyID) throws SQLException {
         Connection con = null;
@@ -157,6 +192,13 @@ public class LobbyController {
         }
         return "Error";
     }
+
+    /**
+     * Adds a user to lobby using username and lobbyID
+     * @param lobbyName
+     * @return Error message or Welcome to the lobby!
+     * @throws SQLException
+     */
     @RequestMapping("/addLobby")
     public String addLobby(@RequestParam(value = "lobbyName", defaultValue = "Gaymer's") String lobbyName /*,@RequestParam(value = "username", defaultValue = "laknoll") String username*/) throws SQLException {
         Connection con = null;
@@ -187,6 +229,12 @@ public class LobbyController {
         return "Error";
     }
 
+    /**
+     * Removes a user from a lobby using username
+     * @param username
+     * @return Successfully removed or Error message
+     * @throws SQLException
+     */
     @RequestMapping("/deleteUser2")
     public String deleteUser2(@RequestParam(value = "username") String username) throws SQLException {
         Connection con = null;
@@ -214,6 +262,12 @@ public class LobbyController {
         return "Error";
     }
 
+    /**
+     * Removes a basic user from a lobby using lobbyID
+     * @param lobbyID
+     * @return Successfully removed or Error message
+     * @throws SQLException
+     */
     @RequestMapping("/deleteUser")
     public String deleteUser(@RequestParam(value = "lobbyID") int lobbyID) throws SQLException {
         Connection con = null;
@@ -239,6 +293,12 @@ public class LobbyController {
         }
     }
 
+    /**
+     * Queries the database for lobby information such as lobbyID, lobbyPassword, hasPassword, lobbyName, and numberOfPlayers
+     * @param lobbyID
+     * @return Returns an ArrayList of lobbies in JSON String format
+     * @throws SQLException
+     */
     @RequestMapping("/lobbyInfo")
     public String lobbyInfo(@RequestParam(value = "lobbyID", defaultValue = "15481") Integer lobbyID) throws SQLException {
         Connection con = null;
