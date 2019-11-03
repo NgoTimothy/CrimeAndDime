@@ -174,7 +174,7 @@ public class tileMapScreen implements Screen {
 
                 UI.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                 stage.addActor(UI);
-                x = x + 1;
+                x += 1;
             }
             if(shelfObjects.getName().equals("Clock")) {
                 Label.LabelStyle textStyle;
