@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 /**
- *
+ * Sets up WebSocketServer
  * @author Vamsi Krishna Calpakkam Wrote skeleton for code
  * @author Timothy Ngo Implemented game specific methods
  *
