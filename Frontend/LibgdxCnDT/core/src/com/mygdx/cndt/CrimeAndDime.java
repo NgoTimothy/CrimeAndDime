@@ -35,9 +35,10 @@ public class CrimeAndDime extends Game {
 	private Boolean shelfChanged;
 	private float accumulator;
 	private final float TIME_STEP = 1 / 30f; // 30 times a second
-	private int seconds;
+	private int hour;
 	private boolean startTimer;
 	private static final int closingTime = 20;
+	private int day;
 
 	@Override
 	public void create() {
@@ -48,10 +49,10 @@ public class CrimeAndDime extends Game {
 		setScreen(new Splash(this));
 		shelfChanged = false;
 		startTimer = false;
-		seconds = 8;
+		hour = 8;
 		accumulator = 0;
-		startTimer = true;
-		printTime(seconds);
+		printTime(hour);
+		day = 0;
 	}
 
 	@Override
@@ -59,9 +60,9 @@ public class CrimeAndDime extends Game {
 		super.render();
 		if(startTimer) {
 			accumulator += Gdx.graphics.getDeltaTime();
-			if (accumulator >= 1f) {
-				seconds++;
-				printTime(seconds);
+			if (accumulator >= 1f) {//1f is 1 second, 2f is 2 seconds and so forth
+				hour++;
+				printTime(hour);
 				accumulator = 0;
 			}
 		}
@@ -112,5 +113,11 @@ public class CrimeAndDime extends Game {
 	public void setStartTimer(boolean startOrStop) { startTimer = startOrStop; }
 
 	public boolean getStartTimer() { return startTimer; }
+
+	public int getHour() { return hour; }
+
+	public void increaseDay() { day++; }
+
+	public int getDay() { return  day; }
 }
 

@@ -4,6 +4,7 @@ import GameClasses.Tile;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.cndt.CrimeAndDime;
 import GameClasses.Tile;
@@ -35,6 +37,8 @@ import utility.WebSocketClient;
 
 public class tileMapScreen implements Screen {
 
+    private static final int closingTime = 20;
+    private BitmapFont white;
     private TiledMap maps;
     private TiledMapTileLayer layer;
     private OrthogonalTiledMapRenderer render;
@@ -49,9 +53,11 @@ public class tileMapScreen implements Screen {
     private CrimeAndDime game;
     private MapObjects shelfMapObject;
     private WebSocketClient socketClient;
+    private Label clock;
 
     public tileMapScreen(CrimeAndDime game) {
     	this.game = game;
+        white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
         maps = new TmxMapLoader().load("img/StoreTileMap.tmx");
         render = new OrthogonalTiledMapRenderer(maps);
         shelfMapObject = maps.getLayers().get("Shelf Object Layer").getObjects();
@@ -72,6 +78,7 @@ public class tileMapScreen implements Screen {
         }
     	try {
     	    socketClient = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + 25 + "/" + "Tim"));
+    	    game.setStartTimer(true);//Delete this shit
         } catch (Exception e) {
     	    e.printStackTrace();
         }
@@ -87,6 +94,7 @@ public class tileMapScreen implements Screen {
         render.setView(camera);
         render.render();
         stage.setDebugAll(true);
+        clock.setText(timeToString(game.getHour()));
         stage.draw();
     }
 
@@ -162,10 +170,25 @@ public class tileMapScreen implements Screen {
                 textStyle = new Label.LabelStyle();
                 textStyle.font = font;
 
-                UI = new Label(Integer.toString(x),textStyle);
+                UI = new Label(Integer.toString(x), textStyle);
 
                 UI.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                 stage.addActor(UI);
+                x = x + 1;
+            }
+            if(shelfObjects.getName().equals("Clock")) {
+                Label.LabelStyle textStyle;
+                BitmapFont font = new BitmapFont();
+
+                textStyle = new Label.LabelStyle();
+                textStyle.font = font;
+
+                clock = new Label(timeToString(game.getHour()), textStyle);
+
+                clock.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                clock.setAlignment(100);
+                clock.setFontScale(2);
+                stage.addActor(clock);
                 x = x + 1;
             }
             if (shelfObjects.getName().equals("Opponent Info")){
@@ -224,6 +247,20 @@ public class tileMapScreen implements Screen {
         maps.dispose();
         render.dispose();
         game = null;
+    }
+
+    private String timeToString(int hour) {
+        String AMOrPM = "AM";
+        int timeOfDay = hour;
+        if(timeOfDay > 12) {
+            timeOfDay -= 12;
+            AMOrPM = "PM";
+        }
+        if(hour == closingTime) {
+            game.setStartTimer(false);
+            game.increaseDay();
+        }
+        return timeOfDay + ":00 " + AMOrPM;
     }
 
     private void sendShelfListToServer() {

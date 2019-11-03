@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3fbc46dd-5282-44e3-a001-957e3193f971" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/assets/img/StoreTileMap.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/assets/img/StoreTileMap.tmx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/com/mygdx/Screen/tileMapScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/com/mygdx/Screen/tileMapScreen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/com/mygdx/cndt/CrimeAndDime.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/com/mygdx/cndt/CrimeAndDime.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
