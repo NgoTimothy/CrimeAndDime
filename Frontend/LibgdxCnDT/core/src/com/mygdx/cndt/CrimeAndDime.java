@@ -12,6 +12,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -24,6 +25,7 @@ import GameClasses.Store;
 import GameClasses.Tile;
 
 import Services.CrimeAndDimeService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class CrimeAndDime extends Game {
 
@@ -31,64 +33,44 @@ public class CrimeAndDime extends Game {
 	public ArrayList<Item> items;
 	public tileMapScreen tileMap;
 	private Boolean shelfChanged;
-	private long accumulator = 0;
-	private final float TIME_STEP      = 1 / 30f; // 30 times a second
-	private final int   MAX_FRAMESKIPS = 5;       // Make 5 updates mostly without a render
-	private int skippedFrames;
+	private float accumulator;
+	private final float TIME_STEP = 1 / 30f; // 30 times a second
+	private int seconds;
+	private boolean startTimer;
+	private static final int closingTime = 20;
 
 	@Override
-	public void create () {
+	public void create() {
 		gameStore = new Store("My Store");
 		tileMap = new tileMapScreen(this);
 		CrimeAndDimeService newService = new CrimeAndDimeService();
 		createItems(newService);
 		setScreen(new Splash(this));
 		shelfChanged = false;
-		//setScreen(new ShelfScreen(this, new Tile()));
+		startTimer = false;
+		seconds = 8;
+		accumulator = 0;
+		startTimer = true;
+		printTime(seconds);
 	}
 
 	@Override
-	public void render () {
+	public void render() {
 		super.render();
-		/*accumulator += Gdx.graphics.getDeltaTime();
-		skippedFrames = 0;
-
-		while (accumulator >= TIME_STEP && skippedFrames <= MAX_FRAMESKIPS)
-		{
-			accumulator -= TIME_STEP;
-			//screen.update(TIME_STEP);
-			System.out.println(accumulator);
-			skippedFrames++;
+		if(startTimer) {
+			accumulator += Gdx.graphics.getDeltaTime();
+			if (accumulator >= 1f) {
+				seconds++;
+				printTime(seconds);
+				accumulator = 0;
+			}
 		}
 
-		screen.render(TIME_STEP);*/
+		screen.render(TIME_STEP);
 	}
 
-	/*final float TIME_STEP      = 1 / 30f; // 30 times a second
-	final int   MAX_FRAMESKIPS = 5;       // Make 5 updates mostly without a render
-
-	float accumulator;
-	int   skippedFrames;
-
-	void render()
-	{
-		accumulator += Gdx.graphics.getDeltaTime();
-
-		skippedFrames = 0;
-
-		while (accumulator >= TIME_STEP && skippedFrames <= MAX_FRAMESKIPS)
-		{
-			accumulator -= TIME_STEP;
-			screen.update(TIME_STEP);
-
-			skippedFrames++;
-		}
-
-		screen.render();
-	}*/
-
 	@Override
-	public void dispose () {
+	public void dispose() {
 		super.dispose();
 	}
 
@@ -108,14 +90,27 @@ public class CrimeAndDime extends Game {
 			e.printStackTrace();
 		}
 	}
-	
-	public ArrayList<Item> getItems()
-	{
-		return items;
+
+	private void printTime(int seconds) {
+		String AMOrPM = "AM";
+		int timeOfDay = seconds;
+		if(timeOfDay > 12) {
+			timeOfDay -= 12;
+			AMOrPM = "PM";
+		}
+		System.out.println(timeOfDay + ":00 " + AMOrPM);
+		if(seconds == closingTime)
+			startTimer = false;
 	}
+	
+	public ArrayList<Item> getItems() { return items; }
 
 	public boolean isShelfChanged() { return shelfChanged; }
 
 	public void setShelfChanged(boolean shelfChanged) { this.shelfChanged = shelfChanged; }
+
+	public void setStartTimer(boolean startOrStop) { startTimer = startOrStop; }
+
+	public boolean getStartTimer() { return startTimer; }
 }
 
