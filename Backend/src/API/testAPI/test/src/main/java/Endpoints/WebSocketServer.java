@@ -34,6 +34,14 @@ public class WebSocketServer {
 
     private final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
 
+    /**
+     * When the server socket is opened it will take a user name parameter and eventually a password parameter and
+     * will check if it is a valid account. If it is not then it will close, otherwise, it will allow
+     * the socket will stay open.
+     * @param session
+     * @param username
+     * @throws IOException
+     */
     @OnOpen
     public void onOpen(
             Session session,
@@ -54,6 +62,16 @@ public class WebSocketServer {
 
     }
 
+    /**
+     * This handles all request and messages
+     * Includes following actions:
+     * Broadcasts money
+     * Send messages to other players
+     * Joins lobby
+     * @param session
+     * @param message
+     * @throws IOException
+     */
     @OnMessage
     public void onMessage(Session session, String message) throws IOException
     {
@@ -86,6 +104,11 @@ public class WebSocketServer {
         }
     }
 
+    /**
+     * Closes socket and disposes resources used
+     * @param session
+     * @throws IOException
+     */
     @OnClose
     public void onClose(Session session) throws IOException
     {
@@ -99,6 +122,11 @@ public class WebSocketServer {
         broadcast(message);
     }
 
+    /**
+     * Method to handle any errors
+     * @param session
+     * @param throwable
+     */
     @OnError
     public void onError(Session session, Throwable throwable)
     {
@@ -106,6 +134,13 @@ public class WebSocketServer {
         logger.info("Entered into Error");
     }
 
+    /**
+     * Method sends a single item to user
+     * @param username
+     * @param itemName
+     * @param quantity
+     * @param price
+     */
     private void sendItemToUser(String username, String itemName, int quantity, double price) {
         try {
             Item returnItem = new Item(itemName, quantity, price);
@@ -117,6 +152,11 @@ public class WebSocketServer {
         }
     }
 
+    /**
+     * Send a message to one specified user
+     * @param username
+     * @param message
+     */
     private void sendMessageToParticularUser(String username, String message)
     {
         try {
@@ -127,6 +167,11 @@ public class WebSocketServer {
         }
     }
 
+    /**
+     * Sends a message to everyone connected to a socket
+     * @param message
+     * @throws IOException
+     */
     private static void broadcast(String message)
             throws IOException
     {
@@ -141,6 +186,12 @@ public class WebSocketServer {
         });
     }
 
+    /**
+     * Sends a single users money information to everyone in the same lobby
+     * @param lobbyId
+     * @param currentUser
+     * @param money
+     */
     private static void broadcastMoney(int lobbyId, String currentUser, double money) {
         ArrayList<String> userOpponents = new ArrayList<String>();
         List<Map.Entry<String, User>> tempList = userObjectMap.entrySet().stream().filter(x -> x.getValue().getLobbyId() == lobbyId && x.getValue().getUsername() != currentUser).collect(Collectors.toList());
@@ -158,11 +209,22 @@ public class WebSocketServer {
 
     }
 
+    /**
+     * This method will check if it is a valid account
+     * @param username
+     * @param psw
+     * @return
+     */
     private static boolean checkIfValidAccount(String username, String psw) {
         //Call database and check if valid password
         return true;
     }
 
+    /**
+     * Returns the number of players in a lobby
+     * @param lobbyId
+     * @return
+     */
     private static int numberOfPlayersInLobby(int lobbyId) {
         int count = Math.toIntExact(userObjectMap.entrySet().stream().filter(x -> x.getValue().getLobbyId() == lobbyId).count());
         return count;
