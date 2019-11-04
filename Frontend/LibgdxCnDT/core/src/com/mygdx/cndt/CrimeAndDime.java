@@ -60,10 +60,10 @@ public class CrimeAndDime extends Game {
 		super.render();
 		if(startTimer) {
 			accumulator += Gdx.graphics.getDeltaTime();
-			if (accumulator >= 1f) {//1f is 1 second, 2f is 2 seconds and so forth
+			if (accumulator >= 2f) {//1f is 1 second, 2f is 2 seconds and so forth
 				hour++;
-				printTime(hour);
 				accumulator = 0;
+				//System.out.println(hour);
 			}
 		}
 

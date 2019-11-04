@@ -54,6 +54,7 @@ public class tileMapScreen implements Screen {
     private MapObjects shelfMapObject;
     private WebSocketClient socketClient;
     private Label clock;
+    private Label day;
 
     public tileMapScreen(CrimeAndDime game) {
     	this.game = game;
@@ -95,6 +96,7 @@ public class tileMapScreen implements Screen {
         render.render();
         stage.setDebugAll(true);
         clock.setText(timeToString(game.getHour()));
+        day.setText("Day: " + Integer.toString(game.getDay()));
         stage.draw();
     }
 
@@ -161,19 +163,20 @@ public class tileMapScreen implements Screen {
                     stage.addActor(playerInfo);
                 }
             }
-            if (shelfObjects.getName().equals("UI"))
+            if (shelfObjects.getName().equals("DayCounter"))
             {
-                Label UI;
                 Label.LabelStyle textStyle;
                 BitmapFont font = new BitmapFont();
 
                 textStyle = new Label.LabelStyle();
                 textStyle.font = font;
 
-                UI = new Label(Integer.toString(x), textStyle);
+                day = new Label("Day: " + Integer.toString(game.getDay()), textStyle);
 
-                UI.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
-                stage.addActor(UI);
+                day.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                day.setAlignment(100);
+                day.setFontScale(2);
+                stage.addActor(day);
                 x += 1;
             }
             if(shelfObjects.getName().equals("Clock")) {
@@ -221,10 +224,6 @@ public class tileMapScreen implements Screen {
                     game.setScreen(new InventoryScreen(game));
                 }
             });
-            if(game.isShelfChanged()) {
-                game.setShelfChanged(false);
-                sendShelfListToServer();
-            }
         }
     }
 
@@ -256,7 +255,8 @@ public class tileMapScreen implements Screen {
             timeOfDay -= 12;
             AMOrPM = "PM";
         }
-        if(hour == closingTime) {
+        if(hour == closingTime && game.getStartTimer()) {
+            sendShelfListToServer();
             game.setStartTimer(false);
             game.increaseDay();
         }
