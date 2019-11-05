@@ -87,15 +87,14 @@ public class tileMapScreen implements Screen {
         switch (randomWant) {
             case 0:
                 yPosition = yPosition - (20 * (Gdx.graphics.getDeltaTime()));
-                customer.setPosition(xPosition,yPosition);
+
                 break;
             case 1:
                // xPosition = xPosition + (20 * (Gdx.graphics.getDeltaTime()));
-                customer.setPosition(xPosition,yPosition);
+
                 break;
             case 2:
                 xPosition = xPosition + (20 * (Gdx.graphics.getDeltaTime()));
-                customer.setPosition(xPosition,yPosition);
                 break;
             default:
                 break;
@@ -215,7 +214,7 @@ public class tileMapScreen implements Screen {
 
 
         customer.setSize(30,30);
-        customer.setPosition(xPosition,yPosition);
+        customer.setPosition(60 * customer.getCollisionLayer().getTileWidth(), 20 * customer.getCollisionLayer().getTileHeight());
 
         setRandomWant();
         testInt++;

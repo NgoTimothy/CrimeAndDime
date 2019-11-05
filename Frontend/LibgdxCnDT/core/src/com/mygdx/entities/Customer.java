@@ -12,6 +12,8 @@ public class Customer extends Sprite {
 
     private float speed = 60*2;
 
+    private float testWind = 5;
+
     private TiledMapTileLayer collisionLayer;
 
     public Customer(Sprite sprite, TiledMapTileLayer collisionLayer){
@@ -27,6 +29,8 @@ public class Customer extends Sprite {
 
     public void update(float delta){
 
+
+        velocity.x += testWind * delta;
         // Squeeze Values
         if (velocity.y > speed){
             velocity.y = speed;
@@ -37,12 +41,17 @@ public class Customer extends Sprite {
         }
 
         // Save Old Position
-        float oldX = getX(), oldY = getY();
+        float oldX = getX(), oldY = getY(); // tildWidth = collisionLayer.getTileWidth(), tileHeight = collisionLayer.getTileHeight();
         boolean collistionX = false, collisionY = false;
 
         // Move on X
         setX(getX() + velocity.x * delta);
 
+        if (collistionX){
+            setX(oldX);
+            velocity.x -= testWind * delta;
+            velocity.x = 0;
+        }
         if (velocity.x < 0){
             collistionX = isCellBlocked(getX(),getY() + getHeight());
 
@@ -55,14 +64,40 @@ public class Customer extends Sprite {
             }
 
         }
+        if (collistionX){
+            setX(oldX);
+            velocity.x = 0;
+        }
         else if (velocity.x > 0){
+            collisionY = isCellBlocked(getX(), getY() + getHeight());
 
+            if(!collisionY) {
+                collisionY = isCellBlocked(getX() + getWidth() / 2, getY() + getHeight());
+            }
+            if (!collisionY){
+                collisionY = isCellBlocked(getX() + getWidth(), getY() + getHeight());
+            }
+        }
+        if (collisionY){
+            setY(oldY);
+            velocity.y = 0;
         }
     }
 
     private boolean isCellBlocked(float x, float y){
         TiledMapTileLayer.Cell cell = collisionLayer.getCell((int) (x / collisionLayer.getTileWidth()) , (int) (y/collisionLayer.getTileHeight()));
-        return cell != null && cell.getTile() != null || cell.getTile().getProperties().containsKey("BLOCKED") || collisionLayer.getName().equals("BLOCKED") || collisionLayer.getName().equals("Shelf");
+
+
+        Boolean testBool = false;
+
+        if (cell.getTile().getProperties().containsKey("BLOCKED")){
+            testBool = true;
+        }
+        if (testBool == true){
+            System.out.println(Boolean.toString(testBool));
+        }
+
+        return cell != null && cell.getTile() != null || cell.getTile().getProperties().containsKey("BLOCKED");
     }
 
     public void customerWants(){
@@ -83,5 +118,12 @@ public class Customer extends Sprite {
 
     public void setSpeed(Float speed){
         this.speed = speed;
+    }
+
+    public TiledMapTileLayer getCollisionLayer() {
+        return collisionLayer;
+    }
+    public void setCollisionLayer(TiledMapTileLayer collisionLayer){
+        this.collisionLayer = collisionLayer;
     }
 }
