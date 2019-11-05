@@ -44,7 +44,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/build.gradle" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Project" />
@@ -69,21 +69,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.ServerSocketTest.trueTest">
-    <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Endpoints.Application" />
-      <module name="gs-rest-service" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Endpoints.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ServerSocketTest.trueTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.ServerSocketTest.afterStoreInfoIsParsedFourthElementIsCorrect">
+    <configuration name="ServerSocketTest.afterStoreInfoIsParsedFirstElementIsCorrect" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gs-rest-service" />
       <extension name="coverage">
         <pattern>
@@ -93,7 +80,71 @@
       </extension>
       <option name="PACKAGE_NAME" value="Sockets" />
       <option name="MAIN_CLASS_NAME" value="Sockets.ServerSocketTest" />
-      <option name="METHOD_NAME" value="trueTest" />
+      <option name="METHOD_NAME" value="afterStoreInfoIsParsedFirstElementIsCorrect" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerSocketTest.afterStoreInfoIsParsedFourthElementIsCorrect" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gs-rest-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Sockets.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Sockets" />
+      <option name="MAIN_CLASS_NAME" value="Sockets.ServerSocketTest" />
+      <option name="METHOD_NAME" value="afterStoreInfoIsParsedFourthElementIsCorrect" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerSocketTest.afterStoreInfoIsParsedSecondElementIsCorrect" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gs-rest-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Sockets.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Sockets" />
+      <option name="MAIN_CLASS_NAME" value="Sockets.ServerSocketTest" />
+      <option name="METHOD_NAME" value="afterStoreInfoIsParsedSecondElementIsCorrect" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerSocketTest.afterStoreInfoIsParsedTheSocketSavesCorrectNumberOfElements" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gs-rest-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Sockets.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Sockets" />
+      <option name="MAIN_CLASS_NAME" value="Sockets.ServerSocketTest" />
+      <option name="METHOD_NAME" value="afterStoreInfoIsParsedTheSocketSavesCorrectNumberOfElements" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerSocketTest.afterStoreInfoIsParsedThirdElementIsCorrect" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gs-rest-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Sockets.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Sockets" />
+      <option name="MAIN_CLASS_NAME" value="Sockets.ServerSocketTest" />
+      <option name="METHOD_NAME" value="afterStoreInfoIsParsedThirdElementIsCorrect" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -106,23 +157,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="gs-rest-service" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Inventory.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="SPRING_BOOT_MAIN_CLASS" value="Inventory.Application" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ServerSocketTest.trueTest" />
-        <item itemvalue="Application.Application" />
+        <item itemvalue="JUnit.ServerSocketTest.afterStoreInfoIsParsedFourthElementIsCorrect" />
+        <item itemvalue="JUnit.ServerSocketTest.afterStoreInfoIsParsedThirdElementIsCorrect" />
+        <item itemvalue="JUnit.ServerSocketTest.afterStoreInfoIsParsedSecondElementIsCorrect" />
+        <item itemvalue="JUnit.ServerSocketTest.afterStoreInfoIsParsedFirstElementIsCorrect" />
+        <item itemvalue="JUnit.ServerSocketTest.afterStoreInfoIsParsedTheSocketSavesCorrectNumberOfElements" />
       </list>
     </recent_temporary>
   </component>
@@ -164,7 +205,7 @@
       <workItem from="1572725662478" duration="1870000" />
       <workItem from="1572820415740" duration="50000" />
       <workItem from="1572836383514" duration="1525000" />
-      <workItem from="1572969181448" duration="764000" />
+      <workItem from="1572969181448" duration="3084000" />
     </task>
     <servers />
   </component>

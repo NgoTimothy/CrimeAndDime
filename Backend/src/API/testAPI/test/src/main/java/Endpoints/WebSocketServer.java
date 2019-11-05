@@ -122,7 +122,7 @@ public class WebSocketServer {
         }
     }
 
-    private void parseStoreInformation(Session session, String message) {
+    public void parseStoreInformation(Session session, String message) {
         logger.info("Entered into Message: Got Message:" + message);
         Item newItem = new Item();
         StoreInfo newStore = new StoreInfo();
@@ -160,6 +160,10 @@ public class WebSocketServer {
         }
         storeInfoSessionMap.put(newStore, session);
         sessionStoreInfoMap.put(session, newStore);
+    }
+
+    public StoreInfo getStoreInfoBySession(Session targetSession) {
+        return sessionStoreInfoMap.get(targetSession);
     }
 }
 
