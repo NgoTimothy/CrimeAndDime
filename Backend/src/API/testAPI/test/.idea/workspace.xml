@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3fbc46dd-5282-44e3-a001-957e3193f971" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/assets/img/StoreTileMap.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/assets/img/StoreTileMap.tmx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/com/mygdx/Screen/tileMapScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/com/mygdx/Screen/tileMapScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/com/mygdx/cndt/CrimeAndDime.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/com/mygdx/cndt/CrimeAndDime.java" afterDir="false" />
-    </list>
+    <list default="true" id="3fbc46dd-5282-44e3-a001-957e3193f971" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +69,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Application">
+  <component name="RunManager" selected="JUnit.ServerSocketTest.trueTest">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Endpoints.Application" />
       <module name="gs-rest-service" />
@@ -83,6 +79,22 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerSocketTest.trueTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gs-rest-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Sockets.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Sockets" />
+      <option name="MAIN_CLASS_NAME" value="Sockets.ServerSocketTest" />
+      <option name="METHOD_NAME" value="trueTest" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -109,6 +121,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ServerSocketTest.trueTest" />
         <item itemvalue="Application.Application" />
       </list>
     </recent_temporary>
@@ -150,7 +163,8 @@
       <workItem from="1572723501918" duration="1778000" />
       <workItem from="1572725662478" duration="1870000" />
       <workItem from="1572820415740" duration="50000" />
-      <workItem from="1572836383514" duration="974000" />
+      <workItem from="1572836383514" duration="1525000" />
+      <workItem from="1572969181448" duration="764000" />
     </task>
     <servers />
   </component>
