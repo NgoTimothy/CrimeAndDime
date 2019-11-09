@@ -106,4 +106,6 @@ public class StoreInfo
 
     public void setOwner(String newOwner) { owner = newOwner; }
 
+    public Inventory getInventory() { return  inventory; }
+
 }
