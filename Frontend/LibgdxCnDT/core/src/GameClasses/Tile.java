@@ -4,6 +4,9 @@ import GameExceptions.CustomerMovingIntoShelfException;
 import GameExceptions.PlacingItemWithNoShelfException;
 import GameExceptions.ShelfWithNoDirectionException;
 
+/**
+ * Tile class is used to represent one space in the store
+ */
 public class Tile {
     public enum tileType {
         CUSTOMER, EMPTY, SHELF
@@ -27,7 +30,6 @@ public class Tile {
     /**
      * Constructor to initialize tile that is not a shelf
      * @param initType
-     * @throws ShelfWithNoDirectionException
      */
     public Tile(tileType initType) {
         curTileType = initType;
@@ -51,14 +53,27 @@ public class Tile {
         stockedItem = null;
     }
 
+    /**
+     * Returns the type of tile
+     * @return
+     */
     public tileType getTileType() {
         return curTileType;
     }
 
+    /**
+     * Returns the item currently stored
+     * or null if there is no item
+     * @return
+     */
     public Item getItem() {
         return stockedItem;
     }
 
+    /**
+     * Gets and returns direction shelf is pointing towards
+     * @return
+     */
     public shelfDirection getShelfDirection() {
         return curShelfDirection;
     }
@@ -135,6 +150,10 @@ public class Tile {
         decreaseItem.subtractQuantity(quantity);
     }
 
+    /**
+     * Overrides toString method to print out the item or else nothing prints out
+     * @return
+     */
     @Override
     public String toString() {
         if(stockedItem == null) {

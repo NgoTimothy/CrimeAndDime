@@ -12,6 +12,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -24,6 +25,7 @@ import GameClasses.Store;
 import GameClasses.Tile;
 
 import Services.CrimeAndDimeService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class CrimeAndDime extends Game {
 
@@ -31,25 +33,45 @@ public class CrimeAndDime extends Game {
 	public ArrayList<Item> items;
 	public tileMapScreen tileMap;
 	private Boolean shelfChanged;
-	
+	private float accumulator;
+	private final float TIME_STEP = 1 / 30f; // 30 times a second
+	private int hour;
+	private boolean startTimer;
+	private static final int closingTime = 20;
+	private int day;
+
 	@Override
-	public void create () {
+	public void create() {
 		gameStore = new Store("My Store");
 		tileMap = new tileMapScreen(this);
 		CrimeAndDimeService newService = new CrimeAndDimeService();
 		createItems(newService);
 		setScreen(new Splash(this));
 		shelfChanged = false;
-		//setScreen(new ShelfScreen(this, new Tile()));
+		startTimer = false;
+		hour = 8;
+		accumulator = 0;
+		printTime(hour);
+		day = 0;
 	}
 
 	@Override
-	public void render () {
+	public void render() {
 		super.render();
+		if(startTimer) {
+			accumulator += Gdx.graphics.getDeltaTime();
+			if (accumulator >= 2f) {//1f is 1 second, 2f is 2 seconds and so forth
+				hour++;
+				accumulator = 0;
+				//System.out.println(hour);
+			}
+		}
+
+		screen.render(TIME_STEP);
 	}
 
 	@Override
-	public void dispose () {
+	public void dispose() {
 		super.dispose();
 	}
 
@@ -69,14 +91,33 @@ public class CrimeAndDime extends Game {
 			e.printStackTrace();
 		}
 	}
-	
-	public ArrayList<Item> getItems()
-	{
-		return items;
+
+	private void printTime(int seconds) {
+		String AMOrPM = "AM";
+		int timeOfDay = seconds;
+		if(timeOfDay > 12) {
+			timeOfDay -= 12;
+			AMOrPM = "PM";
+		}
+		System.out.println(timeOfDay + ":00 " + AMOrPM);
+		if(seconds == closingTime)
+			startTimer = false;
 	}
+	
+	public ArrayList<Item> getItems() { return items; }
 
 	public boolean isShelfChanged() { return shelfChanged; }
 
 	public void setShelfChanged(boolean shelfChanged) { this.shelfChanged = shelfChanged; }
+
+	public void setStartTimer(boolean startOrStop) { startTimer = startOrStop; }
+
+	public boolean getStartTimer() { return startTimer; }
+
+	public int getHour() { return hour; }
+
+	public void increaseDay() { day++; }
+
+	public int getDay() { return  day; }
 }
 

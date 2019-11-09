@@ -1,11 +1,7 @@
-package GameClasses;
+package Endpoints;
 
 import java.util.ArrayList;
 
-/**
- * This class is used to hold all the items
- * that a store currently has
- */
 public class Inventory {
     private ArrayList<Item> inventory;
 
@@ -13,10 +9,6 @@ public class Inventory {
         inventory = new ArrayList<Item>();
     }
 
-    /**
-     * Adds an item to the inventory ArrayList
-     * @param itemToBeAdded
-     */
     public void addItem(Item itemToBeAdded) {
         if(itemToBeAdded == null || itemToBeAdded.getQuantity() == 0) {
             return;
@@ -30,10 +22,6 @@ public class Inventory {
         inventory.add(itemToBeAdded);
     }
 
-    /**
-     * Removes an item from the inventory
-     * @param itemToBeRemoved
-     */
     public void removeItem(Item itemToBeRemoved) {
         if(itemToBeRemoved == null) {
             return;
@@ -46,11 +34,6 @@ public class Inventory {
         }
     }
 
-    /**
-     * Fetches and returns item based on the item itself
-     * @param searchItem
-     * @return
-     */
     public Item getItem(Item searchItem) {
         for (int i = 0; i < inventory.size(); i++) {
             if(searchItem.equals(inventory.get(i))) {
@@ -60,11 +43,6 @@ public class Inventory {
         return null;
     }
 
-    /**
-     * Fetches and returns item based on the item name
-     * @param searchName
-     * @return
-     */
     public Item getItem(String searchName) {
         for (int i = 0; i < inventory.size(); i++) {
             if(searchName.equals(inventory.get(i).getName())) {
@@ -74,18 +52,10 @@ public class Inventory {
         return null;
     }
 
-    /**
-     * Returns the size of the inventory list
-     * @return
-     */
     public int getSize() {
         return inventory.size();
     }
 
-    /**
-     * Returns the current ArrayList of Items
-     * @return
-     */
     public ArrayList<Item> getInventory() {
         return inventory;
     }

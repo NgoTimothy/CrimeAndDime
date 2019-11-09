@@ -2,8 +2,11 @@ package GameClasses;
 
 import java.util.*;
 
-
-
+/**
+ * Customer class represents a customer in a store
+ * Customers give money to store in exchange for an item
+ * They shop and move around in the store itself
+ */
 public class Customer {
 
     private Item item;
@@ -18,22 +21,42 @@ public class Customer {
         preferences = new ArrayList<Item>();
     }
 
+    /**
+     * Sets item that it bought
+     * @param item
+     */
     public void setItem(Item item) {
         this.item = item;
     }
 
+    /**
+     * Signals that a customer has bought an item
+     * @param hasBought
+     */
     public void setHasBought(boolean hasBought) {
         this.hasBought = hasBought;
     }
 
+    /**
+     * Returns the item that a customer has bought
+     * @return
+     */
     public Item getItem() {
         return item;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isHasBought() {
         return hasBought;
     }
 
+    /**
+     * If customer has not bought an item, they will buy the item(s)
+     * @param inventory
+     */
     public void buyItems(Inventory inventory){
         /*
         loop through list of items and check which store has preferred items
@@ -52,6 +75,10 @@ public class Customer {
 
     }
 
+    /**
+     * Customer will buy item if they have not bought an item yet
+     * @param inventories
+     */
     public void buyItems(ArrayList<Inventory> inventories){
         if (hasBought == false){
             for (int i = 0; i < inventories.size(); i++){
@@ -65,26 +92,25 @@ public class Customer {
         }
     }
 
-
-//    public void setBudget(){
-//        budget = Math.floor(Math.random() * 495) +5;
-//    }
-
-    public void setPreferences(double budget){
-        /*
-            -loops through all items
-            -randomly chooses 5-10 items that are less than or equal to budget
-        */
-    }
-
+    /**
+     * Returns the amount of money a customer has left to spend
+     * @return
+     */
     public Double getBudget() {
         return budget;
     }
 
+    /**
+     * Gets and returns the items that a customer wants to buy
+     * @return
+     */
     public ArrayList<Item> getPreferences() {
         return preferences;
     }
 
+    /**
+     * Updates the list of items a customer wants to buy
+     */
     public void updatePreferences(){
         /*
             -loop through current preferences
@@ -106,6 +132,10 @@ public class Customer {
 
     }
 
+    /**
+     * Deducts money from the customers amount of money
+     * @param price
+     */
     public void subtractBudget(double price){
         budget = budget - price;
     }
