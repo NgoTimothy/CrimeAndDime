@@ -1,5 +1,7 @@
 package Endpoints;
 
+import java.util.ArrayList;
+
 /**
  * Store info contains a users store's key info such as storeName, cash, market_score, and nextDay
  */
@@ -108,4 +110,7 @@ public class StoreInfo
 
     public Inventory getInventory() { return  inventory; }
 
+    public ArrayList<Item> getList() {
+        return inventory.getInventory();
+    }
 }
