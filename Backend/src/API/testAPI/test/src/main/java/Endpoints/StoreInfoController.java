@@ -8,9 +8,18 @@ import org.springframework.web.bind.annotation.RestController;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * StoreInfo controller handles all API call and queries to the StoreInfo table.
+ */
 @RestController
 public class StoreInfoController {
 
+    /**
+     * Queries the storeInfo table for one store based on storeName
+     * @param storeName
+     * @return Returns a storeInfo class filled with that stores information
+     * @throws SQLException
+     */
     @RequestMapping("/storeInfo")
     public StoreInfo getStoreInfo(@RequestParam(value = "storeName", defaultValue = "walmart") String storeName) throws SQLException {
         Connection con = null;

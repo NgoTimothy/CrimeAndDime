@@ -14,9 +14,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
+/**
+ * Inventory Controller queries the Inventory table in the database for the front end to use.
+ */
 @RestController
 public class InventoryController {
 
+    /**
+     * This method queries the database for the entire inventory table
+     * @return Returns an ArrayList of all possible items a user can buy
+     */
     @RequestMapping("/inventory")
     public ArrayList<Item> retrieveInventory() {
         try {
