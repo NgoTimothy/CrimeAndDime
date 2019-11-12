@@ -39,8 +39,11 @@ public class WebSocketClient {
  
     @OnMessage
     public void onMessage(String message) {
-        if (this.messageHandler != null)
+        System.out.println(message);
+        if (this.messageHandler != null) {
             this.messageHandler.handleMessage(message);
+            System.out.println(message);
+        }
     }
     
     public void addMessageHandler(MessageHandler msgHandler) {

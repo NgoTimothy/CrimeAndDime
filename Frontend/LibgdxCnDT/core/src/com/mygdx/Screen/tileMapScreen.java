@@ -255,10 +255,11 @@ public class tileMapScreen implements Screen {
             timeOfDay -= 12;
             AMOrPM = "PM";
         }
-        if(hour == closingTime && game.getStartTimer()) {
+        if(hour >= closingTime && game.getStartTimer()) {
             sendShelfListToServer();
             game.setStartTimer(false);
             game.increaseDay();
+            socketClient.sendMessage("sendMyMoney " + game.gameStore.getBalance());
         }
         return timeOfDay + ":00 " + AMOrPM;
     }

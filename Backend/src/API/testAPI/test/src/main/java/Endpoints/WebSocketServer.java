@@ -44,11 +44,13 @@ public class WebSocketServer {
     {
         logger.info("Entered into Open");
 
+        StoreInfo newStore = new StoreInfo(username, 10000, 100, false);
         sessionUsernameMap.put(session, username);
         usernameSessionMap.put(username, session);
         sessionLobbyIDMap.put(session, lobbyID);
         lobbyIDSessionMap.put(lobbyID, session);
-        System.out.println(Integer.toString(lobbyID));
+        sessionStoreInfoMap.put(session, newStore);
+        storeInfoSessionMap.put(newStore, session);
     }
 
     @OnMessage
@@ -59,18 +61,23 @@ public class WebSocketServer {
         System.out.println(message);
         String username = sessionUsernameMap.get(session);
 
-        if (message.contains("sendmymoney")) {
+        if(message.length() >= 9 && message.contains("storeInfo")) {
+            parseStoreInformation(session, message);
+        }
+        else if (message.contains("sendMyMoney")) {
             String[] tokens = message.split(" ");
             double curMoney = Double.parseDouble(tokens[1]);
             int lobbyID = sessionLobbyIDMap.get(session);
             Session usrSession = usernameSessionMap.get(username);
             broadcastMoney(sessionLobbyIDMap.get(usrSession) , username, curMoney);
             sessionStoreInfoMap.get(session).setNextDay(true);
-            checkForNextDay(lobbyID);
+            if(checkForNextDay(lobbyID)) {
+                startNextDay(lobbyID);
+            }
+            else {
+                System.out.println("Did not pass");
+            }
             return;
-        }
-        if(message.length() >= 9 && message.contains("storeInfo")) {
-            parseStoreInformation(session, message);
         }
         else {
             Integer lobbyID = sessionLobbyIDMap.get(session);
@@ -141,7 +148,6 @@ public class WebSocketServer {
         message = message.replace("storeInfo", "");
         message = message.replace("]", "");
         message = message.substring(2);
-        //System.out.println(message);
         String[] tokens = message.split("}");
         for (int i = 0; i < tokens.length; i++) {
             if (tokens[i].length() > 5) { //Do something here
@@ -156,7 +162,6 @@ public class WebSocketServer {
                         newItem = new Item();
                         itemFields[j] = itemFields[j].substring(7).replace("\"", "");
                         newItem.setName(itemFields[j]);
-                        //System.out.println(newItem.getName());
                     }
                     else if (itemFields[j].contains("quantity")) {
                         itemFields[j] = itemFields[j].substring(11);
@@ -221,11 +226,9 @@ public class WebSocketServer {
 
     private boolean checkForNextDay(int lobbyID) {
         Map<Integer, Session> sameLobbies = lobbyIDSessionMap.entrySet().stream().filter(x -> x.getKey() == lobbyID).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
-        for (Session s : sameLobbies.values()) {
+        for(Session s :sameLobbies.values()) {
             StoreInfo tempStore = sessionStoreInfoMap.get(s);
-            if (tempStore.getNextDay() == false) {
-                return false;
-            }
+            System.out.println(tempStore.getNextDay() + " Hello");
         }
         return true;
     }
@@ -233,6 +236,7 @@ public class WebSocketServer {
     public void sendCustomers() {};
 
     public void startNextDay(int lobbyID) {
+        System.out.println("Ready for next day");
         Map<Integer, Session> sameLobbies = lobbyIDSessionMap.entrySet().stream().filter(x -> x.getKey() == lobbyID).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
         for (Session s : sameLobbies.values()) {
             StoreInfo tempStore = sessionStoreInfoMap.get(s);
@@ -247,7 +251,7 @@ public class WebSocketServer {
             synchronized (session) {
                 session.getAsyncRemote().sendText(msg);
             }
-        };
+        });
     }
 
 }
