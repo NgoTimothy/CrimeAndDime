@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="80" height="45" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="113">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="80" height="45" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="118">
  <tileset firstgid="1" name="ghostcrimes_freeinsidetiles" tilewidth="16" tileheight="16" tilecount="714" columns="21">
   <image source="test.png" width="336" height="544"/>
   <tile id="276">
@@ -132,12 +132,7 @@
 401,402,403,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,404,405,404,405,407,408,409,352,353,332,332,332,332,351,352,353,353,352,353
 </data>
  </layer>
- <objectgroup id="4" name="Object Layer 2">
-  <object id="109" name="BLOCKED" x="0" y="0.666667" width="47.375" height="718.458"/>
-  <object id="110" name="BLOCKED" x="1039.81" y="1.021" width="46.875" height="718.208"/>
-  <object id="111" name="BLOCKED" x="48.0909" y="1.09091" width="991" height="45.4545"/>
-  <object id="112" name="BLOCKED" x="48.1667" y="672.273" width="991.5" height="47.7045"/>
- </objectgroup>
+ <objectgroup id="4" name="Object Layer 2"/>
  <objectgroup id="2" name="Shelf Object Layer">
   <object id="1" name="Shelf" x="48" y="128" width="31.5" height="31"/>
   <object id="2" name="Shelf" x="112.25" y="128.25" width="31.5" height="31"/>
@@ -227,5 +222,9 @@
   <object id="101" name="UI" x="1215.33" y="271.5" width="32.6667" height="31.6667"/>
   <object id="102" name="UI" x="1120" y="336.083" width="32.6667" height="31.6667"/>
   <object id="103" name="UI" x="1215.33" y="335.583" width="32.6667" height="31.6667"/>
+  <object id="113" name="BLOCKED" x="1040.56" y="-2.104" width="46.875" height="718.208"/>
+  <object id="114" name="BLOCKED" x="47.5" y="2.27275" width="991" height="45.4545"/>
+  <object id="115" name="BLOCKED" x="48.5" y="671.273" width="991" height="45.4545"/>
+  <object id="117" name="BLOCKED" x="1.5625" y="-1.104" width="46.875" height="718.208"/>
  </objectgroup>
 </map>

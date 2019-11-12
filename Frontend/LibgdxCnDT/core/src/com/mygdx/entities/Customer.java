@@ -29,7 +29,7 @@ public class Customer extends Sprite {
 
     public void update(float delta){
 
-
+        /*
         velocity.x += testWind * delta;
         // Squeeze Values
         if (velocity.y > speed){
@@ -82,6 +82,7 @@ public class Customer extends Sprite {
             setY(oldY);
             velocity.y = 0;
         }
+        */
     }
 
     private boolean isCellBlocked(float x, float y){
@@ -126,4 +127,5 @@ public class Customer extends Sprite {
     public void setCollisionLayer(TiledMapTileLayer collisionLayer){
         this.collisionLayer = collisionLayer;
     }
+
 }

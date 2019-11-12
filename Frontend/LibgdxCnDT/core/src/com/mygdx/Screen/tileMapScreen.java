@@ -26,6 +26,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.Objects.tempTile;
 import com.mygdx.cndt.CrimeandDime;
 import com.mygdx.entities.Customer;
+import com.mygdx.entities.CustomerTestCollison;
+import com.mygdx.entities.Wall;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -60,6 +62,9 @@ public class tileMapScreen implements Screen {
     private CrimeandDime game;
 
     private Customer customer;
+
+    private CustomerTestCollison customerTestCollison;
+    private ArrayList<Wall> wallArrayList;
 /*
     //Testing Purposes
     public tileMapScreen(CrimeandDime newGame, ArrayList<tempTile> newTileArrayList){
@@ -78,11 +83,13 @@ public class tileMapScreen implements Screen {
         render.setView(camera);
         render.render();
 
+
         // Test Code:
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        customer.draw(batch);
+        customerTestCollison.draw(batch);
         batch.end();
+
 
         switch (randomWant) {
             case 0:
@@ -98,6 +105,15 @@ public class tileMapScreen implements Screen {
                 break;
             default:
                 break;
+        }
+
+        //customerTestCollison.setPosition(customerTestCollison.getX() + 2, customerTestCollison.getY());
+
+        for (int i = 0; i < wallArrayList.size(); i++){
+            Wall tempWall = wallArrayList.get(i);
+            if (tempWall.collides(customerTestCollison.getBounds())){
+                System.out.println("Please?");
+            }
         }
 
         stage.setDebugAll(true);
@@ -141,6 +157,7 @@ public class tileMapScreen implements Screen {
         MapObjects shelfMapObject = maps.getLayers().get("Shelf Object Layer").getObjects();
 
         shelfTileArray = new ArrayList<tempTile>(0);
+        wallArrayList = new ArrayList<Wall>(0);
         int opponentIter = 2;
         int uiIter = 1;
         for (MapObject shelfObjects : shelfMapObject )
@@ -203,11 +220,31 @@ public class tileMapScreen implements Screen {
                     stage.addActor(OpponentInfo);
                     opponentIter = opponentIter + 1;
             }
+            if (shelfObjects.getName().equals("BLOCKED")){
+                wallArrayList.add(new Wall((RectangleMapObject) shelfObjects));
+
+                // Temp code
+                Texture texture = new Texture(Gdx.files.internal("img/transparentPicture.png"));
+                Image shelfImage = new Image(texture);
+                shelfImage.setPosition(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY());
+                shelfImage.setSize(((RectangleMapObject) shelfObjects).getRectangle().getWidth(), ((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                shelfImage.setColor(0, 0, 0, 0);
+
+                stage.addActor(shelfImage);
+                shelfImage.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        Gdx.app.exit();
+                    }
+                });
+            }
 
         }
 
 
+
         // Test Code
+        /*
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture("img/apple.jpg"));
         customer = new Customer(sprite,(TiledMapTileLayer) maps.getLayers().get(0));
@@ -215,6 +252,15 @@ public class tileMapScreen implements Screen {
 
         customer.setSize(30,30);
         customer.setPosition(60 * customer.getCollisionLayer().getTileWidth(), 20 * customer.getCollisionLayer().getTileHeight());
+        */
+
+        batch = new SpriteBatch();
+        sprite = new Sprite(new Texture("img/sprite.png"));
+        customerTestCollison = new CustomerTestCollison(80,80,sprite);
+        customerTestCollison.setPosition(80,80);
+
+
+
 
         setRandomWant();
         testInt++;
@@ -259,5 +305,12 @@ public class tileMapScreen implements Screen {
         Random rn = new Random();
         randomWant = rn.nextInt(3);
     }
+
+
+    public CustomerTestCollison getCustomerTestCollsion(){
+        return customerTestCollison;
+    }
+
+
 }
 
