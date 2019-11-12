@@ -148,6 +148,9 @@ public class WebSocketServer {
         message = message.replace("storeInfo", "");
         message = message.replace("]", "");
         message = message.substring(2);
+        if(message.length() < 10) {
+            return;
+        }
         String[] tokens = message.split("}");
         for (int i = 0; i < tokens.length; i++) {
             if (tokens[i].length() > 5) { //Do something here

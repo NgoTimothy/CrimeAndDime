@@ -4,9 +4,7 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3fbc46dd-5282-44e3-a001-957e3193f971" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/com/mygdx/Screen/tileMapScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/com/mygdx/Screen/tileMapScreen.java" afterDir="false" />
-    </list>
+    <list default="true" id="3fbc46dd-5282-44e3-a001-957e3193f971" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -221,7 +219,7 @@
       <workItem from="1572820415740" duration="50000" />
       <workItem from="1572836383514" duration="1525000" />
       <workItem from="1572969181448" duration="3687000" />
-      <workItem from="1573589093852" duration="235000" />
+      <workItem from="1573589093852" duration="418000" />
     </task>
     <servers />
   </component>
@@ -254,16 +252,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Endpoints/WebSocketServer.java</url>
-          <line>74</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
