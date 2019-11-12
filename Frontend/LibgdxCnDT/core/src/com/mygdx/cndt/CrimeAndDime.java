@@ -52,7 +52,7 @@ public class CrimeAndDime extends Game {
 		hour = 8;
 		accumulator = 0;
 		printTime(hour);
-		day = 0;
+		day = 1;
 	}
 
 	@Override
@@ -113,6 +113,11 @@ public class CrimeAndDime extends Game {
 	public void setStartTimer(boolean startOrStop) { startTimer = startOrStop; }
 
 	public boolean getStartTimer() { return startTimer; }
+
+	public void setHour(int newHour) {
+		hour = newHour;
+		accumulator = 0;
+	}
 
 	public int getHour() { return hour; }
 

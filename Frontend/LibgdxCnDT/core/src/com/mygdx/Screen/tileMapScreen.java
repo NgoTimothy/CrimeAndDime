@@ -100,6 +100,14 @@ public class tileMapScreen implements Screen {
         stage.draw();
     }
 
+    private void advancedDay() {
+        System.out.println(socketClient.getNextDay());
+        socketClient.setNextDay(false);
+        game.setHour(8);
+        game.increaseDay();
+        game.setStartTimer(true);
+    }
+
 
     @Override
     public void resize(int width, int height){
@@ -258,8 +266,17 @@ public class tileMapScreen implements Screen {
         if(hour >= closingTime && game.getStartTimer()) {
             sendShelfListToServer();
             game.setStartTimer(false);
-            game.increaseDay();
             socketClient.sendMessage("sendMyMoney " + game.gameStore.getBalance());
+            System.out.println(socketClient.getNextDay());
+        }
+        if(!game.getStartTimer()) {
+            socketClient.setNextDay(true);
+            if (socketClient.getNextDay()) {
+                System.out.println(socketClient.getNextDay());
+                advancedDay();
+            }
+            System.out.println(socketClient.getNextDay());
+
         }
         return timeOfDay + ":00 " + AMOrPM;
     }

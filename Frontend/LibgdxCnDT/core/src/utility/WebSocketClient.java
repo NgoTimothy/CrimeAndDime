@@ -17,11 +17,13 @@ import javax.websocket.WebSocketContainer;
 public class WebSocketClient {
 	Session userSession = null;
     private MessageHandler messageHandler;
+    private boolean nextDay;
  
     public WebSocketClient(URI endpointURI) {
         try {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, endpointURI);
+            nextDay = false;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -39,7 +41,10 @@ public class WebSocketClient {
  
     @OnMessage
     public void onMessage(String message) {
-        System.out.println(message);
+        if(message.equals("StartNextDay")) {
+            nextDay = true;
+            System.out.println(message + " " + nextDay);
+        }
         if (this.messageHandler != null) {
             this.messageHandler.handleMessage(message);
             System.out.println(message);
@@ -58,6 +63,10 @@ public class WebSocketClient {
     {
     	this.userSession.close();
     }
+
+    public void setNextDay(boolean newVal) { nextDay = newVal; }
+
+    public boolean getNextDay() { return nextDay; }
  
     public static interface MessageHandler {
         public void handleMessage(String message);
