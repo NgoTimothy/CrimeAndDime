@@ -3,6 +3,7 @@ package Endpoints;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -61,18 +62,11 @@ public class WebSocketServer {
         if (message.contains("sendmymoney")) {
             String[] tokens = message.split(" ");
             double curMoney = Double.parseDouble(tokens[1]);
+            int lobbyID = sessionLobbyIDMap.get(session);
             Session usrSession = usernameSessionMap.get(username);
             broadcastMoney(sessionLobbyIDMap.get(usrSession) , username, curMoney);
-            return;
-        }
-        if (message.contains("joinlobby")) {
-            String[] tokens = message.split(" ");
-            int newLobbyId = Integer.parseInt(tokens[1]);
-            Session usrSession = usernameSessionMap.get(username);
-            usernameSessionMap.put(username, session);
-            lobbyIDSessionMap.put(newLobbyId, usrSession);
-            sessionLobbyIDMap.put(usrSession, newLobbyId);
-            broadcast("I have joined lobby " + sessionLobbyIDMap.get(usrSession).toString(), sessionLobbyIDMap.get(usrSession));
+            sessionStoreInfoMap.get(session).setNextDay(true);
+            checkForNextDay(lobbyID);
             return;
         }
         if(message.length() >= 9 && message.contains("storeInfo")) {
@@ -212,7 +206,6 @@ public class WebSocketServer {
                 }
             }
         });
-
     }
 
     /**
@@ -226,5 +219,35 @@ public class WebSocketServer {
         return true;
     }
 
-}
+    private boolean checkForNextDay(int lobbyID) {
+        Map<Integer, Session> sameLobbies = lobbyIDSessionMap.entrySet().stream().filter(x -> x.getKey() == lobbyID).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
+        for (Session s : sameLobbies.values()) {
+            StoreInfo tempStore = sessionStoreInfoMap.get(s);
+            if (tempStore.getNextDay() == false) {
+                return false;
+            }
+        }
+        return true;
+    }
 
+    public void sendCustomers() {};
+
+    public void startNextDay(int lobbyID) {
+        Map<Integer, Session> sameLobbies = lobbyIDSessionMap.entrySet().stream().filter(x -> x.getKey() == lobbyID).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
+        for (Session s : sameLobbies.values()) {
+            StoreInfo tempStore = sessionStoreInfoMap.get(s);
+            tempStore.setNextDay(false);
+        }
+        broadcastToLobby(lobbyID, "StartNextDay");
+    }
+
+    public void broadcastToLobby(int lobbyID, String msg) {
+        Map<Integer, Session> sameLobbies = lobbyIDSessionMap.entrySet().stream().filter(x -> x.getKey() == lobbyID).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
+        sameLobbies.forEach((lobbyId, session) -> {
+            synchronized (session) {
+                session.getAsyncRemote().sendText(msg);
+            }
+        };
+    }
+
+}
