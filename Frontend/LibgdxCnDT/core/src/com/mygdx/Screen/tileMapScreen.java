@@ -269,8 +269,13 @@ public class tileMapScreen implements Screen {
             socketClient.sendMessage("sendMyMoney " + game.gameStore.getBalance());
             System.out.println(socketClient.getNextDay());
         }
-        if(!game.getStartTimer()) {
+        else if(!game.getStartTimer()) {
             socketClient.setNextDay(true);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             if (socketClient.getNextDay()) {
                 System.out.println(socketClient.getNextDay());
                 advancedDay();

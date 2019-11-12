@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3fbc46dd-5282-44e3-a001-957e3193f971" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/com/mygdx/Screen/tileMapScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/com/mygdx/Screen/tileMapScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/com/mygdx/cndt/CrimeAndDime.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/com/mygdx/cndt/CrimeAndDime.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/utility/WebSocketClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../Frontend/LibgdxCnDT/core/src/utility/WebSocketClient.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -181,12 +179,12 @@
           <expand>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@766e35db" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@f5bf815a" type="7427dc5b:ServiceModel$ServiceGroupNode" />
             </path>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@766e35db" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@8338619e" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@f5bf815a" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@f538bd03" type="7427dc5b:ServiceModel$ServiceGroupNode" />
             </path>
           </expand>
           <select />
@@ -223,6 +221,7 @@
       <workItem from="1572820415740" duration="50000" />
       <workItem from="1572836383514" duration="1525000" />
       <workItem from="1572969181448" duration="3687000" />
+      <workItem from="1573589093852" duration="235000" />
     </task>
     <servers />
   </component>
