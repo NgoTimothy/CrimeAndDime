@@ -72,7 +72,52 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.Application (1)">
+  <component name="RunManager" selected="JUnit.StoreInfoControllerTest.storeInfoTest">
+    <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Endpoints.Application" />
+      <module name="gs-rest-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Endpoints.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LobbyControllerTest.lobbyInfoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gs-rest-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Endpoints.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Endpoints" />
+      <option name="MAIN_CLASS_NAME" value="Endpoints.LobbyControllerTest" />
+      <option name="METHOD_NAME" value="lobbyInfoTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LobbyControllerTest.lobbyTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gs-rest-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Endpoints.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Endpoints" />
+      <option name="MAIN_CLASS_NAME" value="Endpoints.LobbyControllerTest" />
+      <option name="METHOD_NAME" value="lobbyTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ServerSocketTest.afterStoreInfoIsParsedFirstElementIsCorrect" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gs-rest-service" />
       <extension name="coverage">
@@ -89,65 +134,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServerSocketTest.afterStoreInfoIsParsedFourthElementIsCorrect" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="StoreInfoControllerTest.storeInfoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gs-rest-service" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Sockets.*" />
+          <option name="PATTERN" value="Endpoints.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="Sockets" />
-      <option name="MAIN_CLASS_NAME" value="Sockets.ServerSocketTest" />
-      <option name="METHOD_NAME" value="afterStoreInfoIsParsedFourthElementIsCorrect" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ServerSocketTest.afterStoreInfoIsParsedSecondElementIsCorrect" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="gs-rest-service" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Sockets.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="Sockets" />
-      <option name="MAIN_CLASS_NAME" value="Sockets.ServerSocketTest" />
-      <option name="METHOD_NAME" value="afterStoreInfoIsParsedSecondElementIsCorrect" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ServerSocketTest.afterStoreInfoIsParsedTheSocketSavesCorrectNumberOfElements" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="gs-rest-service" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Sockets.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="Sockets" />
-      <option name="MAIN_CLASS_NAME" value="Sockets.ServerSocketTest" />
-      <option name="METHOD_NAME" value="afterStoreInfoIsParsedTheSocketSavesCorrectNumberOfElements" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ServerSocketTest.afterStoreInfoIsParsedThirdElementIsCorrect" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="gs-rest-service" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Sockets.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="Sockets" />
-      <option name="MAIN_CLASS_NAME" value="Sockets.ServerSocketTest" />
-      <option name="METHOD_NAME" value="afterStoreInfoIsParsedThirdElementIsCorrect" />
+      <option name="PACKAGE_NAME" value="Endpoints" />
+      <option name="MAIN_CLASS_NAME" value="Endpoints.StoreInfoControllerTest" />
+      <option name="METHOD_NAME" value="storeInfoTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -162,11 +159,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ServerSocketTest.afterStoreInfoIsParsedFourthElementIsCorrect" />
-        <item itemvalue="JUnit.ServerSocketTest.afterStoreInfoIsParsedThirdElementIsCorrect" />
-        <item itemvalue="JUnit.ServerSocketTest.afterStoreInfoIsParsedSecondElementIsCorrect" />
+        <item itemvalue="JUnit.StoreInfoControllerTest.storeInfoTest" />
+        <item itemvalue="JUnit.LobbyControllerTest.lobbyTest" />
+        <item itemvalue="JUnit.LobbyControllerTest.lobbyInfoTest" />
+        <item itemvalue="Application.Application" />
         <item itemvalue="JUnit.ServerSocketTest.afterStoreInfoIsParsedFirstElementIsCorrect" />
-        <item itemvalue="JUnit.ServerSocketTest.afterStoreInfoIsParsedTheSocketSavesCorrectNumberOfElements" />
       </list>
     </recent_temporary>
   </component>
