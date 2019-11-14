@@ -61,9 +61,8 @@ public class WebSocketServer {
         System.out.println(message);
         String username = sessionUsernameMap.get(session);
 
-        if(message.length() >= 9 && message.contains("storeInfo")) {
+        if(message.contains("storeInfo"))
             parseStoreInformation(session, message);
-        }
         else if (message.contains("sendMyMoney")) {
             String[] tokens = message.split(" ");
             double curMoney = Double.parseDouble(tokens[1]);
@@ -144,13 +143,18 @@ public class WebSocketServer {
     public void parseStoreInformation(Session session, String message) {
         logger.info("Entered into Message: Got Message:" + message);
         Item newItem = new Item();
-        StoreInfo newStore = new StoreInfo();
+        StoreInfo curStore = sessionStoreInfoMap.get(session);
+        storeInfoSessionMap.remove(curStore);
+        sessionStoreInfoMap.remove(session);
+        curStore.getList().clear();
         message = message.replace("storeInfo", "");
         message = message.replace("]", "");
-        message = message.substring(2);
-        if(message.length() < 10) {
+        if(message.length() < 2) {
+            storeInfoSessionMap.put(curStore, session);
+            sessionStoreInfoMap.put(session, curStore);
             return;
         }
+        message = message.substring(2);
         String[] tokens = message.split("}");
         for (int i = 0; i < tokens.length; i++) {
             if (tokens[i].length() > 5) { //Do something here
@@ -173,13 +177,13 @@ public class WebSocketServer {
                     else if (itemFields[j].contains("retailCost")) {
                         itemFields[j] = itemFields[j].substring(13);
                         newItem.setPrice(Double.parseDouble(itemFields[j]));
-                        newStore.getInventory().addItem(newItem);
+                        curStore.getInventory().addItem(newItem);
                     }
                 }
             }
         }
-        storeInfoSessionMap.put(newStore, session);
-        sessionStoreInfoMap.put(session, newStore);
+        storeInfoSessionMap.put(curStore, session);
+        sessionStoreInfoMap.put(session, curStore);
     }
 
     public StoreInfo getStoreInfoBySession(Session targetSession) {
