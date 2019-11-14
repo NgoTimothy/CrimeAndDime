@@ -1,5 +1,7 @@
 package utility;
 
+import com.mygdx.cndt.CrimeAndDime;
+
 import java.io.IOException;
 
 import java.net.URI;
@@ -17,17 +19,30 @@ import javax.websocket.WebSocketContainer;
 public class WebSocketClient {
 	Session userSession = null;
     private MessageHandler messageHandler;
-    private boolean nextDay;
+    private CrimeAndDime game;
  
     public WebSocketClient(URI endpointURI) {
         try {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, endpointURI);
-            nextDay = false;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
+    public WebSocketClient(URI endpointURI, CrimeAndDime game) {
+        try {
+            WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+            container.connectToServer(this, endpointURI);
+            this.game = game;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //ObjectMapper objectMapper = new ObjectMapper();
+	//	objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    //items = objectMapper.readValue(result, new TypeReference<ArrayList<Item>>(){});
  
     @OnOpen
     public void onOpen(Session userSession) {
@@ -41,10 +56,8 @@ public class WebSocketClient {
  
     @OnMessage
     public void onMessage(String message) {
-        if(message.equals("StartNextDay")) {
-            nextDay = true;
-            System.out.println(message + " " + nextDay);
-        }
+        if(message.equals("StartNextDay"))
+            game.setNextDay(true);
         if (this.messageHandler != null) {
             this.messageHandler.handleMessage(message);
             System.out.println(message);
@@ -63,10 +76,6 @@ public class WebSocketClient {
     {
     	this.userSession.close();
     }
-
-    public void setNextDay(boolean newVal) { nextDay = newVal; }
-
-    public boolean getNextDay() { return nextDay; }
  
     public static interface MessageHandler {
         public void handleMessage(String message);

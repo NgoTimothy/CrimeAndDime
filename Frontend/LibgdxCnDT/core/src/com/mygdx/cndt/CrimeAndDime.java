@@ -37,6 +37,7 @@ public class CrimeAndDime extends Game {
 	private final float TIME_STEP = 1 / 30f; // 30 times a second
 	private int hour;
 	private boolean startTimer;
+	private boolean nextDay;
 	private static final int closingTime = 20;
 	private int day;
 
@@ -49,6 +50,7 @@ public class CrimeAndDime extends Game {
 		setScreen(new Splash(this));
 		shelfChanged = false;
 		startTimer = false;
+		nextDay = false;
 		hour = 8;
 		accumulator = 0;
 		printTime(hour);
@@ -124,5 +126,9 @@ public class CrimeAndDime extends Game {
 	public void increaseDay() { day++; }
 
 	public int getDay() { return  day; }
+
+	public void setNextDay(boolean readyForNewDay) { nextDay = readyForNewDay; }
+
+	public boolean getNextDay() { return nextDay; }
 }
 
