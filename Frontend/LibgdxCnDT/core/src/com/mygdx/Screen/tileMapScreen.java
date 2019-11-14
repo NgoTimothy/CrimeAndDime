@@ -78,7 +78,7 @@ public class tileMapScreen implements Screen {
     		}
         }
     	try {
-    	    socketClient = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + 25 + "/" + "Tim"));
+    	    socketClient = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + 25 + "/" + "Tim"), game);
     	    game.setStartTimer(true);//Delete this shit
         } catch (Exception e) {
     	    e.printStackTrace();
