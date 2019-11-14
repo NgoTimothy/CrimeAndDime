@@ -52,7 +52,7 @@ public class CrimeAndDime extends Game {
 		hour = 8;
 		accumulator = 0;
 		printTime(hour);
-		day = 0;
+		day = 1;
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class CrimeAndDime extends Game {
 		super.render();
 		if(startTimer) {
 			accumulator += Gdx.graphics.getDeltaTime();
-			if (accumulator >= 2f) {//1f is 1 second, 2f is 2 seconds and so forth
+			if (accumulator >= 1f) {//1f is 1 second, 2f is 2 seconds and so forth
 				hour++;
 				accumulator = 0;
 				//System.out.println(hour);
@@ -113,6 +113,11 @@ public class CrimeAndDime extends Game {
 	public void setStartTimer(boolean startOrStop) { startTimer = startOrStop; }
 
 	public boolean getStartTimer() { return startTimer; }
+
+	public void setHour(int newHour) {
+		hour = newHour;
+		accumulator = 0;
+	}
 
 	public int getHour() { return hour; }
 

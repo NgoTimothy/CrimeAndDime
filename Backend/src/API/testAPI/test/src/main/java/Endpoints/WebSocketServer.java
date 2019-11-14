@@ -3,6 +3,7 @@ package Endpoints;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -43,11 +44,13 @@ public class WebSocketServer {
     {
         logger.info("Entered into Open");
 
+        StoreInfo newStore = new StoreInfo(username, 10000, 100, false);
         sessionUsernameMap.put(session, username);
         usernameSessionMap.put(username, session);
         sessionLobbyIDMap.put(session, lobbyID);
         lobbyIDSessionMap.put(lobbyID, session);
-        System.out.println(Integer.toString(lobbyID));
+        sessionStoreInfoMap.put(session, newStore);
+        storeInfoSessionMap.put(newStore, session);
     }
 
     @OnMessage
@@ -58,25 +61,23 @@ public class WebSocketServer {
         System.out.println(message);
         String username = sessionUsernameMap.get(session);
 
-        if (message.contains("sendmymoney")) {
-            String[] tokens = message.split(" ");
-            double curMoney = Double.parseDouble(tokens[1]);
-            Session usrSession = usernameSessionMap.get(username);
-            broadcastMoney(sessionLobbyIDMap.get(usrSession) , username, curMoney);
-            return;
-        }
-        if (message.contains("joinlobby")) {
-            String[] tokens = message.split(" ");
-            int newLobbyId = Integer.parseInt(tokens[1]);
-            Session usrSession = usernameSessionMap.get(username);
-            usernameSessionMap.put(username, session);
-            lobbyIDSessionMap.put(newLobbyId, usrSession);
-            sessionLobbyIDMap.put(usrSession, newLobbyId);
-            broadcast("I have joined lobby " + sessionLobbyIDMap.get(usrSession).toString(), sessionLobbyIDMap.get(usrSession));
-            return;
-        }
         if(message.length() >= 9 && message.contains("storeInfo")) {
             parseStoreInformation(session, message);
+        }
+        else if (message.contains("sendMyMoney")) {
+            String[] tokens = message.split(" ");
+            double curMoney = Double.parseDouble(tokens[1]);
+            int lobbyID = sessionLobbyIDMap.get(session);
+            Session usrSession = usernameSessionMap.get(username);
+            broadcastMoney(sessionLobbyIDMap.get(usrSession) , username, curMoney);
+            sessionStoreInfoMap.get(session).setNextDay(true);
+            if(checkForNextDay(lobbyID)) {
+                startNextDay(lobbyID);
+            }
+            else {
+                System.out.println("Did not pass");
+            }
+            return;
         }
         else {
             Integer lobbyID = sessionLobbyIDMap.get(session);
@@ -147,7 +148,9 @@ public class WebSocketServer {
         message = message.replace("storeInfo", "");
         message = message.replace("]", "");
         message = message.substring(2);
-        //System.out.println(message);
+        if(message.length() < 10) {
+            return;
+        }
         String[] tokens = message.split("}");
         for (int i = 0; i < tokens.length; i++) {
             if (tokens[i].length() > 5) { //Do something here
@@ -162,7 +165,6 @@ public class WebSocketServer {
                         newItem = new Item();
                         itemFields[j] = itemFields[j].substring(7).replace("\"", "");
                         newItem.setName(itemFields[j]);
-                        //System.out.println(newItem.getName());
                     }
                     else if (itemFields[j].contains("quantity")) {
                         itemFields[j] = itemFields[j].substring(11);
@@ -212,7 +214,6 @@ public class WebSocketServer {
                 }
             }
         });
-
     }
 
     /**
@@ -226,5 +227,34 @@ public class WebSocketServer {
         return true;
     }
 
-}
+    private boolean checkForNextDay(int lobbyID) {
+        Map<Integer, Session> sameLobbies = lobbyIDSessionMap.entrySet().stream().filter(x -> x.getKey() == lobbyID).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
+        for(Session s :sameLobbies.values()) {
+            StoreInfo tempStore = sessionStoreInfoMap.get(s);
+            System.out.println(tempStore.getNextDay() + " Hello");
+        }
+        return true;
+    }
 
+    public void sendCustomers() {};
+
+    public void startNextDay(int lobbyID) {
+        System.out.println("Ready for next day");
+        Map<Integer, Session> sameLobbies = lobbyIDSessionMap.entrySet().stream().filter(x -> x.getKey() == lobbyID).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
+        for (Session s : sameLobbies.values()) {
+            StoreInfo tempStore = sessionStoreInfoMap.get(s);
+            tempStore.setNextDay(false);
+        }
+        broadcastToLobby(lobbyID, "StartNextDay");
+    }
+
+    public void broadcastToLobby(int lobbyID, String msg) {
+        Map<Integer, Session> sameLobbies = lobbyIDSessionMap.entrySet().stream().filter(x -> x.getKey() == lobbyID).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
+        sameLobbies.forEach((lobbyId, session) -> {
+            synchronized (session) {
+                session.getAsyncRemote().sendText(msg);
+            }
+        });
+    }
+
+}

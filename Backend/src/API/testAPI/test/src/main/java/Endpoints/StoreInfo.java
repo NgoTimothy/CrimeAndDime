@@ -113,4 +113,6 @@ public class StoreInfo
     public ArrayList<Item> getList() {
         return inventory.getInventory();
     }
+
+    public boolean getNextDay() { return nextDay; }
 }
