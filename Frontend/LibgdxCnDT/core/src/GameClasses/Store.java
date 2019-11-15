@@ -137,10 +137,16 @@ public class Store {
     }
 
     /**
-     * Returns the ArrayList of items in the store
-     * @return
+     * @return the actual inventory object of the store
      */
-    public ArrayList<Item> getInventory() {
+    public Inventory getInventory() {
+        return storeInventory;
+    }
+
+    /**
+     * @return the arraylist of items in the store
+     */
+    public ArrayList<Item> getListOfInventoryItems() {
         return storeInventory.getInventory();
     }
 
@@ -152,4 +158,10 @@ public class Store {
     {
     	return balance;
     }
+
+    /**
+     * Will add amountTobeAdded to the balance of the store
+     * @param amountToBeAdded
+     */
+    public void addBalance(double amountToBeAdded) { balance += amountToBeAdded; }
 }

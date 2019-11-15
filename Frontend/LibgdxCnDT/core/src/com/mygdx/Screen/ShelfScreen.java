@@ -74,8 +74,8 @@ public class ShelfScreen implements Screen {
         shelfImage.setPosition(0, 200);
         stage.addActor(shelfImage);
         
-        	addButton = new TextButton[game.gameStore.getInventory().size()];
-        	for (int i = 0; i < game.gameStore.getInventory().size() && i < 12; i++)
+        	addButton = new TextButton[game.gameStore.getListOfInventoryItems().size()];
+        	for (int i = 0; i < game.gameStore.getListOfInventoryItems().size() && i < 12; i++)
         	{
         		addButton[i] = new TextButton("Add", TextButtonStyle());
         		addButton[i].setPosition(1200, 525 - i * 35);
@@ -85,11 +85,11 @@ public class ShelfScreen implements Screen {
 		            @Override
 		            public void clicked(InputEvent event, float x, float y) {	
 		            	try {
-		            		if (game.gameStore.getInventory().get(index).getQuantity() > 0)
+		            		if (game.gameStore.getListOfInventoryItems().get(index).getQuantity() > 0)
 		            		{
-		            			if (shelfTile.getItem() != null && !shelfTile.getItem().getName().equals(game.gameStore.getInventory().get(index).getName()))
+		            			if (shelfTile.getItem() != null && !shelfTile.getItem().getName().equals(game.gameStore.getListOfInventoryItems().get(index).getName()))
 		            				game.gameStore.storeInventory.addItem(shelfTile.getItem());
-		            			shelfTile.setItemOnShelf(game.gameStore.getInventory().get(index), 1);
+		            			shelfTile.setItemOnShelf(game.gameStore.getListOfInventoryItems().get(index), 1);
 		            			game.setShelfChanged(true);
 		            		}
 						} catch (PlacingItemWithNoShelfException e) {
@@ -149,9 +149,9 @@ public class ShelfScreen implements Screen {
         
         batch.begin();
         white.draw(batch, String.format("%-12s %-8s %s", "Item", "Quantity", "Price"), 650, 585);
-        for (int i = 0; i < game.gameStore.getInventory().size(); i++)
+        for (int i = 0; i < game.gameStore.getListOfInventoryItems().size(); i++)
         {
-        	String s = String.format("%-12s %-8d $%.2f", game.gameStore.getInventory().get(i).getName(), game.gameStore.getInventory().get(i).getQuantity(), game.gameStore.getInventory().get(i).getWholesaleCost());
+        	String s = String.format("%-12s %-8d $%.2f", game.gameStore.getListOfInventoryItems().get(i).getName(), game.gameStore.getListOfInventoryItems().get(i).getQuantity(), game.gameStore.getListOfInventoryItems().get(i).getWholesaleCost());
         	white.draw(batch, s, 650, 550 - i * 35);
         }
         

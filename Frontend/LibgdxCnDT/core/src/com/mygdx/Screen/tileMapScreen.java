@@ -101,10 +101,7 @@ public class tileMapScreen implements Screen {
     }
 
     private void advancedDay() {
-        game.setNextDay(false);
-        game.setHour(8);
-        game.increaseDay();
-        game.setStartTimer(true);
+        game.advanceDay();
     }
 
     @Override
