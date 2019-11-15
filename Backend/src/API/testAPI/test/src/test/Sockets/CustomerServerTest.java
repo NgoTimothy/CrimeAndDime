@@ -3,8 +3,12 @@ package Sockets;
 import Endpoints.Customer;
 import Endpoints.Item;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class CustomerServerTest {
     private ArrayList<Customer> customers;
@@ -25,5 +29,17 @@ public class CustomerServerTest {
         desiredItemsForCustomer2.add(fakeItem2);
         dummyCustomer1 = new Customer(desiredItemsForCustomer1, 10);
         dummyCustomer2 = new Customer(desiredItemsForCustomer2, 7);
+    }
+
+    @Test
+    public void whenNewCustomerIsCreatedItHasCorrectFieldValues() {
+        assertEquals(1, dummyCustomer1.getDesiredItems().size());
+        assertEquals(1, dummyCustomer2.getDesiredItems().size());
+        assertEquals(fakeItem1, dummyCustomer1.getDesiredItems().get(0));
+        assertEquals(fakeItem2, dummyCustomer2.getDesiredItems().get(0));
+        assertEquals("Customer budget is not correct", 10, dummyCustomer1.getBudget(), 0);
+        assertEquals("Customer budget is not correct", 7, dummyCustomer2.getBudget(), 0);
+        assertFalse(dummyCustomer1.getHasShopped());
+        assertFalse(dummyCustomer2.getHasShopped());
     }
 }
