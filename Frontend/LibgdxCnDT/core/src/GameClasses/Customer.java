@@ -8,88 +8,62 @@ import java.util.*;
  * They shop and move around in the store itself
  */
 public class Customer {
-
-    private Item item;
-    boolean hasBought;
+    boolean doneShopping;
     private double budget;
-    private ArrayList<Item> preferences; // must be within budget
+    private ArrayList<Item> desiredItems; // must be within budget
 
-    public Customer(){
-        item = new Item();
-        hasBought = false;
+    public Customer(ArrayList<Item> desiredItems) {
+        this.desiredItems = desiredItems;
+        doneShopping = false;
         budget = 0.0;
-        preferences = new ArrayList<Item>();
-    }
-
-    /**
-     * Sets item that it bought
-     * @param item
-     */
-    public void setItem(Item item) {
-        this.item = item;
     }
 
     /**
      * Signals that a customer has bought an item
-     * @param hasBought
+     * @param doneShopping
      */
-    public void setHasBought(boolean hasBought) {
-        this.hasBought = hasBought;
-    }
-
-    /**
-     * Returns the item that a customer has bought
-     * @return
-     */
-    public Item getItem() {
-        return item;
+    public void setDoneShopping(boolean doneShopping) {
+        this.doneShopping = doneShopping;
     }
 
     /**
      *
-     * @return
+     * @return Whether the customer is done shopping or not
      */
-    public boolean isHasBought() {
-        return hasBought;
+    public boolean isDoneShopping() {
+        return doneShopping;
     }
 
     /**
-     * If customer has not bought an item, they will buy the item(s)
-     * @param inventory
+     * This method purchases the item for the customer and subtracts the cost of the item from the budget
+     * @param item Returns the item bought from the store. If null, no item was purchased
      */
-    public void buyItems(Inventory inventory){
-        /*
-        loop through list of items and check which store has preferred items
-
-           Purchase item
-            -subtract budget from customer
-            -subtract item from store inventory
-            -removed item from list of preferences and update preferences
-
-        repeat process if able to purchase another item
-         */
-        if(hasBought == false) {
-            inventory.removeItem(item);
-            hasBought = true;
-        }
-
-    }
-
-    /**
-     * Customer will buy item if they have not bought an item yet
-     * @param inventories
-     */
-    public void buyItems(ArrayList<Inventory> inventories){
-        if (hasBought == false){
-            for (int i = 0; i < inventories.size(); i++){
-                for (int j = 0; j < inventories.get(j).getSize(); j++){
-                    if(inventories.get(j).getItem(item) == item){
-                        inventories.get(j).removeItem(item);
-                        hasBought = true;
-                    }
+    public Item purchaseItem(Item item){
+        for(int i = 0; i < desiredItems.size(); i++) {
+            if(item.equals(desiredItems.get(i))) {
+                item.setQuantity(getMaxPurchasableQuantity(item, desiredItems.get(i)));
+                budget -= item.getQuantity() * item.getRetailCost();
+                desiredItems.get(i).subtractQuantity(item.getQuantity());
+                if(desiredItems.get(i).getQuantity() == 0) {
+                    desiredItems.remove(i);
                 }
+                return item;
             }
         }
+        return null;
+    }
+
+    /**
+     * TODO test this later please
+     * @param purchasableItem The item you are planning to purchase
+     * @param stockedItem What the store currently stocks of said item you want to purchase
+     * @return The max quantity you can purchase
+     */
+    private int getMaxPurchasableQuantity(Item purchasableItem, Item stockedItem) {
+        while(purchasableItem.getQuantity() > stockedItem.getQuantity() && (purchasableItem.getQuantity() * purchasableItem.getRetailCost()) > budget) {
+            purchasableItem.setQuantity(purchasableItem.getQuantity() - 1);
+        }
+        return purchasableItem.getQuantity();
     }
 
     /**
@@ -101,42 +75,51 @@ public class Customer {
     }
 
     /**
+     * Sets the budget of the customer
+     * @param budget
+     */
+    public void setBudget(double budget) { this.budget = budget; }
+
+    /**
      * Gets and returns the items that a customer wants to buy
      * @return
      */
-    public ArrayList<Item> getPreferences() {
-        return preferences;
+    public ArrayList<Item> getDesiredItems() {
+        return desiredItems;
     }
+
+    public void setDesiredItems(ArrayList<Item> desiredItems) { this.desiredItems = desiredItems; }
 
     /**
      * Updates the list of items a customer wants to buy
      */
-    public void updatePreferences(){
-        /*
-            -loop through current preferences
-
-            -remove item purchased
-            -remove items they can no longer afford
-        */
-        for(int i =0; i < preferences.size(); i++){
-            if(item.getName() == preferences.get(i).getName()){
-                preferences.get(i).subtractQuantity(1);
+    /*public void updatePreferences(){
+        for(int i = 0; i < desiredItems.size(); i++){
+            if(item.getName() == desiredItems.get(i).getName()){
+                desiredItems.get(i).subtractQuantity(1);
                 budget -= item.getRetailCost();
             }
         }
-        for(int i =0; i< preferences.size(); i++){
-            if(preferences.get(i).getRetailCost() > budget){
-                preferences.get(i).subtractQuantity(10);
+        for(int i = 0; i< desiredItems.size(); i++){
+            if(desiredItems.get(i).getRetailCost() > budget){
+                desiredItems.get(i).subtractQuantity(10);
             }
         }
-
-    }
+    }*/
 
     /**
      * Deducts money from the customers amount of money
      * @param price
      */
     public void subtractBudget(double price){
-        budget = budget - price;
+        budget -= price;
+    }
+
+    /**
+     * Adds money to customers budget
+     * @param price
+     */
+    public void addBudget(double price){
+        budget += price;
     }
 }
