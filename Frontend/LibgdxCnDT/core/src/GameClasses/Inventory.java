@@ -16,18 +16,20 @@ public class Inventory {
     /**
      * This method will subtract the quantity in the inventory by the quantity purchased
      * @param itemToBePurchased
+     * @return Quantity purchased
      */
-    public void purchaseItem(Item itemToBePurchased) {
+    public int purchaseItem(Item itemToBePurchased) {
         for(int i = 0; i < inventory.size(); i++) {
             if(itemToBePurchased.equals(inventory.get(i))) {
-                int purchasedQuantity = inventory.get(i).getQuantity() - itemToBePurchased.getQuantity();
-                if(purchasedQuantity == 0)
+                int quantityLeftover = inventory.get(i).getQuantity() - itemToBePurchased.getQuantity();
+                if(quantityLeftover == 0)
                     removeItem(itemToBePurchased);
                 else
-                    inventory.get(i).subtractQuantity(purchasedQuantity);
-                return;
+                    inventory.get(i).subtractQuantity(quantityLeftover);
+                return itemToBePurchased.getQuantity();
             }
         }
+        return 0;
     }
 
     /**

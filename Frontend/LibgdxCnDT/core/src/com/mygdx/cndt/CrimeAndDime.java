@@ -109,9 +109,23 @@ public class CrimeAndDime extends Game {
 			double budget = totalCostOfItems(desiredCustomerItems);
 			Customer newCustomer = new Customer(desiredCustomerItems, budget);
 			customers.add(newCustomer);
-			gameStore.getInventory().purchaseItem(customerDesiredItem);//When customers are generated they are automatically purchased from store, may delete later
+			int quantityPurchased = gameStore.getInventory().purchaseItem(customerDesiredItem);//When customers are generated they are automatically purchased from store, may delete later
+			subQuantityFromItemsList(quantityPurchased, customerDesiredItem);
 			double priceToBeAdded = Math.round(customerDesiredItem.getRetailCost() * customerDesiredItem.getQuantity() * 100.0)/ 100.0;
 			gameStore.addBalance(priceToBeAdded);//May delete this too
+			newCustomer.purchaseItem(customerDesiredItem);
+		}
+	}
+
+	private void subQuantityFromItemsList(int quantityPurchased, Item customerDesiredItem) {
+		if(quantityPurchased <= 0)
+			return;
+		System.out.println("Hello");
+		for(int i = 0; i < items.size(); i++) {
+			if(customerDesiredItem.equals(items.get(i))) {
+				items.get(i).subtractQuantity(quantityPurchased);
+				System.out.println(items.get(i));
+			}
 		}
 	}
 
