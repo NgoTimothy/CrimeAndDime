@@ -48,7 +48,7 @@ public class CrimeAndDime extends Game {
 		onBreak = true;
 		hour = 8;
 		accumulator = 0;
-		timeLeftOnBreak = 30;
+		timeLeftOnBreak = 10;//This is the amount of time on break.
 		//printTime(hour);
 		day = 1;
 	}
@@ -110,7 +110,8 @@ public class CrimeAndDime extends Game {
 			Customer newCustomer = new Customer(desiredCustomerItems, budget);
 			customers.add(newCustomer);
 			gameStore.getInventory().purchaseItem(customerDesiredItem);//When customers are generated they are automatically purchased from store, may delete later
-			gameStore.addBalance(customerDesiredItem.getRetailCost() * customerDesiredItem.getQuantity());//May delete this too
+			double priceToBeAdded = Math.round(customerDesiredItem.getRetailCost() * customerDesiredItem.getQuantity() * 100.0)/ 100.0;
+			gameStore.addBalance(priceToBeAdded);//May delete this too
 		}
 	}
 
@@ -191,5 +192,9 @@ public class CrimeAndDime extends Game {
 	public void setNextDay(boolean readyForNewDay) { nextDay = readyForNewDay; }
 
 	public boolean getNextDay() { return nextDay; }
+
+	public void setOnBreak(boolean onBreak) { this.onBreak = onBreak; }
+
+	public boolean getOnBreak() {return onBreak; }
 }
 

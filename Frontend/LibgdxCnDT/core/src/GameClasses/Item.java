@@ -13,12 +13,14 @@ public class Item implements Comparable<Item> {
     @JsonProperty("price")
     private Double wholesaleCost;
     private Double retailCost;
+    private boolean forSale;
 
     public Item() {
         name = "";
         wholesaleCost = 0.0;
         retailCost = 0.0;
         quantity = 0;
+        forSale = false;
     }
 
     public Item(String initName) {
@@ -26,6 +28,7 @@ public class Item implements Comparable<Item> {
         wholesaleCost =  0.0;
         retailCost = 0.0;
         quantity = 0;
+        forSale = false;
     }
 
     public Item(String initName, double initWholesaleCost, double initRetailCost, int initQuantity) {
@@ -33,6 +36,7 @@ public class Item implements Comparable<Item> {
         wholesaleCost = initWholesaleCost;
         retailCost = initRetailCost;
         quantity = initQuantity;
+        forSale = false;
     }
 
     public Item(Item originalItem) {
@@ -40,6 +44,7 @@ public class Item implements Comparable<Item> {
         wholesaleCost = originalItem.getWholesaleCost();
         retailCost = originalItem.getRetailCost();
         quantity = originalItem.getQuantity();
+        forSale = false;
     }
 
     /**
@@ -138,6 +143,17 @@ public class Item implements Comparable<Item> {
         }
         retailCost = newRetailCost;
     }
+
+    /**
+     * @return Whether this item is for sale or not
+     */
+    public boolean getForSale() { return forSale; }
+
+    /**
+     * Sets whether the item is for sale or not
+     * @param forSale
+     */
+    public void setForSale(boolean forSale) { this.forSale = forSale; }
 
     /**
      * Clears quantity from item

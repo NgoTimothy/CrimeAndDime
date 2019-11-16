@@ -78,9 +78,11 @@ public class tileMapScreen implements Screen {
     		}
         }
     	try {
-    	    socketClient = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + 25 + "/" + "Tim"), game);
-    	    game.setStartTimer(true);//Delete this shit
-        } catch (Exception e) {
+    	    //socketClient = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + 25 + "/" + "Tim"), game);
+            socketClient = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + 25 + "/" + "Tim/"), game);
+    	    //game.setStartTimer(true);//Delete this shit
+
+    	} catch (Exception e) {
     	    e.printStackTrace();
         }
     }
@@ -282,13 +284,17 @@ public class tileMapScreen implements Screen {
     }
 
     private JSONArray listToJSON() {
+        JSONArray jsArray = new JSONArray(getListOfItemsOnShelves());
+        return jsArray;
+    }
+
+    private ArrayList<Tile> getListOfItemsOnShelves() {
         ArrayList<Tile> tileArr = new ArrayList<>();
         for(int i = 0; i < shelfTileArray.size(); i++) {
             if(shelfTileArray.get(i).getItem() != null) {
                 tileArr.add(shelfTileArray.get(i));
             }
         }
-        JSONArray jsArray = new JSONArray(tileArr);
-        return jsArray;
+        return tileArr;
     }
 }

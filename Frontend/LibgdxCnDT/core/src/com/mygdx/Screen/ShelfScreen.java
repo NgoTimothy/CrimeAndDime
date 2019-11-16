@@ -73,17 +73,16 @@ public class ShelfScreen implements Screen {
         Image shelfImage = new Image(texture);
         shelfImage.setPosition(0, 200);
         stage.addActor(shelfImage);
-        
-        	addButton = new TextButton[game.gameStore.getListOfInventoryItems().size()];
-        	for (int i = 0; i < game.gameStore.getListOfInventoryItems().size() && i < 12; i++)
-        	{
-        		addButton[i] = new TextButton("Add", TextButtonStyle());
-        		addButton[i].setPosition(1200, 525 - i * 35);
-        		final int index = i;
-	        	addButton[i].addListener(new ClickListener()
+        addButton = new TextButton[game.gameStore.getListOfInventoryItems().size()];
+        for (int i = 0; i < game.gameStore.getListOfInventoryItems().size() && i < 12; i++)
+        {
+        	addButton[i] = new TextButton("Add", TextButtonStyle());
+        	addButton[i].setPosition(1200, 525 - i * 35);
+        	final int index = i;
+        	addButton[i].addListener(new ClickListener()
 	        	{
 		            @Override
-		            public void clicked(InputEvent event, float x, float y) {	
+		            public void clicked(InputEvent event, float x, float y) {
 		            	try {
 		            		if (game.gameStore.getListOfInventoryItems().get(index).getQuantity() > 0)
 		            		{

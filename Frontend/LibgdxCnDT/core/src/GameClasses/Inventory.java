@@ -24,7 +24,7 @@ public class Inventory {
                 if(purchasedQuantity == 0)
                     removeItem(itemToBePurchased);
                 else
-                    inventory.get(i).setQuantity(purchasedQuantity);
+                    inventory.get(i).subtractQuantity(purchasedQuantity);
                 return;
             }
         }
