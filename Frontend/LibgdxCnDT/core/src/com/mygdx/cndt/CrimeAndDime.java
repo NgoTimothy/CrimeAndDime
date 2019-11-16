@@ -90,15 +90,20 @@ public class CrimeAndDime extends Game {
 	/**
 	 * Method will generated new customers for the day
 	 */
-	private void createCustomers() {
+	public void createCustomers() {
 		//For now just generate 10 customers at random
 		if(gameStore.getListOfInventoryItems().size() <= 0)
 			return;
 		int numOfNewCustomers = 10;
 		for(int i = 0; i < numOfNewCustomers; i++) {//For testing purposes only one item is added to customers desired items
+			if(gameStore.getListOfInventoryItems().isEmpty())
+				return;
 			int randItemIndex = random.nextInt(gameStore.getListOfInventoryItems().size());
 			Item customerDesiredItem = new Item(gameStore.getListOfInventoryItems().get(randItemIndex));
-			customerDesiredItem.setQuantity(random.nextInt(gameStore.getListOfInventoryItems().get(randItemIndex).getQuantity() - 1) + 1);
+			if(gameStore.getListOfInventoryItems().get(randItemIndex).getQuantity() > 1)
+				customerDesiredItem.setQuantity(random.nextInt(gameStore.getListOfInventoryItems().get(randItemIndex).getQuantity() - 1) + 1);
+			else
+				customerDesiredItem.setQuantity(1);
 			ArrayList<Item> desiredCustomerItems = new ArrayList<Item>();
 			desiredCustomerItems.add(customerDesiredItem);
 			double budget = totalCostOfItems(desiredCustomerItems);
