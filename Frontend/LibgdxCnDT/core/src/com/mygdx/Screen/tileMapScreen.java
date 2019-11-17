@@ -88,6 +88,7 @@ public class tileMapScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         customerTestCollison.draw(batch);
+        customerTestCollison.setPosition(customerTestCollison.getPosition().x,customerTestCollison.getPosition().y);
         batch.end();
 
 
@@ -112,7 +113,7 @@ public class tileMapScreen implements Screen {
         for (int i = 0; i < wallArrayList.size(); i++){
             Wall tempWall = wallArrayList.get(i);
             if (tempWall.collides(customerTestCollison.getBounds())){
-                System.out.println("Please?");
+               customerTestCollison.stop();
             }
         }
 
@@ -252,7 +253,8 @@ public class tileMapScreen implements Screen {
 
         customer.setSize(30,30);
         customer.setPosition(60 * customer.getCollisionLayer().getTileWidth(), 20 * customer.getCollisionLayer().getTileHeight());
-        */
+           */
+
 
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture("img/sprite.png"));

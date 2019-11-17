@@ -13,25 +13,29 @@ import java.util.ArrayList;
 
 public class CustomerTestCollison extends Sprite{
 
-    private static final int MOVEMENT = 100;
+    private static final int MOVEMENT = 2;
  //   private Texture customerTexture;
     private Vector2 position;
-    private Vector2 velocity = new Vector2();
+    private Vector2 velocity;
     private Rectangle bounds;
+    private Sprite sprite;
 
+    private boolean hasCollided = false;
     private ArrayList<Wall> walls;
 
     public CustomerTestCollison(int x, int y, Sprite sprite){
         super(sprite);
+        this.sprite = sprite;
         position = new Vector2(x,y);
+        velocity = new Vector2(0,0);
         bounds = new Rectangle(x,y,sprite.getWidth(),sprite.getWidth());
     }
 
     public void update(float dt){
-        position.x += MOVEMENT * dt;
-
-        velocity.scl(dt);
-       // position.add(MOVEMENT * Gdx.graphics.getDeltaTime(), velocity.y,0);
+        if (!hasCollided){
+            velocity.x += MOVEMENT * dt;
+        }
+        position.set(position.x + velocity.x , position.y + velocity.y);
         bounds.setPosition(position.x,position.y);
     }
 
@@ -41,10 +45,22 @@ public class CustomerTestCollison extends Sprite{
         super.draw(batch);
     }
 
+    public void stop(){
+        velocity.set(0,0);
+        hasCollided = true;
+    }
     public Rectangle getBounds(){
         return bounds;
     }
 
+    public Vector2 getPosition()
+    {
+        return position;
+    }
+
+    public void setPosition(){
+
+    }
     public void setWallArrayList(ArrayList<Wall> walls){
         this.walls = walls;
     }
