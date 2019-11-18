@@ -19,6 +19,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -48,6 +49,7 @@ public class tileMapScreen implements Screen {
     private TextureAtlas shelfButtonAtlas;
     private ArrayList<tempTile> shelfTileArray;
     private Label.LabelStyle textStyle;
+    private Vector2 spawnPoint = new Vector2(175,620);
 
     //Test Var
     private Double money;
@@ -242,29 +244,15 @@ public class tileMapScreen implements Screen {
 
         }
 
-
-
-        // Test Code
-        /*
-        batch = new SpriteBatch();
-        sprite = new Sprite(new Texture("img/apple.jpg"));
-        customer = new Customer(sprite,(TiledMapTileLayer) maps.getLayers().get(0));
-
-
-        customer.setSize(30,30);
-        customer.setPosition(60 * customer.getCollisionLayer().getTileWidth(), 20 * customer.getCollisionLayer().getTileHeight());
-           */
-
+        setRandomWant();
 
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture("img/sprite.png"));
-        customerTestCollison = new CustomerTestCollison(80,80,sprite);
-        customerTestCollison.setPosition(80,80);
+        Vector2 tempVector2 = new Vector2(625,70);
+        customerTestCollison = new CustomerTestCollison((int) spawnPoint.x,(int) spawnPoint.y,sprite,tempVector2);
+        customerTestCollison.setWallArrayList(wallArrayList);
+        customerTestCollison.setPosition((int) spawnPoint.x,(int) spawnPoint.y);
 
-
-
-
-        setRandomWant();
         testInt++;
             switch (randomWant) {
                 case 0:
@@ -312,7 +300,6 @@ public class tileMapScreen implements Screen {
     public CustomerTestCollison getCustomerTestCollsion(){
         return customerTestCollison;
     }
-
 
 }
 
