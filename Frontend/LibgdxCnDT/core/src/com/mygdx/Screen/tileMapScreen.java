@@ -78,9 +78,11 @@ public class tileMapScreen implements Screen {
     		}
         }
     	try {
-    	    socketClient = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + 25 + "/" + "Tim"));
-    	    game.setStartTimer(true);//Delete this shit
-        } catch (Exception e) {
+    	    //socketClient = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + 25 + "/" + "Tim"), game);
+            socketClient = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + 25 + "/" + "Tim/"), game);
+    	    //game.setStartTimer(true);//Delete this shit
+
+    	} catch (Exception e) {
     	    e.printStackTrace();
         }
     }
@@ -101,13 +103,8 @@ public class tileMapScreen implements Screen {
     }
 
     private void advancedDay() {
-        System.out.println(socketClient.getNextDay());
-        socketClient.setNextDay(false);
-        game.setHour(8);
-        game.increaseDay();
-        game.setStartTimer(true);
+        game.advanceDay();
     }
-
 
     @Override
     public void resize(int width, int height){
@@ -267,21 +264,14 @@ public class tileMapScreen implements Screen {
             sendShelfListToServer();
             game.setStartTimer(false);
             socketClient.sendMessage("sendMyMoney " + game.gameStore.getBalance());
-            System.out.println(socketClient.getNextDay());
         }
-        else if(!game.getStartTimer()) {
-            socketClient.setNextDay(true);
+        else if(!game.getStartTimer() && game.getNextDay()) {
             try {
                 Thread.sleep(500);
+                advancedDay();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (socketClient.getNextDay()) {
-                System.out.println(socketClient.getNextDay());
-                advancedDay();
-            }
-            System.out.println(socketClient.getNextDay());
-
         }
         return timeOfDay + ":00 " + AMOrPM;
     }
@@ -294,13 +284,17 @@ public class tileMapScreen implements Screen {
     }
 
     private JSONArray listToJSON() {
+        JSONArray jsArray = new JSONArray(getListOfItemsOnShelves());
+        return jsArray;
+    }
+
+    private ArrayList<Tile> getListOfItemsOnShelves() {
         ArrayList<Tile> tileArr = new ArrayList<>();
         for(int i = 0; i < shelfTileArray.size(); i++) {
             if(shelfTileArray.get(i).getItem() != null) {
                 tileArr.add(shelfTileArray.get(i));
             }
         }
-        JSONArray jsArray = new JSONArray(tileArr);
-        return jsArray;
+        return tileArr;
     }
 }

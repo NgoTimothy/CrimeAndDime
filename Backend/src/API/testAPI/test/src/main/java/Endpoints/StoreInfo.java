@@ -115,4 +115,5 @@ public class StoreInfo
     }
 
     public boolean getNextDay() { return nextDay; }
+
 }

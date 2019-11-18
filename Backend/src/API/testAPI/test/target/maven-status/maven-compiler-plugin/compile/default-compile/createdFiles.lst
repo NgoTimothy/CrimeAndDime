@@ -1,11 +1,14 @@
 Endpoints\LobbyController.class
 Endpoints\Item.class
-Endpoints\WebSocketServer.class
 Endpoints\InventoryController.class
-Endpoints\Lobby.class
 Endpoints\ItemEncoder.class
+Endpoints\LobbyControllerTest.class
+Endpoints\Application.class
+Endpoints\StoreInfoControllerTest.class
+Endpoints\WebSocketServer.class
+Endpoints\Inventory.class
+Endpoints\Lobby.class
 Endpoints\User.class
 Endpoints\StoreInfo.class
-Endpoints\Application.class
 Endpoints\StoreInfoController.class
 Endpoints\WebSocketConfig.class

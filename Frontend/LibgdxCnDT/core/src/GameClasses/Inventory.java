@@ -14,6 +14,25 @@ public class Inventory {
     }
 
     /**
+     * This method will subtract the quantity in the inventory by the quantity purchased
+     * @param itemToBePurchased
+     * @return Quantity purchased
+     */
+    public int purchaseItem(Item itemToBePurchased) {
+        for(int i = 0; i < inventory.size(); i++) {
+            if(itemToBePurchased.equals(inventory.get(i))) {
+                int quantityLeftover = inventory.get(i).getQuantity() - itemToBePurchased.getQuantity();
+                if(quantityLeftover == 0)
+                    removeItem(itemToBePurchased);
+                else
+                    inventory.get(i).subtractQuantity(quantityLeftover);
+                return itemToBePurchased.getQuantity();
+            }
+        }
+        return 0;
+    }
+
+    /**
      * Adds an item to the inventory ArrayList
      * @param itemToBeAdded
      */

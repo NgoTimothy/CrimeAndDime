@@ -23,6 +23,14 @@ public class Store {
         initStore();
     }
 
+    public Store(String initName, double balance) {
+        name = initName;
+        storeMap = new ArrayList<List<Tile>>();
+        this.balance = balance;
+        storeInventory = new Inventory();
+        initStore();
+    }
+
     public static void main(String[] args) {
         Store newStore = new Store("Tim's Store");
         newStore.printStore();
@@ -137,10 +145,16 @@ public class Store {
     }
 
     /**
-     * Returns the ArrayList of items in the store
-     * @return
+     * @return the actual inventory object of the store
      */
-    public ArrayList<Item> getInventory() {
+    public Inventory getInventory() {
+        return storeInventory;
+    }
+
+    /**
+     * @return the arraylist of items in the store
+     */
+    public ArrayList<Item> getListOfInventoryItems() {
         return storeInventory.getInventory();
     }
 
@@ -151,5 +165,14 @@ public class Store {
     public double getBalance()
     {
     	return balance;
+    }
+
+    /**
+     * Will add amountTobeAdded to the balance of the store and makes it so the balance is always two decimals
+     * @param amountToBeAdded
+     */
+    public void addBalance(double amountToBeAdded) {
+        balance += amountToBeAdded;
+        balance = Math.round(balance * 100.0) / 100.0;
     }
 }

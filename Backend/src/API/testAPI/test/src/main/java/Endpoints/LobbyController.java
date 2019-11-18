@@ -24,7 +24,6 @@ public class LobbyController {
     public String getAllLobbies() throws SQLException {
         Connection con = null;
         try {
-
             ArrayList<Lobby> lobbies = new ArrayList<Lobby>();
             String query = "SELECT * FROM crime_and_dime.lobby";
             Class.forName("com.mysql.jdbc.Driver");
