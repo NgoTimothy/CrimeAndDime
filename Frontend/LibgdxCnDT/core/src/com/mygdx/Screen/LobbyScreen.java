@@ -43,7 +43,6 @@ public class LobbyScreen implements Screen {
     public LobbyScreen(CrimeAndDime newGame, Lobby newLobby)
     {
     	lobby = newLobby;
-    	getLobby();
     	game = newGame;
     	white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
@@ -51,6 +50,7 @@ public class LobbyScreen implements Screen {
     	username = "player" + Integer.toString(lobby.getNumPlayers());
     	messages = new ArrayList<String>();
     	lobbyScreenService = new LobbyScreenService();
+		getLobby();
     	try {
 			connect();
 		} catch (Exception e) {
@@ -147,7 +147,7 @@ public class LobbyScreen implements Screen {
 
 
     @Override
-    public void resize(int y, int x){
+    public void resize(int y, int x) {
     	
     }
 
