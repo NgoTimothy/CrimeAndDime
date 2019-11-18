@@ -168,8 +168,11 @@ public class Store {
     }
 
     /**
-     * Will add amountTobeAdded to the balance of the store
+     * Will add amountTobeAdded to the balance of the store and makes it so the balance is always two decimals
      * @param amountToBeAdded
      */
-    public void addBalance(double amountToBeAdded) { balance += amountToBeAdded; }
+    public void addBalance(double amountToBeAdded) {
+        balance += amountToBeAdded;
+        balance = Math.round(balance * 100.0) / 100.0;
+    }
 }

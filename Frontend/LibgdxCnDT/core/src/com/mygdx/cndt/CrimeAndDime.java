@@ -111,7 +111,7 @@ public class CrimeAndDime extends Game {
 			customers.add(newCustomer);
 			int quantityPurchased = gameStore.getInventory().purchaseItem(customerDesiredItem);//When customers are generated they are automatically purchased from store, may delete later
 			subQuantityFromItemsList(quantityPurchased, customerDesiredItem);
-			double priceToBeAdded = Math.round(customerDesiredItem.getRetailCost() * customerDesiredItem.getQuantity() * 100.0)/ 100.0;
+			double priceToBeAdded = Math.round((customerDesiredItem.getRetailCost() * customerDesiredItem.getQuantity()) * 100.0) / 100.0;
 			gameStore.addBalance(priceToBeAdded);//May delete this too
 			newCustomer.purchaseItem(customerDesiredItem);
 		}
