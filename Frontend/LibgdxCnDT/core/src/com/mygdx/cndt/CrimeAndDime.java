@@ -33,6 +33,7 @@ public class CrimeAndDime extends Game {
 	private static final int closingTime = 20;
 	private int day;
 	private int timeLeftOnBreak;
+	private String username;
 
 	@Override
 	public void create() {
@@ -210,5 +211,8 @@ public class CrimeAndDime extends Game {
 	public void setOnBreak(boolean onBreak) { this.onBreak = onBreak; }
 
 	public boolean getOnBreak() {return onBreak; }
-}
 
+	public void setUsername(String username) { this.username = username; }
+
+	public String getUsername() { return username; }
+}

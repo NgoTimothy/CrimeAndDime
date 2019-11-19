@@ -1,5 +1,6 @@
 package com.mygdx.Screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.cndt.CrimeAndDime;
+
+import java.util.regex.Pattern;
 
 public class Login implements Screen {
     private BitmapFont white, black;
@@ -73,7 +76,7 @@ public class Login implements Screen {
         login.addListener(new ClickListener() {
            @Override
            public void clicked(InputEvent input, float x, float y) {
-               verifyLogin(usernameTextField.getText(), passwordTextField.getText());
+               attemptToLogin(usernameTextField.getText(), passwordTextField.getText());
            }
         });
         stage.addActor(login);
@@ -131,14 +134,29 @@ public class Login implements Screen {
     }
 
     /**
-     * Method will verify login information exists in the database
-     * If it is verified it will login
+     * Method will attempt login
+     * If successful it will login and go to lobbies screen
      * Else it will give an error message
      * @param usr
      * @param psw
      */
-    private void verifyLogin(String usr, String psw) {
+    private void attemptToLogin(String usr, String psw) {
         //TODO
+        if(usr != null && !usr.isEmpty() && psw != null && !psw.isEmpty() && verifyLogin(usr, psw)) {
+            game.setUsername(usr);
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new Lobbies(game));
+        }
+    }
+
+    private boolean verifyLogin(String usr, String psw) {
+        if(usr == null || usr.isEmpty()) {
+            System.out.println("Username cannot be empty");
+        }
+        if(psw == null || psw.isEmpty()) {
+            System.out.println("Password cannot be empty");
+            return false;
+        }
+        return true; //TODO
     }
 
     /**
@@ -152,6 +170,81 @@ public class Login implements Screen {
      */
     private void registerAccount(String usr, String psw, String email, String phoneNumber) {
         //TODO
+        if(verifyRegisteringAccount(usr, psw, email, phoneNumber)) {
+            game.setUsername(usr);
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new Lobbies(game));
+        }
+    }
+
+    /**
+     * This verify all fields when registering an account
+     * @param usr
+     * @param psw
+     * @param email
+     * @param phoneNumber
+     * @return Whether or not the account could be registered
+     */
+    private boolean verifyRegisteringAccount(String usr, String psw, String email, String phoneNumber) {
+        Pattern specialCharPatten = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+        Pattern upperCasePatten = Pattern.compile("[A-Z ]");
+        Pattern lowerCasePatten = Pattern.compile("[a-z ]");
+        Pattern digitCasePatten = Pattern.compile("[0-9 ]");
+        Pattern allDigits = Pattern.compile(".*[^0-9].*");
+
+        if(usr == null || usr.isEmpty()) {
+            System.out.println("Username cannot be empty");
+            return false;
+        }
+        else if(usr.length() <= 4) {
+            System.out.println("Username must be at least 4 characters");
+            return false;
+        }
+        if(psw == null || psw.isEmpty()) {
+            System.out.println("Password cannot be empty");
+            return false;
+        }
+        if(psw.length() <= 7) {
+            System.out.println("Password must be at least 8 characters");
+            return false;
+        }
+        if(!specialCharPatten.matcher(psw).find()) {
+            System.out.println("Password must have a special character");
+            return false;
+        }
+        if(!upperCasePatten.matcher(psw).find()) {
+            System.out.println("Password must have a uppercase character");
+            return false;
+        }
+        if(!lowerCasePatten.matcher(psw).find()) {
+            System.out.println("Password must have a lowercase character");
+            return false;
+        }
+        if(!digitCasePatten.matcher(psw).find()) {
+            System.out.println("Password must have a number");
+            return false;
+        }
+        if(email == null || email.isEmpty()) {
+            System.out.println("Email cannot be empty");
+            return false;
+        }
+        if(!email.contains("@")) {
+            System.out.println("Email is not valid");
+            return false;
+        }
+        if(phoneNumber == null || phoneNumber.isEmpty()) {
+            System.out.println("Phone number cannot be empty");
+            return false;
+        }
+        phoneNumber.replace("-", "");
+        if(allDigits.matcher(phoneNumber).matches()) {
+            System.out.println("Phone number can only contain digits");
+            return false;
+        }
+        if(phoneNumber.length() != 7 || phoneNumber.length() != 10) {
+            System.out.println("Phone number is not correct length");
+            return false;
+        }
+        return true;
     }
 
     @Override
