@@ -10,13 +10,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -27,7 +25,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.Objects.tempTile;
 import com.mygdx.cndt.CrimeandDime;
 import com.mygdx.entities.Customer;
-import com.mygdx.entities.CustomerTestCollison;
 import com.mygdx.entities.Wall;
 
 import java.util.ArrayList;
@@ -64,9 +61,8 @@ public class tileMapScreen implements Screen {
     private CrimeandDime game;
 
     private Customer customer;
-
-    private CustomerTestCollison customerTestCollison;
     private ArrayList<Wall> wallArrayList;
+
 /*
     //Testing Purposes
     public tileMapScreen(CrimeandDime newGame, ArrayList<tempTile> newTileArrayList){
@@ -89,8 +85,8 @@ public class tileMapScreen implements Screen {
         // Test Code:
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        customerTestCollison.draw(batch);
-        customerTestCollison.setPosition(customerTestCollison.getPosition().x,customerTestCollison.getPosition().y);
+        customer.draw(batch);
+        customer.setPosition(customer.getPosition().x, customer.getPosition().y);
         batch.end();
 
 
@@ -101,7 +97,6 @@ public class tileMapScreen implements Screen {
                 break;
             case 1:
                // xPosition = xPosition + (20 * (Gdx.graphics.getDeltaTime()));
-
                 break;
             case 2:
                 xPosition = xPosition + (20 * (Gdx.graphics.getDeltaTime()));
@@ -110,12 +105,10 @@ public class tileMapScreen implements Screen {
                 break;
         }
 
-        //customerTestCollison.setPosition(customerTestCollison.getX() + 2, customerTestCollison.getY());
-
         for (int i = 0; i < wallArrayList.size(); i++){
             Wall tempWall = wallArrayList.get(i);
-            if (tempWall.collides(customerTestCollison.getBounds())){
-               customerTestCollison.stop();
+            if (tempWall.collides(customer.getBounds())){
+               customer.stop();
             }
         }
 
@@ -234,12 +227,6 @@ public class tileMapScreen implements Screen {
                 shelfImage.setColor(0, 0, 0, 0);
 
                 stage.addActor(shelfImage);
-                shelfImage.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        Gdx.app.exit();
-                    }
-                });
             }
 
         }
@@ -249,9 +236,9 @@ public class tileMapScreen implements Screen {
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture("img/sprite.png"));
         Vector2 tempVector2 = new Vector2(625,70);
-        customerTestCollison = new CustomerTestCollison((int) spawnPoint.x,(int) spawnPoint.y,sprite,tempVector2);
-        customerTestCollison.setWallArrayList(wallArrayList);
-        customerTestCollison.setPosition((int) spawnPoint.x,(int) spawnPoint.y);
+        customer = new Customer((int) spawnPoint.x,(int) spawnPoint.y,sprite,tempVector2);
+        customer.setWallArrayList(wallArrayList);
+        customer.setPosition((int) spawnPoint.x,(int) spawnPoint.y);
 
         testInt++;
             switch (randomWant) {
@@ -297,8 +284,8 @@ public class tileMapScreen implements Screen {
     }
 
 
-    public CustomerTestCollison getCustomerTestCollsion(){
-        return customerTestCollison;
+    public Customer getCustomerTestCollsion(){
+        return customer;
     }
 
 }

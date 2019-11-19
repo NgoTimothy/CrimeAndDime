@@ -1,24 +1,41 @@
 package com.mygdx.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.mygdx.Screen.tileMapScreen;
 
-public class Customer extends Sprite {
+import java.util.ArrayList;
 
-    private Vector2 velocity = new Vector2();
+public class Customer extends Sprite{
 
-    private float speed = 60*2;
+    private static final int MOVEMENT = 50;
+ //   private Texture customerTexture;
+    private Vector2 position;
+    private Vector2 velocity;
+    private Vector2 targetPosition;
+    private Rectangle bounds;
+    private Sprite sprite;
 
-    private float testWind = 5;
+    private boolean hasCollided = false;
+    private ArrayList<Wall> walls;
 
-    private TiledMapTileLayer collisionLayer;
-
-    public Customer(Sprite sprite, TiledMapTileLayer collisionLayer){
+    public Customer(int x, int y, Sprite sprite, Vector2 targetPosition){
         super(sprite);
-        this.collisionLayer = collisionLayer;
+        this.sprite = sprite;
+        position = new Vector2(x,y);
+        velocity = new Vector2(0,0);
+        this.targetPosition = targetPosition;
+        bounds = new Rectangle(x,y,sprite.getWidth(),sprite.getWidth());
+    }
+
+    public void update(float dt){
+        updateMovement(dt);
+        bounds.setPosition(position.x,position.y);
     }
 
     @Override
@@ -27,105 +44,95 @@ public class Customer extends Sprite {
         super.draw(batch);
     }
 
-    public void update(float delta){
+    public void stop(){
+        velocity.set(0,0);
+        hasCollided = true;
+    }
+    public Rectangle getBounds(){
+        return bounds;
+    }
 
-        /*
-        velocity.x += testWind * delta;
-        // Squeeze Values
-        if (velocity.y > speed){
-            velocity.y = speed;
+    public Vector2 getPosition()
+    {
+        return position;
+    }
+
+    public void setPosition(){
+
+    }
+
+    public void setWallArrayList(ArrayList<Wall> walls){
+        this.walls = walls;
+    }
+
+    public void updateMovement(float dt){
+        switch (isValidMovement()){
+            case 1:
+                velocity.y = MOVEMENT * dt;
+                position.set(position.x, position.y - velocity.y);
+                break;
+            case 2:
+                velocity.x = MOVEMENT * dt;
+                position.set(position.x - velocity.x, position.y);
+                break;
+            case 3:
+                velocity.x = MOVEMENT * dt;
+                position.set(position.x + velocity.x, position.y);
+                break;
+            default:
+                System.out.println(isValidMovement());
+                System.out.println("It should never get to this????");
+                break;
         }
-        else if(velocity.y < speed){
-            velocity.y =- speed;
+    }
 
-        }
-
-        // Save Old Position
-        float oldX = getX(), oldY = getY(); // tildWidth = collisionLayer.getTileWidth(), tileHeight = collisionLayer.getTileHeight();
-        boolean collistionX = false, collisionY = false;
-
-        // Move on X
-        setX(getX() + velocity.x * delta);
-
-        if (collistionX){
-            setX(oldX);
-            velocity.x -= testWind * delta;
-            velocity.x = 0;
-        }
-        if (velocity.x < 0){
-            collistionX = isCellBlocked(getX(),getY() + getHeight());
-
-            if (!collistionX) {
-                collistionX = isCellBlocked(getX(), getY() + getHeight() / 2);
+    public int isValidMovement(){
+        Vector2 futureMovement = new Vector2();
+        Rectangle futureMovementBound;
+        if (position.x != targetPosition.x && position.y != targetPosition.y)  // Could make this a boolean that checks the "checkpoint" for the targetGoal.
+        {
+            if (position.y > targetPosition.y){
+                futureMovement.x = targetPosition.x;
+                futureMovement.y = targetPosition.y + (MOVEMENT * Gdx.graphics.getDeltaTime());
+                futureMovementBound = new Rectangle(futureMovement.x,futureMovement.y,sprite.getWidth(),sprite.getHeight()); // Not 100% sure about this.
+                if (!isWallCollistion(futureMovementBound))
+                {
+                    return 1;
+                }
+                // Should never be true becasue if it is, position.y <= targetPosition.y
             }
-
-            if (!collistionX) {
-                collistionX = isCellBlocked(getX(), getY());
+            if (position.x > targetPosition.x){
+                futureMovement.x = targetPosition.x - (MOVEMENT * Gdx.graphics.getDeltaTime());
+                futureMovement.y = targetPosition.y;
+                futureMovementBound = new Rectangle(futureMovement.x,futureMovement.y,sprite.getWidth(),sprite.getHeight());
+                if (!isWallCollistion(futureMovementBound))
+                {
+                    return 2;
+                }
             }
-
-        }
-        if (collistionX){
-            setX(oldX);
-            velocity.x = 0;
-        }
-        else if (velocity.x > 0){
-            collisionY = isCellBlocked(getX(), getY() + getHeight());
-
-            if(!collisionY) {
-                collisionY = isCellBlocked(getX() + getWidth() / 2, getY() + getHeight());
-            }
-            if (!collisionY){
-                collisionY = isCellBlocked(getX() + getWidth(), getY() + getHeight());
+            if (position.x < targetPosition.x){
+                futureMovement.x = targetPosition.x + (MOVEMENT * Gdx.graphics.getDeltaTime());
+                futureMovement.y = targetPosition.y;
+                futureMovementBound = new Rectangle(futureMovement.x,futureMovement.y,sprite.getWidth(),sprite.getHeight());
+                if (!isWallCollistion(futureMovementBound))
+                {
+                    return 3;
+                }
             }
         }
-        if (collisionY){
-            setY(oldY);
-            velocity.y = 0;
+        else {
+            return 0;
         }
-        */
+        return 0;
     }
 
-    private boolean isCellBlocked(float x, float y){
-        TiledMapTileLayer.Cell cell = collisionLayer.getCell((int) (x / collisionLayer.getTileWidth()) , (int) (y/collisionLayer.getTileHeight()));
-
-
-        Boolean testBool = false;
-
-        if (cell.getTile().getProperties().containsKey("BLOCKED")){
-            testBool = true;
+    public boolean isWallCollistion(Rectangle input){
+        for (int i = 0; i < walls.size(); i++){
+            Wall tempWall = walls.get(i);
+            if (tempWall.collides(input)){
+                return true;
+            }
         }
-        if (testBool == true){
-            System.out.println(Boolean.toString(testBool));
-        }
-
-        return cell != null && cell.getTile() != null || cell.getTile().getProperties().containsKey("BLOCKED");
+        return false;
     }
-
-    public void customerWants(){
-
-    }
-
-    public Vector2 getVelocity(){
-        return velocity;
-    }
-
-    public void setVelocity(Vector2 velocity){
-        this.velocity = velocity;
-    }
-
-    public float getSpeed(){
-        return speed;
-    }
-
-    public void setSpeed(Float speed){
-        this.speed = speed;
-    }
-
-    public TiledMapTileLayer getCollisionLayer() {
-        return collisionLayer;
-    }
-    public void setCollisionLayer(TiledMapTileLayer collisionLayer){
-        this.collisionLayer = collisionLayer;
-    }
-
 }
