@@ -247,11 +247,12 @@ public class Login implements Screen {
             return false;
         }
         phoneNumber.replace("-", "");
+        phoneNumber.trim();
         if(allDigits.matcher(phoneNumber).matches()) {
             System.out.println("Phone number can only contain digits");
             return false;
         }
-        if(phoneNumber.length() != 7 || phoneNumber.length() != 10) {
+        if(phoneNumber.length() != 7 && phoneNumber.length() != 10) {
             System.out.println("Phone number is not correct length");
             return false;
         }
@@ -293,8 +294,7 @@ public class Login implements Screen {
 
     }
 
-    private TextButton.TextButtonStyle textButtonStyle()
-    {
+    private TextButton.TextButtonStyle textButtonStyle() {
         atlas = new TextureAtlas("ui/button.pack");
         skin = new Skin(atlas);
 
