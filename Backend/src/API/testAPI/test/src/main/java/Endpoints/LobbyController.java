@@ -204,7 +204,7 @@ public class LobbyController {
         try {
 
             //String query = "INSERT INTO lobby_group(username, lobbyID) VALUES(?, ?)";
-            String query2 = "INSERT INTO lobby(lobbyName, hasPassword, numberOfPlayers) VALUES(?, 0, 1)";
+            String query2 = "INSERT INTO lobby(lobbyName, hasPassword, numberOfPlayers) VALUES(?, 0, 0)";
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
                     // "jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","teamTC3","TC_3CrimeAndDime");

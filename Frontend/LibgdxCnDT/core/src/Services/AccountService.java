@@ -9,7 +9,7 @@ public class AccountService {
 
     public boolean login(String username, String password) {
         try {
-            String url = "http://coms-309-tc-3.misc.iastate.edu:8080/login?username=" + username + "?password=" + password;
+            String url = "http://coms-309-tc-3.misc.iastate.edu:8080/login?username=" + username + "&password=" + password;
 
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -50,7 +50,7 @@ public class AccountService {
 
     public boolean register(String username, String password, String email, String phoneNumber) {
         try {
-            String url = "http://coms-309-tc-3.misc.iastate.edu:8080/register?username=" + username + "?password=" + password;
+            String url = "http://coms-309-tc-3.misc.iastate.edu:8080/register?username=" + username + "&password=" + password;
 
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
