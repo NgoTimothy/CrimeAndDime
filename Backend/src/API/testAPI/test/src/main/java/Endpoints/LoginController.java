@@ -29,7 +29,7 @@ public class LoginController {
             //prst.setInt(2, lobbyID);
             //prst.executeUpdate();
 
-            return "Accepted!";
+            return "Accepted";
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
