@@ -92,13 +92,15 @@ public class LobbyScreen implements Screen {
         stage.setDebugAll(true);
 
         stage.draw();
-        
+
         batch.begin();
         white.draw(batch, lobby.getLobbyName(), 500, 700);
         for(int i = 0; i < 4; i++)
         {
-	        if (i < lobby.getNumPlayers())
-	        	white.draw(batch, "player" + Integer.toString(i + 1), i * 200 + 250, 400);
+	        if (i < lobby.getNumPlayers()) {
+				white.draw(batch, username, i * 200 + 250, 400);
+				//white.draw(batch, "player" + Integer.toString(i + 1), i * 200 + 250, 400);
+			}
 	        else
 	        	white.draw(batch, "Open", i * 200 + 250, 400);
         }
