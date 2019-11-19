@@ -149,6 +149,7 @@ public class Login implements Screen {
         if(verifyLogin(usr, psw)) {
             game.setUsername(usr);
             ((Game) Gdx.app.getApplicationListener()).setScreen(new Lobbies(game));
+            System.out.println(game.getUsername());
         }
         else {
             System.out.println("User could not be found");

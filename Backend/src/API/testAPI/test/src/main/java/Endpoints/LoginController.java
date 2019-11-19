@@ -1,5 +1,6 @@
 package Endpoints;
 
+import com.mysql.jdbc.Connection;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ public class LoginController {
             
             String query2 = "INSERT INTO login(username, password) VALUES(?, ?)";
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(
+            con = (Connection) DriverManager.getConnection(
                     "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
             PreparedStatement prst = con.prepareStatement(query2);
             prst.setString(1, username);
@@ -41,7 +42,7 @@ public class LoginController {
 
             String query2 = "SELECT * FROM login WHERE username = ? AND password = ?";
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(
+            con = (Connection) DriverManager.getConnection(
                     // "jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","teamTC3","TC_3CrimeAndDime");
                     "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
             PreparedStatement prst = con.prepareStatement(query2);
