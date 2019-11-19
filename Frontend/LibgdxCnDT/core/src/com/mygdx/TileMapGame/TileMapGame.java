@@ -8,11 +8,7 @@ public class TileMapGame extends Game {
 
     @Override
     public void create (){
-<<<<<<< HEAD
         setScreen(new tileMapScreen(new CrimeAndDime()));
-=======
-        setScreen(new Splash());
->>>>>>> SpriteMovement-Hung
     }
 
     @Override

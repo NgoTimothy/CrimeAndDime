@@ -44,26 +44,10 @@ public class Splash implements Screen {
         splashImg = new Sprite(splashTexture);
         splashImg.setSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-<<<<<<< HEAD
         playImg = setImage(texture, 290, 314, 700, 75, nextScreen.LOBBY);
         stage.addActor(playImg);
         exitImg = setImage(texture, 290, 50, 700, 75, nextScreen.EXIT);
         stage.addActor(exitImg);
-=======
-        Texture texture = new Texture(Gdx.files.internal("img/transparentPicture.png"));
-        shelfImage = new Image(texture);
-        shelfImage.setPosition(290,314);
-        shelfImage.setSize(700,75);
-        shelfImage.addListener(new ClickListener()
-        {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new tileMapScreen());
-            }
-        });
-
-        stage.addActor(shelfImage);
->>>>>>> SpriteMovement-Hung
         batch.begin();
         batch.end();
         System.out.println(playImg.getX());
