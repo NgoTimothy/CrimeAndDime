@@ -14,20 +14,26 @@ public class Store {
     private String name;
     private double balance;
     public Inventory storeInventory;
+    public int marketScore;
+    public int crime;
 
     public Store(String initName) {
         name = initName;
         storeMap = new ArrayList<List<Tile>>();
         balance = 9999.99;
         storeInventory = new Inventory();
+        marketScore = 0;
+        crime = 0;
         initStore();
     }
 
-    public Store(String initName, double balance) {
+    public Store(String initName, double balance, int marketScore, int crime) {
         name = initName;
         storeMap = new ArrayList<List<Tile>>();
         this.balance = balance;
         storeInventory = new Inventory();
+        this.marketScore = marketScore;
+        this.crime = crime;
         initStore();
     }
 
@@ -144,6 +150,71 @@ public class Store {
         }
     }
 
+    public void positiveMarketingOne(){
+        if(balance > 100){
+            balance = balance - 100;
+            marketScore = marketScore + 10;
+        }
+
+    }
+    public void positiveMarketingTwo(){
+        if(balance > 500){
+            balance = balance - 500;
+            marketScore = marketScore + 50;
+        }
+    }
+
+    public void positiveMarketingThree(){
+        if(balance > 1000){
+            balance = balance - 1000;
+            marketScore = marketScore + 100;
+        }
+    }
+
+    public void negativeMarketingOne(Store store){
+        if(balance > 100){
+            balance = balance - 100;
+            store.setMarketScore(store.getMarketScore() - 10);
+        }
+
+    }
+
+    public void negativeMarketingTwo(Store store){
+        if(balance > 500){
+            balance = balance - 500;
+            store.setMarketScore(store.getMarketScore() - 50);
+        }
+    }
+
+    public void negativeMarketingThree(Store store){
+        if(balance > 1000){
+            balance = balance - 1000;
+            store.setMarketScore(store.getMarketScore() - 100);
+        }
+    }
+
+    public void crimeOne(Store store){
+        if(balance > 10){
+            balance = balance - 10;
+            crime = crime + 10;
+            store.setMarketScore(store.getMarketScore() - 10);
+        }
+    }
+    public void crimeTwo(Store store){
+        if(balance > 50){
+            balance = balance - 50;
+            crime = crime + 20;
+            store.setMarketScore(store.getMarketScore() - 50);
+        }
+    }
+    public void crimeThree(Store store){
+        if(balance > 100){
+            balance = balance - 100;
+            crime = crime + 30;
+            store.setMarketScore(store.getMarketScore() - 100);
+        }
+    }
+
     /**
      * @return the actual inventory object of the store
      */
@@ -174,5 +245,21 @@ public class Store {
     public void addBalance(double amountToBeAdded) {
         balance += amountToBeAdded;
         balance = Math.round(balance * 100.0) / 100.0;
+    }
+
+    public int getMarketScore() {
+        return marketScore;
+    }
+
+    public void setMarketScore(int marketScore) {
+        this.marketScore = marketScore;
+    }
+
+    public int getCrime() {
+        return crime;
+    }
+
+    public void setCrime(int crime) {
+        this.crime = crime;
     }
 }
