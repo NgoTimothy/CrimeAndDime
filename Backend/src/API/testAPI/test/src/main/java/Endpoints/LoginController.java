@@ -48,7 +48,7 @@ public class LoginController {
             String expectedU = "";
             String expectedP = "";
             //String query = "INSERT INTO lobby_group(username, lobbyID) VALUES(?, ?)";
-            String query2 = "SELECT * FROM login WHERE username = ? & password = ?";
+            String query2 = "SELECT * FROM login WHERE username = ? AND password = ?";
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
                     // "jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","teamTC3","TC_3CrimeAndDime");
