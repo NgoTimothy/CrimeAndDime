@@ -2,6 +2,8 @@ import org.junit.*;
 import org.mockito.Mock;
 import utility.Lobby;
 
+import java.util.HashMap;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -50,6 +52,16 @@ public class LobbyTest {
         assertEquals(2, testLobby.getNumPlayers());
         testLobby.setNumPlayers(1);
         assertEquals(1, testLobby.getNumPlayers());
+    }
+
+    @Test
+    public void hashmapTest() {
+        HashMap<String, Integer> usernameToLobby = new HashMap<String, Integer>();
+        usernameToLobby.put("player1", 1);
+        usernameToLobby.put("player1", 2);
+        for(int i = 0; i < usernameToLobby.size(); i++)
+            System.out.println(usernameToLobby.size());
+
     }
 
 }

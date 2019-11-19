@@ -49,7 +49,7 @@ public class LobbyScreen implements Screen {
     	white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
     	batch = new SpriteBatch();
-    	username = game.getUsername();//This was changed
+    	username = game.getUsername();
     	messages = new ArrayList<String>();
     	try {
 			connect();
@@ -67,7 +67,7 @@ public class LobbyScreen implements Screen {
 
 	void connect() throws Exception
     {
-    	clientEndPoint = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + lobby.getLobbyID() + "/" + username));
+    	clientEndPoint = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + lobby.getLobbyID() + "/" + username));
         clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
                     @Override
 					public void handleMessage(String message) {
