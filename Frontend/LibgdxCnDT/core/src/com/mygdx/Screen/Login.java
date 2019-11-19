@@ -1,5 +1,6 @@
 package com.mygdx.Screen;
 
+import Services.AccountService;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -29,14 +30,17 @@ public class Login implements Screen {
     private CrimeAndDime game;
     private String usr;
     private TextField usernameTextField, passwordTextField, regUsrTextField, regPswTextField, regEmailTextField, regPhoneTextField;
+    private AccountService accountService;
 
-    public Login(CrimeAndDime game) {
+    public Login(CrimeAndDime game, AccountService accountService) {
         white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
         black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
         batch = new SpriteBatch();
         stage = new Stage();
         this.game = game;
+        this.accountService = accountService;
     }
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -142,21 +146,25 @@ public class Login implements Screen {
      */
     private void attemptToLogin(String usr, String psw) {
         //TODO
-        if(usr != null && !usr.isEmpty() && psw != null && !psw.isEmpty() && verifyLogin(usr, psw)) {
+        if(verifyLogin(usr, psw)) {
             game.setUsername(usr);
             ((Game) Gdx.app.getApplicationListener()).setScreen(new Lobbies(game));
+        }
+        else {
+            System.out.println("User could not be found");
         }
     }
 
     private boolean verifyLogin(String usr, String psw) {
         if(usr == null || usr.isEmpty()) {
             System.out.println("Username cannot be empty");
+            return false;
         }
         if(psw == null || psw.isEmpty()) {
             System.out.println("Password cannot be empty");
             return false;
         }
-        return true; //TODO
+        return accountService.login(usr, psw);
     }
 
     /**
@@ -170,9 +178,12 @@ public class Login implements Screen {
      */
     private void registerAccount(String usr, String psw, String email, String phoneNumber) {
         //TODO
-        if(verifyRegisteringAccount(usr, psw, email, phoneNumber)) {
+        if(verifyRegisteringAccount(usr, psw, email, phoneNumber) && accountService.register(usr, psw, email, phoneNumber)) {
             game.setUsername(usr);
             ((Game) Gdx.app.getApplicationListener()).setScreen(new Lobbies(game));
+        }
+        else {
+            System.out.println("User could not be registered");
         }
     }
 
@@ -236,11 +247,12 @@ public class Login implements Screen {
             return false;
         }
         phoneNumber.replace("-", "");
+        phoneNumber.trim();
         if(allDigits.matcher(phoneNumber).matches()) {
             System.out.println("Phone number can only contain digits");
             return false;
         }
-        if(phoneNumber.length() != 7 || phoneNumber.length() != 10) {
+        if(phoneNumber.length() != 7 && phoneNumber.length() != 10) {
             System.out.println("Phone number is not correct length");
             return false;
         }
@@ -282,8 +294,7 @@ public class Login implements Screen {
 
     }
 
-    private TextButton.TextButtonStyle textButtonStyle()
-    {
+    private TextButton.TextButtonStyle textButtonStyle() {
         atlas = new TextureAtlas("ui/button.pack");
         skin = new Skin(atlas);
 
