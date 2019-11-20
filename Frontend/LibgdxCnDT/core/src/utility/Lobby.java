@@ -50,14 +50,21 @@ public class Lobby {
 		return numPlayers;
 	}
 	
+	public void addPlayer(Player player)
+	{
+		players.add(player);
+		numPlayers++;
+	}
+	
 	public void addPlayer(String playerName)
 	{
 		players.add(new Player(playerName));
+		numPlayers++;
 	}
 	
 	public void removePlayer(String playerName)
 	{
-		numPlayers = numPlayers - 1;
+		numPlayers--;
 		for (Player p : players)
 		{
 			if (p.getUsername().equals(playerName))
