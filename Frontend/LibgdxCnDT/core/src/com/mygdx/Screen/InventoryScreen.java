@@ -55,6 +55,7 @@ public class InventoryScreen implements Screen {
         {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+            	game.sendStoreBalance();
             	game.setScreen(game.tileMap);
             }
         });

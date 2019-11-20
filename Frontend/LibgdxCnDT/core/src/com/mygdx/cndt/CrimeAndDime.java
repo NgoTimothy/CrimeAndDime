@@ -14,6 +14,8 @@ import GameClasses.Item;
 import GameClasses.Store;
 
 import Services.CrimeAndDimeService;
+import utility.Lobby;
+import utility.WebSocketClient;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
@@ -33,7 +35,10 @@ public class CrimeAndDime extends Game {
 	private static final int closingTime = 20;
 	private int day;
 	private int timeLeftOnBreak;
-
+	public WebSocketClient clientEndPoint;
+	public String username;
+	public Lobby lobby;
+	
 	@Override
 	public void create() {
 		gameStore = new Store("My Store");
@@ -100,9 +105,9 @@ public class CrimeAndDime extends Game {
 				return;
 			int randItemIndex = random.nextInt(gameStore.getListOfInventoryItems().size());
 			Item customerDesiredItem = new Item(gameStore.getListOfInventoryItems().get(randItemIndex));
-			if(gameStore.getListOfInventoryItems().get(randItemIndex).getQuantity() > 1)
-				customerDesiredItem.setQuantity(random.nextInt(gameStore.getListOfInventoryItems().get(randItemIndex).getQuantity() - 1) + 1);
-			else
+			//if(gameStore.getListOfInventoryItems().get(randItemIndex).getQuantity() > 1)
+				//customerDesiredItem.setQuantity(random.nextInt(gameStore.getListOfInventoryItems().get(randItemIndex).getQuantity() - 1) + 1);
+			//else
 				customerDesiredItem.setQuantity(1);
 			ArrayList<Item> desiredCustomerItems = new ArrayList<Item>();
 			desiredCustomerItems.add(customerDesiredItem);
@@ -114,6 +119,7 @@ public class CrimeAndDime extends Game {
 			double priceToBeAdded = Math.round((customerDesiredItem.getRetailCost() * customerDesiredItem.getQuantity()) * 100.0) / 100.0;
 			gameStore.addBalance(priceToBeAdded);//May delete this too
 			newCustomer.purchaseItem(customerDesiredItem);
+			sendStoreBalance();
 		}
 	}
 
@@ -180,6 +186,10 @@ public class CrimeAndDime extends Game {
 		hour = 8;
 		day++;
 		startTimer = true;
+	}
+	
+	public void sendStoreBalance()	{
+		clientEndPoint.sendMessage("money:" + username + ":" + gameStore.getBalance());
 	}
 	
 	public ArrayList<Item> getItems() { return items; }
