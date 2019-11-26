@@ -1,5 +1,6 @@
 package com.mygdx.Screen;
 
+import Services.AccountService;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -69,7 +70,7 @@ public class Splash implements Screen {
             returnImg.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    ((Game) Gdx.app.getApplicationListener()).setScreen(new Lobbies(curGame));
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new Login(curGame, new AccountService()));//Change to new Lobbies(curGame)
                 }
             });
         }

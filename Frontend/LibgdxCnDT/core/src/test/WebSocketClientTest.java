@@ -43,43 +43,6 @@ public class WebSocketClientTest {
         fakeStr = fakeStr.replace("[", "");//We will do up to this point for the server
         System.out.println(fakeStr);
         assertEquals(expectedString, fakeStr);
-        /*String[] tokens = fakeStr.split("}");
-        for(int i = 0; i < tokens.length; i++) {
-            if(tokens[i].length() > 5) { //Do something here
-                if(i != 0) {
-                    tokens[i] = tokens[i].substring(3);
-                }
-                tokens[i] = tokens[i].replace("\"{", "");
-                tokens[i] = tokens[i].replace("{", "");
-                String[] itemFields = tokens[i].split(",");
-                for(int j = 0; j < itemFields.length; j++) {
-                    if(itemFields[j].contains("name")) {
-                        item = new Item();
-                        item.setName(itemFields[j].substring(7).replace("\"", ""));
-                        //System.out.println(item.getName());
-
-                    }
-                    else if(itemFields[j].contains("quantity")) {
-                        item.setQuantity(Integer.parseInt(itemFields[j].substring(11)));
-                        //System.out.println(item.getQuantity());
-                    }
-                    else if(itemFields[j].contains("wholesaleCost")) {
-                        item.setWholesaleCost(Double.parseDouble(itemFields[j].substring(16)));
-                        //System.out.println(item.getWholesaleCost());
-                    }
-                    else if(itemFields[j].contains("retailCost")) {
-                        item.setRetailCost(Double.parseDouble(itemFields[j].substring(13)));
-                        //System.out.println(item.getRetailCost());
-                        itemArr.add(item);
-                    }
-
-                    //System.out.println(itemFields[j]);
-                }
-
-                //System.out.println(tokens[i]);
-            }
-        }
-        printArr(itemArr);*/
     }
 
     private void printArr(ArrayList<Item> printableArr) {
