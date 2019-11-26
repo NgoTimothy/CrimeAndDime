@@ -56,6 +56,7 @@ public class WebSocketClient {
  
     @OnMessage
     public void onMessage(String message) {
+        System.out.println(message);
         if(message.equals("StartNextDay"))
             game.setNextDay(true);
         if (this.messageHandler != null) {
@@ -72,8 +73,7 @@ public class WebSocketClient {
         this.userSession.getAsyncRemote().sendText(message);
     }
     
-    public void close() throws IOException
-    {
+    public void close() throws IOException {
     	this.userSession.close();
     }
  

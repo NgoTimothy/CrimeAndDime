@@ -42,6 +42,7 @@ public class LobbyScreen implements Screen {
     
     public LobbyScreen(CrimeAndDime newGame, Lobby newLobby)
     {
+		lobbyScreenService = new LobbyScreenService();
     	lobby = newLobby;
     	game = newGame;
     	white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
@@ -49,7 +50,6 @@ public class LobbyScreen implements Screen {
     	batch = new SpriteBatch();
     	username = "player" + Integer.toString(lobby.getNumPlayers());
     	messages = new ArrayList<String>();
-    	lobbyScreenService = new LobbyScreenService();
 		getLobby();
     	try {
 			connect();
@@ -67,7 +67,7 @@ public class LobbyScreen implements Screen {
 
 	void connect() throws Exception
     {
-    	clientEndPoint = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + lobby.getLobbyID() + "/" + username));
+    	clientEndPoint = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + lobby.getLobbyID() + "/" + username));
         clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
                     @Override
 					public void handleMessage(String message) {
@@ -77,8 +77,6 @@ public class LobbyScreen implements Screen {
                 });
         	
             	clientEndPoint.sendMessage(username + " has joined this lobby.");
-//            String m = "[{\"action\": \"join\", \"message\":\"" + username + " has joined this lobby.\"}]";
-//            clientEndPoint.sendMessage(m);
     }
     
     @Override
@@ -140,6 +138,8 @@ public class LobbyScreen implements Screen {
         	@Override
             public void clicked(InputEvent event, float x, float y) {
         		clientEndPoint.sendMessage(username + " is ready.");
+        		game.setLobbyID(lobby.getLobbyID());
+				game.setScreen(new tileMapScreen(game));//Make this play
         	}
         });
         stage.addActor(playButton);
@@ -199,89 +199,6 @@ public class LobbyScreen implements Screen {
 		textButtonStyle.pressedOffsetY = -1;
 		textButtonStyle.font = black;
 		return textButtonStyle;
-	}
-
-	public String callAPIGet() {
-		String result = "";
-		try {
-			String url = "http://coms-309-tc-3.misc.iastate.edu:8080/lobbyInfo?lobbyID=" + lobby.getLobbyID();
-
-			URL obj = new URL(url);
-			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-			// optional default is GET
-			con.setRequestMethod("GET");
-
-			String USER_AGENT = "Mozilla/5.0";
-
-			//add request header
-			con.setRequestProperty("User-Agent", USER_AGENT);
-
-			int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'GET' request to URL : " + url);
-			System.out.println("Response Code : " + responseCode);
-
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(con.getInputStream()));
-			String inputLine;
-			StringBuffer response = new StringBuffer();
-
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-			in.close();
-
-			result = response.toString();
-			return result;
-		}
-		catch(Exception e)	{
-			System.out.print(e);
-		}
-    	return "failure";
-	}
-
-	public String APIDelete() {
-		try {
-			String url = "http://coms-309-tc-3.misc.iastate.edu:8080/deleteUser";
-			URL obj = new URL(url);
-			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-			String USER_AGENT = "Mozilla/5.0";
-
-			//add request header
-			con.setRequestMethod("POST");
-			con.setRequestProperty("User-Agent", USER_AGENT);
-			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
-			String urlParameters = "lobbyID=" + lobby.getLobbyID();
-
-			// Send post request
-			con.setDoOutput(true);
-			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-			wr.writeBytes(urlParameters);
-			wr.flush();
-			wr.close();
-
-			int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'POST' request to URL : " + url);
-			System.out.println("Post parameters : " + urlParameters);
-			System.out.println("Response Code : " + responseCode);
-
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(con.getInputStream()));
-			String inputLine;
-			StringBuffer response = new StringBuffer();
-
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-			in.close();
-			return "success";
-		}
-		catch(Exception e)	{
-			System.out.print(e);
-		}
-		return "failure";
 	}
 
 	public Lobby returnCurrentLobby() {

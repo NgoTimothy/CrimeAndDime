@@ -27,6 +27,7 @@ public class CrimeAndDime extends Game {
 	private float accumulator;
 	private final float TIME_STEP = 1 / 30f; // 30 times a second
 	private int hour;
+	private int lobbyID;
 	private boolean startTimer;
 	private boolean nextDay;
 	private boolean onBreak;
@@ -210,5 +211,9 @@ public class CrimeAndDime extends Game {
 	public void setOnBreak(boolean onBreak) { this.onBreak = onBreak; }
 
 	public boolean getOnBreak() {return onBreak; }
+
+	public void setLobbyID(int lobbyID) { this.lobbyID = lobbyID; }
+
+	public int getLobbyID() { return lobbyID; }
 }
 

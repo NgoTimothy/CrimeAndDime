@@ -111,6 +111,7 @@ public class WebSocketServer {
         try {
             usernameSessionMap.get(username).getBasicRemote().sendText(message);
         } catch (IOException e) {
+
             logger.info("Exception: " + e.getMessage().toString());
             e.printStackTrace();
         }
