@@ -24,6 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LobbyScreen implements Screen {
 
@@ -39,10 +40,12 @@ public class LobbyScreen implements Screen {
     private WebSocketClient clientEndPoint;
     private String username;
     private LobbyScreenService lobbyScreenService;
+    private ArrayList<String> usernames;
     
     public LobbyScreen(CrimeAndDime newGame, Lobby newLobby)
     {
     	lobby = newLobby;
+    	usernames = new ArrayList<>();
     	lobbyScreenService = new LobbyScreenService();
     	getLobby();
     	game = newGame;
@@ -53,10 +56,10 @@ public class LobbyScreen implements Screen {
     	messages = new ArrayList<String>();
     	try {
 			connect();
+            fillUsernames();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	System.out.println(lobby.getLobbyID());
     }
 
     //For testing purposes only
@@ -97,8 +100,8 @@ public class LobbyScreen implements Screen {
         white.draw(batch, lobby.getLobbyName(), 500, 700);
         for(int i = 0; i < 4; i++)
         {
-	        if (i < lobby.getNumPlayers()) {
-				white.draw(batch, username, i * 200 + 250, 400);
+	        if (i < lobby.getNumPlayers() && i < usernames.size()) {
+				white.draw(batch, usernames.get(i), i * 200 + 250, 400);
 				//white.draw(batch, "player" + Integer.toString(i + 1), i * 200 + 250, 400);
 			}
 	        else
@@ -188,6 +191,18 @@ public class LobbyScreen implements Screen {
     		lobby.setNumPlayers(Integer.parseInt(tokens[8]));
     	else
     		lobby.setNumPlayers(Integer.parseInt(tokens[10]));
+    }
+
+    public void fillUsernames() {
+        String result = lobbyScreenService.getUsernames(lobby.getLobbyID());
+        result =  result.replace("[", "");
+        result = result.replace("]", "");
+        result = result.replace("\"", "");
+        String[] tokens = result.split(",");
+        System.out.println(result);
+        for(int i = 0; i < tokens.length; i++)
+            usernames.add(tokens[i]);
+        //usernames.add(username);
     }
     
     private TextButton.TextButtonStyle TextButtonStyle() {
