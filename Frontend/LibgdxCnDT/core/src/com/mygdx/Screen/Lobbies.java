@@ -113,19 +113,21 @@ public class Lobbies implements Screen {
         stage.addActor(playButton);
         
         getLobbies();
-        
+
         joinButton = new TextButton[lobbyList.size()];
         for(int i = 0; i < 10 && i < lobbyList.size(); i++)
         {
 	        joinButton[i] = new TextButton("Join", TextButtonStyle());
 	        joinButton[i].setPosition(700, 575 - i * 35);
-	        final Lobby l = lobbyList.get(i);
+	        final int index = i;
 	        joinButton[i].addListener(new ClickListener()
 	        {
 	            @Override
 	            public void clicked(InputEvent event, float x, float y) {	
-	            	joinLobby(l.getLobbyID());
-	            	game.setScreen(new LobbyScreen(game, l));
+	            	getLobbies();
+	            	Lobby destLobby = lobbyList.get(index);
+	            	joinLobby(destLobby.getLobbyID());
+	            	game.setScreen(new LobbyScreen(game, destLobby));
 	            }
 	        });
 	        stage.addActor(joinButton[i]);
@@ -143,7 +145,9 @@ public class Lobbies implements Screen {
 	            @Override
 	            public void clicked(InputEvent event, float x, float y) {	            	
 	            	addLobby(newLobby.getText());
-	            	System.out.println(newLobby.getText());
+	            	Lobby destLobby = lobbyList.get(lobbyList.size() - 1);
+	            	joinLobby(destLobby.getLobbyID());
+	            	game.setScreen(new LobbyScreen(game, destLobby));
 	            }
 	        });
         stage.addActor(startLobbyButton);
@@ -151,20 +155,21 @@ public class Lobbies implements Screen {
 
 
     @Override
-    public void resize(int y, int x)	{
+    public void resize(int y, int x) {
     	
     }
 
     @Override
-    public void pause(){
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
 
     }
     @Override
-    public void resume(){
-
-    }
-    @Override
-    public void hide(){
+    public void hide() {
 
     }
 
@@ -189,6 +194,7 @@ public class Lobbies implements Screen {
     
     public ArrayList<Lobby> getLobbies()
     {
+    	lobbyList.clear();
     	//Get a string of lobby info from the API
     	String result = lobbyService.APIGetAllLobbies();
     	String delims = "[{}\":,]+";
@@ -211,8 +217,7 @@ public class Lobbies implements Screen {
     
     public String addLobby(String lobbyName) {
     	String result = lobbyService.APIAddLobby(lobbyName);
-    	getLobbies();
-    	System.out.println(result);
+    	getLobbies();  	
     	return result;
     }
     

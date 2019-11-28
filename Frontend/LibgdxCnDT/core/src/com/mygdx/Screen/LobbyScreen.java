@@ -36,21 +36,21 @@ public class LobbyScreen implements Screen {
     private CrimeAndDime game;
     private ArrayList<String> messages;
     private Lobby lobby;
-    private WebSocketClient clientEndPoint;
-    private String username;
+    //private String username;
     private LobbyScreenService lobbyScreenService;
     
     public LobbyScreen(CrimeAndDime newGame, Lobby newLobby)
     {
     	lobby = newLobby;
-    	lobbyScreenService = new LobbyScreenService();
-    	getLobby();
     	game = newGame;
+    	game.lobby = lobby;
     	white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
     	batch = new SpriteBatch();
-    	username = game.getUsername();
+    	game.username = "player" + Integer.toString(lobby.getNumPlayers() + 1);
     	messages = new ArrayList<String>();
+    	lobbyScreenService = new LobbyScreenService();
+		getLobby();
     	try {
 			connect();
 		} catch (Exception e) {
@@ -67,18 +67,39 @@ public class LobbyScreen implements Screen {
 
 	void connect() throws Exception
     {
-    	clientEndPoint = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + lobby.getLobbyID() + "/" + username));
-        clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
+		game.clientEndPoint = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + lobby.getLobbyID() + "/" + game.username), game);
+        game.clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
                     @Override
 					public void handleMessage(String message) {
                     	messages.add(message);
                     	getLobby();
+                    	if (message.contains("has joined this lobby."))
+                    	{
+                    		String[] m = message.split(" has joined this lobby.", 2);
+                    		System.out.println(m[0]);
+                    		lobby.addPlayer(m[0]);
+                    	}
+                    	else if(message.contains("is ready."))
+                    	{
+                    		String[] m = message.split(" is ready.", 2);
+                    		System.out.println(m[0]);
+                    		lobby.readyPlayer(m[0]);
+                    	}
+                    	else if(message.contains("has left this lobby."))
+                    	{
+                    		String[] m = message.split(" has left this lobby.", 2);
+                    		System.out.println(m[0]);
+                    		lobby.removePlayer(m[0]);
+                    		if(m[0].charAt(6) < game.username.charAt(6))
+                    		{
+                    			int num = Integer.parseInt(String.valueOf(game.username.charAt(6))) - 1;
+                    			game.username = "player" + num;
+                    		}
+                    	}
                     }
                 });
         	
-            	clientEndPoint.sendMessage(username + " has joined this lobby.");
-//            String m = "[{\"action\": \"join\", \"message\":\"" + username + " has joined this lobby.\"}]";
-//            clientEndPoint.sendMessage(m);
+            	game.clientEndPoint.sendMessage(game.username + " has joined this lobby.");
     }
     
     @Override
@@ -97,10 +118,8 @@ public class LobbyScreen implements Screen {
         white.draw(batch, lobby.getLobbyName(), 500, 700);
         for(int i = 0; i < 4; i++)
         {
-	        if (i < lobby.getNumPlayers()) {
-				white.draw(batch, username, i * 200 + 250, 400);
-				//white.draw(batch, "player" + Integer.toString(i + 1), i * 200 + 250, 400);
-			}
+	        if (i < lobby.getPlayers().size())
+	        	white.draw(batch, lobby.getPlayers().get(i).getUsername(), i * 200 + 250, 400);
 	        else
 	        	white.draw(batch, "Open", i * 200 + 250, 400);
         }
@@ -109,6 +128,9 @@ public class LobbyScreen implements Screen {
         {
         	white.draw(batch, messages.get(messages.size() - i - 1), 50, i * 30 + 50);
         }
+        
+        if(lobby.isLobbyReady())
+        	game.setScreen(new tileMapScreen(game));
         
         batch.end();        
     }
@@ -128,8 +150,6 @@ public class LobbyScreen implements Screen {
         {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	leaveLobby();
-            	lobby.setNumPlayers(lobby.getNumPlayers() - 1);
             	game.setScreen(new Lobbies(game));
             }
         });
@@ -141,7 +161,7 @@ public class LobbyScreen implements Screen {
         {
         	@Override
             public void clicked(InputEvent event, float x, float y) {
-        		clientEndPoint.sendMessage(username + " is ready.");
+        		game.clientEndPoint.sendMessage(game.username + " is ready.");
         	}
         });
         stage.addActor(playButton);
@@ -149,7 +169,7 @@ public class LobbyScreen implements Screen {
 
 
     @Override
-    public void resize(int y, int x){
+    public void resize(int y, int x) {
     	
     }
 
@@ -163,7 +183,7 @@ public class LobbyScreen implements Screen {
     }
     @Override
     public void hide(){
-    	
+    	leaveLobby();
     }
 
     @Override
@@ -173,6 +193,9 @@ public class LobbyScreen implements Screen {
     
     public String leaveLobby()
     {
+    	game.clientEndPoint.sendMessage(game.username + " has left this lobby.");
+    	if (lobby.getNumPlayers() <= 1)
+    		lobbyScreenService.APIDeleteLobby(lobby.getLobbyID());
     	return lobbyScreenService.APIDelete(lobby.getLobbyID());
     }
     

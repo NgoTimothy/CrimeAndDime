@@ -7,6 +7,8 @@ public class Lobby {
 	private int lobbyID;
 	private String lobbyName;
 	private int numPlayers;
+	private Player me;
+	private ArrayList<Player> players;
 	private ArrayList<String> lobbyUsernames;
 	
 	public Lobby(int lobbyID, String lobbyName, int numPlayers)
@@ -14,6 +16,9 @@ public class Lobby {
 		this.lobbyID = lobbyID;
 		this.lobbyName = lobbyName;
 		this.numPlayers = numPlayers;
+		players = new ArrayList<Player>();
+		for(int i = 0; i < numPlayers; i++)
+			players.add(new Player("player" + (i + 1)));
 		lobbyUsernames = new ArrayList<String>();
 	}
 	
@@ -42,5 +47,58 @@ public class Lobby {
 	public int getNumPlayers()
 	{
 		return numPlayers;
+	}
+	
+	public void addPlayer(Player player)
+	{
+		players.add(player);
+		numPlayers++;
+	}
+	
+	public void addPlayer(String playerName)
+	{
+		players.add(new Player(playerName));
+		numPlayers++;
+	}
+	
+	public void removePlayer(String playerName)
+	{
+		numPlayers--;
+		for (Player p : players)
+		{
+			if (p.getUsername().equals(playerName))
+				players.remove(p);
+		}
+		
+		for (int i = 0; i < players.size(); i++)
+		{
+			players.get(i).setUsername("player" + (i + 1));
+		}
+	}
+	
+	public void readyPlayer(String playerName)
+	{
+		for (Player p : players)
+		{
+			if (p.getUsername().equals(playerName))
+				p.readyPlayer();
+		}
+	}
+	
+	public ArrayList<Player> getPlayers()
+	{
+		return players;
+	}
+	
+	public boolean isLobbyReady()
+	{
+		if(players.size() == 0)
+			return false;
+		for(Player p : players)
+		{
+			if(!p.isReady())
+				return false;
+		}
+		return true;
 	}
 }

@@ -132,9 +132,9 @@
   <object id="91" name="Player Info" x="1105" y="13" width="157" height="49"/>
   <object id="92" name="Player Info" x="1103.5" y="97.5" width="157" height="49"/>
   <object id="93" name="Player Info" x="1104.5" y="175.5" width="157" height="49"/>
-  <object id="94" name="Opponent Info" x="1105.25" y="413.25" width="157" height="49"/>
-  <object id="95" name="Opponent Info" x="1103.75" y="497.75" width="157" height="49"/>
-  <object id="96" name="Opponent Info" x="1104.75" y="575.75" width="157" height="49"/>
+  <object id="94" name="Opponent Info 1" x="1105.25" y="413.25" width="157" height="49"/>
+  <object id="95" name="Opponent Info 2" x="1103.75" y="497.75" width="157" height="49"/>
+  <object id="96" name="Opponent Info 3" x="1104.75" y="575.75" width="157" height="49"/>
   <object id="100" name="Clock" x="1120" y="272" width="130.667" height="31.6667"/>
   <object id="101" name="DayCounter" x="1120" y="336.083" width="130.667" height="31.6667"/>
  </objectgroup>
