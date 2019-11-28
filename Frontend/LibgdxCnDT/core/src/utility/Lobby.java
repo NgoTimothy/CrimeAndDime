@@ -9,6 +9,7 @@ public class Lobby {
 	private int numPlayers;
 	private Player me;
 	private ArrayList<Player> players;
+	private ArrayList<String> lobbyUsernames;
 	
 	public Lobby(int lobbyID, String lobbyName, int numPlayers)
 	{
@@ -18,6 +19,7 @@ public class Lobby {
 		players = new ArrayList<Player>();
 		for(int i = 0; i < numPlayers; i++)
 			players.add(new Player("player" + (i + 1)));
+		lobbyUsernames = new ArrayList<String>();
 	}
 	
 	public void setLobbyID(int lobbyID)
@@ -25,10 +27,7 @@ public class Lobby {
 		this.lobbyID = lobbyID;
 	}
 	
-	public int getLobbyID()
-	{
-		return lobbyID;
-	}
+	public int getLobbyID() { return lobbyID; }
 	
 	public void setLobbyName(String lobbyName)
 	{

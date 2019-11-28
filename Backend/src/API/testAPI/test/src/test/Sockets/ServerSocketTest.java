@@ -8,6 +8,7 @@ import org.junit.Test;
 import javax.websocket.Session;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -73,6 +74,5 @@ public class ServerSocketTest {
         assertEquals("Item price as not correct", 110, fakeStoreInfo.getList().get(3).getPrice(), 0);
         assertEquals("tv", fakeStoreInfo.getList().get(3).getName());
     }
-
 
 }

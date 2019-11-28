@@ -5,6 +5,8 @@ import org.mockito.Mock;
 import utility.Lobby;
 import utility.Player;
 
+import java.util.HashMap;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -88,6 +90,16 @@ public class LobbyTest {
         testLobby.addPlayer(p1);
         assertEquals(1, testLobby.getNumPlayers());
         assertEquals("player1", testLobby.getPlayers().get(0).getUsername());        
+    }
+
+    @Test
+    public void hashmapTest() {
+        HashMap<String, Integer> usernameToLobby = new HashMap<String, Integer>();
+        usernameToLobby.put("player1", 1);
+        usernameToLobby.put("player1", 2);
+        for(int i = 0; i < usernameToLobby.size(); i++)
+            System.out.println(usernameToLobby.size());
+
     }
 
 }
