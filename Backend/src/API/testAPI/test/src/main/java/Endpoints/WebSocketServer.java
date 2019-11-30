@@ -63,6 +63,11 @@ public class WebSocketServer {
 
         if(message.contains("storeInfo"))
             parseStoreInformation(session, message);
+        else if(message.contains("updateLobby")) {//New Change
+            message = message.substring(12).trim();
+            int lobbyNum = Integer.parseInt(message);
+            broadcastToLobby(lobbyNum, "updateLobby");
+        }
         else if (message.contains("sendMyMoney")) {
             String[] tokens = message.split(" ");
             double curMoney = Double.parseDouble(tokens[1]);
@@ -146,7 +151,10 @@ public class WebSocketServer {
         StoreInfo curStore = sessionStoreInfoMap.get(session);
         storeInfoSessionMap.remove(curStore);
         sessionStoreInfoMap.remove(session);
-        curStore.getList().clear();
+        if(curStore != null)
+            curStore.getList().clear();
+        else
+            curStore = new StoreInfo();
         message = message.replace("storeInfo", "");
         message = message.replace("]", "");
         if(message.length() < 2) {

@@ -63,8 +63,6 @@ public class AccountService {
             //add request header
             con.setRequestProperty("User-Agent", USER_AGENT);
 
-            int responseCode = con.getResponseCode();
-
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
             String inputLine;

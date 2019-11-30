@@ -34,6 +34,7 @@ public class CrimeAndDime extends Game {
 	private int day;
 	private int timeLeftOnBreak;
 	private String username;
+	private boolean updateLobby;
 
 	@Override
 	public void create() {
@@ -215,4 +216,8 @@ public class CrimeAndDime extends Game {
 	public void setUsername(String username) { this.username = username; }
 
 	public String getUsername() { return username; }
+
+	public void setUpdateLobby(boolean updateLobby) { this.updateLobby = updateLobby; }
+
+	public boolean getUpdateLobby() { return updateLobby; }
 }

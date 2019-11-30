@@ -102,10 +102,6 @@ public class tileMapScreen implements Screen {
         stage.draw();
     }
 
-    private void advancedDay() {
-        game.advanceDay();
-    }
-
     @Override
     public void resize(int width, int height){
         camera.viewportWidth = width;
@@ -268,7 +264,7 @@ public class tileMapScreen implements Screen {
         else if(!game.getStartTimer() && game.getNextDay()) {
             try {
                 Thread.sleep(500);
-                advancedDay();
+                game.advanceDay();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

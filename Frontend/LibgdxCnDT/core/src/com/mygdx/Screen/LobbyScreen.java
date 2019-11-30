@@ -1,7 +1,6 @@
 package com.mygdx.Screen;
 
 import Services.LobbyScreenService;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -17,14 +16,8 @@ import com.mygdx.cndt.CrimeAndDime;
 import utility.Lobby;
 import utility.WebSocketClient;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class LobbyScreen implements Screen {
 
@@ -112,7 +105,11 @@ public class LobbyScreen implements Screen {
         {
         	white.draw(batch, messages.get(messages.size() - i - 1), 50, i * 30 + 50);
         }
-        
+        if(game.getUpdateLobby()) {
+            getLobby();
+            fillUsernames();
+            game.setUpdateLobby(false);
+        }
         batch.end();        
     }
 
@@ -157,15 +154,15 @@ public class LobbyScreen implements Screen {
     }
 
     @Override
-    public void pause(){
+    public void pause() {
 
     }
     @Override
-    public void resume(){
+    public void resume() {
 
     }
     @Override
-    public void hide(){
+    public void hide() {
     	
     }
 
@@ -174,13 +171,11 @@ public class LobbyScreen implements Screen {
     	leaveLobby();
     }
     
-    public String leaveLobby()
-    {
-    	return lobbyScreenService.APIDelete(lobby.getLobbyID());
+    public String leaveLobby() {
+    	return lobbyScreenService.APIDelete(username);
     }
     
-    public void getLobby()
-    {
+    public void getLobby() {
     	String result = lobbyScreenService.callAPIGet(lobby.getLobbyID());
     	String delims = "[{}\":,]+";
     	String[] tokens = result.split(delims);
@@ -202,7 +197,6 @@ public class LobbyScreen implements Screen {
         System.out.println(result);
         for(int i = 0; i < tokens.length; i++)
             usernames.add(tokens[i]);
-        //usernames.add(username);
     }
     
     private TextButton.TextButtonStyle TextButtonStyle() {
