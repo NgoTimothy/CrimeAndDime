@@ -238,28 +238,34 @@ public class LobbyController {
     public String deleteUser2(@RequestParam(value = "username") String username) throws SQLException {
         Connection con = null;
         try {
-
-            String query = "DELETE FROM crime_and_dime.lobby_group WHERE username = ?";
+            String query1 = "SELECT lobbyID FROM lobby_group WHERE username = ?";
+            String query2 = "DELETE FROM crime_and_dime.lobby_group WHERE username = ?";
+            String query3 = "UPDATE lobby SET numberOfPlayers = numberofPlayers - 1 WHERE lobbyID = ?";
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
                     //"jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","root","");
                     "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
-            PreparedStatement prst = con.prepareStatement(query);
+            PreparedStatement prst = con.prepareStatement(query1);
             prst.setString(1, username);
-            int result = prst.executeUpdate();
-            if(result == 0) {
-                return "No row found";
-            }
-            return "Success";
+            ResultSet rs = prst.executeQuery();
+            rs.next();
+            int lobby = rs.getInt("lobbyID");
+            prst = con.prepareStatement(query2);
+            prst.setString(1, username);
+            prst.executeUpdate();
+            prst = con.prepareStatement(query3);
+            prst.setInt(1, lobby);
+            prst.executeUpdate();
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-        }
-        finally {
+            return "Error";
+        } finally {
             con.close();
         }
-        return "Error";
+        return "Removed";
     }
+
 
     /**
      * Removes a basic user from a lobby using lobbyID
