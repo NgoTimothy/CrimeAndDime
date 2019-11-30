@@ -142,8 +142,12 @@ public class Lobbies implements Screen {
 	        {
 	            @Override
 	            public void clicked(InputEvent event, float x, float y) {	            	
-	            	addLobby(newLobby.getText());
-	            	System.out.println(newLobby.getText());
+	            	if(!addLobby(newLobby.getText()).equals("failure")) {
+	            	    Lobby newlyCreatedLobby = lobbyList.get(lobbyList.size()-1);
+                        joinLobby(newlyCreatedLobby.getLobbyID(), game.getUsername());
+                        game.setScreen(new LobbyScreen(game, newlyCreatedLobby));
+                        System.out.println(newLobby.getText());
+                    }
 	            }
 	        });
         stage.addActor(startLobbyButton);
@@ -194,7 +198,7 @@ public class Lobbies implements Screen {
     	String delims = "[{}\":,]+";
     	String[] tokens = result.split(delims);
     		
-    		//Parse the string
+    	//Parse the string
 		Lobby lobby;
 		for (int i = 1; i < tokens.length - 8; i += 8) {
 			if(tokens[i + 5].equals("false"))
