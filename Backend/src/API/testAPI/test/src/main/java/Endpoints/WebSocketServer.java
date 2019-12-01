@@ -261,8 +261,8 @@ public class WebSocketServer {
     }
 
     public void broadcastToLobby(int lobbyID, String msg) {
-        Map<Integer, Session> sameLobbies = lobbyIDSessionMap.entrySet().stream().filter(x -> x.getKey() == lobbyID).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
-        sameLobbies.forEach((lobbyId, session) -> {
+        Map<Session, Integer> sameLobbies = sessionLobbyIDMap.entrySet().stream().filter(x -> x.getValue() == lobbyID).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
+        sameLobbies.forEach((session, lobbyId) -> {
             synchronized (session) {
                 session.getAsyncRemote().sendText(msg);
             }

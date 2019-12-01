@@ -60,8 +60,7 @@ public class WebSocketClient {
             game.setNextDay(true);
         else if(message.equals("updateLobby")) {
             game.setUpdateLobby(true);
-            System.out.println(game.getUpdateLobby());
-            return;
+            System.out.println(message);
         }
         if (this.messageHandler != null) {
             this.messageHandler.handleMessage(message);

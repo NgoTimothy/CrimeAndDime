@@ -50,7 +50,7 @@ public class LobbyScreen implements Screen {
     	try {
 			connect();
             fillUsernames();
-		} catch (Exception e) {
+        } catch (Exception e) {
 			e.printStackTrace();
 		}
     }
@@ -63,12 +63,21 @@ public class LobbyScreen implements Screen {
 
 	void connect() throws Exception
     {
-    	clientEndPoint = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8082/websocket/" + lobby.getLobbyID() + "/" + username));
+    	//clientEndPoint = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + lobby.getLobbyID() + "/" + username), game);
+        clientEndPoint = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + lobby.getLobbyID() + "/" + username), game);
         clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
                     @Override
 					public void handleMessage(String message) {
-                    	messages.add(message);
-                    	getLobby();
+                        if(message.equals("updateLobby")) {
+                            getLobby();
+                            fillUsernames();
+                            game.setUpdateLobby(false);
+                            System.out.println("Fuck");
+                        }
+                        else {
+                            messages.add(message);
+                            getLobby();
+                        }
                     }
                 });
         clientEndPoint.sendMessage(username + " has joined this lobby.");
@@ -99,14 +108,12 @@ public class LobbyScreen implements Screen {
 	        	white.draw(batch, "Open", i * 200 + 250, 400);
         }
         
-        for(int i = 0; i < messages.size() && i < 5; i++)
-        {
+        for(int i = 0; i < messages.size() && i < 5; i++) {
         	white.draw(batch, messages.get(messages.size() - i - 1), 50, i * 30 + 50);
         }
         batch.end();
         //System.out.println(game.getUpdateLobby());
         if(game.getUpdateLobby()) {
-            System.out.println("Please help me god.");
             getLobby();
             fillUsernames();
             game.setUpdateLobby(false);
@@ -130,7 +137,7 @@ public class LobbyScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
             	leaveLobby();
             	lobby.setNumPlayers(lobby.getNumPlayers() - 1);
-            	clientEndPoint.sendMessage("updateLobby:" + lobby.getLobbyID());
+                clientEndPoint.sendMessage("updateLobby:" + lobby.getLobbyID());
             	game.setScreen(new Lobbies(game));
             }
         });
