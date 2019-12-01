@@ -63,7 +63,7 @@ public class LobbyScreen implements Screen {
 
 	void connect() throws Exception
     {
-    	clientEndPoint = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + lobby.getLobbyID() + "/" + username));
+    	clientEndPoint = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8082/websocket/" + lobby.getLobbyID() + "/" + username));
         clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
                     @Override
 					public void handleMessage(String message) {
@@ -71,10 +71,8 @@ public class LobbyScreen implements Screen {
                     	getLobby();
                     }
                 });
-        	
-            	clientEndPoint.sendMessage(username + " has joined this lobby.");
-//            String m = "[{\"action\": \"join\", \"message\":\"" + username + " has joined this lobby.\"}]";
-//            clientEndPoint.sendMessage(m);
+        clientEndPoint.sendMessage(username + " has joined this lobby.");
+        clientEndPoint.sendMessage("updateLobby:" + lobby.getLobbyID());
     }
     
     @Override
@@ -105,12 +103,14 @@ public class LobbyScreen implements Screen {
         {
         	white.draw(batch, messages.get(messages.size() - i - 1), 50, i * 30 + 50);
         }
+        batch.end();
+        //System.out.println(game.getUpdateLobby());
         if(game.getUpdateLobby()) {
+            System.out.println("Please help me god.");
             getLobby();
             fillUsernames();
             game.setUpdateLobby(false);
         }
-        batch.end();        
     }
 
 
@@ -130,6 +130,7 @@ public class LobbyScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
             	leaveLobby();
             	lobby.setNumPlayers(lobby.getNumPlayers() - 1);
+            	clientEndPoint.sendMessage("updateLobby:" + lobby.getLobbyID());
             	game.setScreen(new Lobbies(game));
             }
         });
@@ -168,7 +169,7 @@ public class LobbyScreen implements Screen {
 
     @Override
     public void dispose () {
-    	leaveLobby();
+        leaveLobby();
     }
     
     public String leaveLobby() {
@@ -189,6 +190,7 @@ public class LobbyScreen implements Screen {
     }
 
     public void fillUsernames() {
+        usernames.clear();
         String result = lobbyScreenService.getUsernames(lobby.getLobbyID());
         result =  result.replace("[", "");
         result = result.replace("]", "");

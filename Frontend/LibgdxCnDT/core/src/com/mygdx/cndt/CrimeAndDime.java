@@ -53,6 +53,7 @@ public class CrimeAndDime extends Game {
 		timeLeftOnBreak = 10;//This is the amount of time on break.
 		//printTime(hour);
 		day = 1;
+		updateLobby = false;
 	}
 
 	@Override

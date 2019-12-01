@@ -58,8 +58,11 @@ public class WebSocketClient {
     public void onMessage(String message) {
         if(message.equals("StartNextDay"))
             game.setNextDay(true);
-        else if(message.equals("updateLobby"))
+        else if(message.equals("updateLobby")) {
             game.setUpdateLobby(true);
+            System.out.println(game.getUpdateLobby());
+            return;
+        }
         if (this.messageHandler != null) {
             this.messageHandler.handleMessage(message);
             System.out.println(message);

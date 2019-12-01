@@ -18,7 +18,7 @@ public class LobbyScreenTest {
         expectedJson = "[{\"lobbyId\":15481,\"lobbyName\":\"Iowa State Lobby\",\"hasPassword\":false,\"numberOfPlayers\":1}]";
         mockLobbyScreenService = mock(LobbyScreenService.class);
         when(mockLobbyScreenService.callAPIGet(anyInt())).thenReturn(expectedJson);
-        when(mockLobbyScreenService.APIDelete(anyInt())).thenReturn("success");
+        when(mockLobbyScreenService.APIDelete(anyString())).thenReturn("success");
         mockScreen = new LobbyScreen(mockLobbyScreenService);
     }
 

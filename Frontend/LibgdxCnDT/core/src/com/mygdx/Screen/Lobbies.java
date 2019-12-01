@@ -108,8 +108,7 @@ public class Lobbies implements Screen {
         	@Override
 			public void clicked(InputEvent event, float x, float y) {
         		game.setScreen(new tileMapScreen(game));
-			}
-        });
+        	}});
         stage.addActor(playButton);
         
         getLobbies();
