@@ -100,8 +100,15 @@ public class WebSocketServer {
         sessionUsernameMap.remove(session);
         usernameSessionMap.remove(username);
 
-        String message= username + " has left this lobby.";
+        String message = username + " has left this lobby.";
         broadcast(message, sessionLobbyIDMap.get(session));
+        int lobbyID = sessionLobbyIDMap.get(session);
+        StoreInfo newStore = sessionStoreInfoMap.get(session);
+        sessionLobbyIDMap.remove(session, lobbyID);
+        lobbyIDSessionMap.remove(lobbyID, session);
+        sessionStoreInfoMap.remove(session, newStore);
+        storeInfoSessionMap.remove(newStore, session);
+        session.close();
     }
 
     @OnError
@@ -109,6 +116,12 @@ public class WebSocketServer {
     {
         // Do error handling here
         logger.info("Entered into Error");
+        try {
+            session.close();
+            System.out.println(throwable.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void sendMessageToParticularUser(String username, String message)

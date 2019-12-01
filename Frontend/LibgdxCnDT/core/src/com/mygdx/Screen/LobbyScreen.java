@@ -1,8 +1,10 @@
 package com.mygdx.Screen;
 
+import GameClasses.Player;
 import Services.LobbyScreenService;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,6 +18,7 @@ import com.mygdx.cndt.CrimeAndDime;
 import utility.Lobby;
 import utility.WebSocketClient;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -33,12 +36,13 @@ public class LobbyScreen implements Screen {
     private WebSocketClient clientEndPoint;
     private String username;
     private LobbyScreenService lobbyScreenService;
-    private ArrayList<String> usernames;
+    private ArrayList<Player> users;
+    private boolean ready;
     
     public LobbyScreen(CrimeAndDime newGame, Lobby newLobby)
     {
     	lobby = newLobby;
-    	usernames = new ArrayList<>();
+    	users = new ArrayList<>();
     	lobbyScreenService = new LobbyScreenService();
     	getLobby();
     	game = newGame;
@@ -49,7 +53,8 @@ public class LobbyScreen implements Screen {
     	messages = new ArrayList<String>();
     	try {
 			connect();
-            fillUsernames();
+            fillUsers();
+            ready = false;
         } catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -70,9 +75,22 @@ public class LobbyScreen implements Screen {
 					public void handleMessage(String message) {
                         if(message.equals("updateLobby")) {
                             getLobby();
-                            fillUsernames();
+                            fillUsers();
                             game.setUpdateLobby(false);
-                            System.out.println("Fuck");
+                        }
+                        else if(message.contains("is not ready")) {
+                            String[] tokens = message.split(":");
+                            for(int i = 0; i < users.size(); i++) {
+                                if(users.get(i).getUsername().equals(tokens[0]))
+                                    users.get(i).setIsReady(false);
+                            }
+                        }
+                        else if(message.contains("is ready")) {
+                            String[] tokens = message.split(":");
+                            for(int i = 0; i < users.size(); i++) {
+                                if(users.get(i).getUsername().equals(tokens[0]))
+                                    users.get(i).setIsReady(true);
+                            }
                         }
                         else {
                             messages.add(message);
@@ -100,8 +118,15 @@ public class LobbyScreen implements Screen {
         white.draw(batch, lobby.getLobbyName(), 500, 700);
         for(int i = 0; i < 4; i++)
         {
-	        if (i < lobby.getNumPlayers() && i < usernames.size()) {
-				white.draw(batch, usernames.get(i), i * 200 + 250, 400);
+	        if (i < lobby.getNumPlayers() && i < users.size()) {
+	            BitmapFont font = new BitmapFont();
+	            if(users.get(i).getIsReady())
+	                font.setColor(Color.GREEN);
+	            else
+	                font.setColor(Color.RED);
+                font.getData().setScale(2);
+                font.draw(batch, users.get(i).getUsername(), i * 200 + 250, 400);
+				//white.draw(batch, users.get(i).getUsername(), i * 200 + 250, 400);
 				//white.draw(batch, "player" + Integer.toString(i + 1), i * 200 + 250, 400);
 			}
 	        else
@@ -115,7 +140,7 @@ public class LobbyScreen implements Screen {
         //System.out.println(game.getUpdateLobby());
         if(game.getUpdateLobby()) {
             getLobby();
-            fillUsernames();
+            fillUsers();
             game.setUpdateLobby(false);
         }
     }
@@ -126,7 +151,6 @@ public class LobbyScreen implements Screen {
     {
     	stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        
         exitButton = new TextButton("X", TextButtonStyle());
         exitButton.setPosition(1100, 600);
         exitButton.setWidth(50);
@@ -138,7 +162,7 @@ public class LobbyScreen implements Screen {
             	leaveLobby();
             	lobby.setNumPlayers(lobby.getNumPlayers() - 1);
                 clientEndPoint.sendMessage("updateLobby:" + lobby.getLobbyID());
-            	game.setScreen(new Lobbies(game));
+                game.setScreen(new Lobbies(game));
             }
         });
         stage.addActor(exitButton);
@@ -149,8 +173,15 @@ public class LobbyScreen implements Screen {
         {
         	@Override
             public void clicked(InputEvent event, float x, float y) {
-        		clientEndPoint.sendMessage(username + " is ready.");
-        	}
+                if(!ready) {
+                    clientEndPoint.sendMessage(username + ":is ready.");
+                    ready = true;
+                }
+                else {
+                    clientEndPoint.sendMessage(username + ":is not ready.");
+                    ready = false;
+                }
+            }
         });
         stage.addActor(playButton);
     }
@@ -177,6 +208,11 @@ public class LobbyScreen implements Screen {
     @Override
     public void dispose () {
         leaveLobby();
+        try {
+            clientEndPoint.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     public String leaveLobby() {
@@ -196,16 +232,18 @@ public class LobbyScreen implements Screen {
     		lobby.setNumPlayers(Integer.parseInt(tokens[10]));
     }
 
-    public void fillUsernames() {
-        usernames.clear();
+    public void fillUsers() {
+        users.clear();
         String result = lobbyScreenService.getUsernames(lobby.getLobbyID());
         result =  result.replace("[", "");
         result = result.replace("]", "");
         result = result.replace("\"", "");
         String[] tokens = result.split(",");
         System.out.println(result);
-        for(int i = 0; i < tokens.length; i++)
-            usernames.add(tokens[i]);
+        for(int i = 0; i < tokens.length; i++) {
+            Player player = new Player(tokens[i], false);
+            users.add(player);
+        }
     }
     
     private TextButton.TextButtonStyle TextButtonStyle() {
