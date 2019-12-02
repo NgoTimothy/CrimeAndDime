@@ -33,11 +33,12 @@ public class LobbyScreen implements Screen {
     private CrimeAndDime game;
     private ArrayList<String> messages;
     private Lobby lobby;
-    //private String username;
+    private WebSocketClient clientEndPoint;
+    private String username;
     private LobbyScreenService lobbyScreenService;
     private ArrayList<Player> users;
     private boolean ready;
-    
+
     public LobbyScreen(CrimeAndDime newGame, Lobby newLobby)
     {
     	lobby = newLobby;
@@ -45,14 +46,11 @@ public class LobbyScreen implements Screen {
     	lobbyScreenService = new LobbyScreenService();
     	getLobby();
     	game = newGame;
-    	game.lobby = lobby;
     	white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
     	batch = new SpriteBatch();
-    	game.username = "player" + Integer.toString(lobby.getNumPlayers() + 1);
+    	username = game.getUsername();
     	messages = new ArrayList<String>();
-    	lobbyScreenService = new LobbyScreenService();
-		getLobby();
     	try {
 			connect();
             fillUsers();
@@ -72,6 +70,7 @@ public class LobbyScreen implements Screen {
 	void connect() throws Exception
     {
     	//clientEndPoint = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + lobby.getLobbyID() + "/" + username), game);
+        //Change to line above to use the socket on server
         clientEndPoint = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + lobby.getLobbyID() + "/" + username), game);
         clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
                     @Override
@@ -104,13 +103,13 @@ public class LobbyScreen implements Screen {
         clientEndPoint.sendMessage(username + " has joined this lobby.");
         clientEndPoint.sendMessage("updateLobby:" + lobby.getLobbyID());
     }
-    
+
     @Override
     public void render(float delta){
-    	
+
         Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);      
-        
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         stage.act(delta);
 
         stage.setDebugAll(true);
@@ -133,7 +132,7 @@ public class LobbyScreen implements Screen {
 	        else
 	        	white.draw(batch, "Open", i * 200 + 250, 400);
         }
-        
+
         for(int i = 0; i < messages.size() && i < 5; i++) {
         	white.draw(batch, messages.get(messages.size() - i - 1), 50, i * 30 + 50);
         }
@@ -169,7 +168,7 @@ public class LobbyScreen implements Screen {
             }
         });
         stage.addActor(exitButton);
-        
+
         playButton = new TextButton("Play", TextButtonStyle());
         playButton.setPosition(1100, 50);
         playButton.addListener(new ClickListener()
@@ -191,7 +190,7 @@ public class LobbyScreen implements Screen {
 
 
     @Override
-    public void resize(int y, int x) {
+    public void resize(int y, int x){
     	
     }
 
