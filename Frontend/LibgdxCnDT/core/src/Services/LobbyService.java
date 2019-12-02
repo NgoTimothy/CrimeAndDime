@@ -94,7 +94,7 @@ public class LobbyService {
 
     public String APIJoinALobby(int lobbyID, String username) {
         try {
-            String url = "http://coms-309-tc-3.misc.iastate.edu:8080/addToLobby2?lobbyID=" + lobbyID + "&username=" + username;//Using addToLobby2 instead of regular one
+            String url = "http://coms-309-tc-3.misc.iastate.edu:8080/addToLobby2?lobbyID=" + lobbyID + "&username=" + username;//Using addToLobby2 instead of one
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 

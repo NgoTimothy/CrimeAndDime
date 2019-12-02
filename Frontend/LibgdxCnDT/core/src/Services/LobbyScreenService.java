@@ -129,10 +129,6 @@ public class LobbyScreenService {
 
             // Send post request
             con.setDoOutput(true);
-            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-            wr.writeBytes(urlParameters);
-            wr.flush();
-            wr.close();
 
             int responseCode = con.getResponseCode();
             System.out.println("\nSending 'POST' request to URL : " + url);

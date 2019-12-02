@@ -125,7 +125,7 @@ public class Lobbies implements Screen {
 	            public void clicked(InputEvent event, float x, float y) {	
 	            	getLobbies();
 	            	Lobby destLobby = lobbyList.get(index);
-	            	joinLobby(destLobby.getLobbyID());
+	            	joinLobby(destLobby.getLobbyID(), game.getUsername());
 	            	game.setScreen(new LobbyScreen(game, destLobby));
 	            }
 	        });
@@ -222,8 +222,8 @@ public class Lobbies implements Screen {
     	return result;
     }
     
-    public String joinLobby(int lobbyID, String username) {
-		String result = lobbyService.APIJoinALobby(lobbyID, username);
+    public String joinLobby(int lobbyId, String username) {
+		String result = lobbyService.APIJoinALobby(lobbyId, username);
 		System.out.println(result);
 		return result;
     }
