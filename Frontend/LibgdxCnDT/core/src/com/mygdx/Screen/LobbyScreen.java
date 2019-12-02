@@ -33,8 +33,7 @@ public class LobbyScreen implements Screen {
     private CrimeAndDime game;
     private ArrayList<String> messages;
     private Lobby lobby;
-    private WebSocketClient clientEndPoint;
-    private String username;
+    //private String username;
     private LobbyScreenService lobbyScreenService;
     private ArrayList<Player> users;
     private boolean ready;
@@ -46,11 +45,14 @@ public class LobbyScreen implements Screen {
     	lobbyScreenService = new LobbyScreenService();
     	getLobby();
     	game = newGame;
+    	game.lobby = lobby;
     	white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
     	batch = new SpriteBatch();
-    	username = game.getUsername();
+    	game.username = "player" + Integer.toString(lobby.getNumPlayers() + 1);
     	messages = new ArrayList<String>();
+    	lobbyScreenService = new LobbyScreenService();
+		getLobby();
     	try {
 			connect();
             fillUsers();
@@ -189,7 +191,7 @@ public class LobbyScreen implements Screen {
 
 
     @Override
-    public void resize(int y, int x){
+    public void resize(int y, int x) {
     	
     }
 
