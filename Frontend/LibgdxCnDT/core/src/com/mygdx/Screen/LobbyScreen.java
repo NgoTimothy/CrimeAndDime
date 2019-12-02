@@ -55,6 +55,7 @@ public class LobbyScreen implements Screen {
 			connect();
             fillUsers();
             ready = false;
+            game.setLobbyID(lobby.getLobbyID());
         } catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -126,8 +127,6 @@ public class LobbyScreen implements Screen {
 	                font.setColor(Color.RED);
                 font.getData().setScale(2);
                 font.draw(batch, users.get(i).getUsername(), i * 200 + 250, 400);
-				//white.draw(batch, users.get(i).getUsername(), i * 200 + 250, 400);
-				//white.draw(batch, "player" + Integer.toString(i + 1), i * 200 + 250, 400);
 			}
 	        else
 	        	white.draw(batch, "Open", i * 200 + 250, 400);
@@ -143,6 +142,8 @@ public class LobbyScreen implements Screen {
             fillUsers();
             game.setUpdateLobby(false);
         }
+        if(readyToStart())
+            game.setScreen(new tileMapScreen(game));
     }
 
 
@@ -216,6 +217,7 @@ public class LobbyScreen implements Screen {
     }
     
     public String leaveLobby() {
+        game.setLobbyID(-1);
     	return lobbyScreenService.APIDelete(username);
     }
     
@@ -262,5 +264,15 @@ public class LobbyScreen implements Screen {
 	public Lobby returnCurrentLobby() {
     	return lobby;
 	}
+
+	public boolean readyToStart() {
+        if(lobby.getNumPlayers() < 2)
+            return false;
+        for(int i = 0; i < users.size(); i++) {
+            if(!users.get(i).getIsReady())
+                return false;
+        }
+        return true;
+    }
     
 }

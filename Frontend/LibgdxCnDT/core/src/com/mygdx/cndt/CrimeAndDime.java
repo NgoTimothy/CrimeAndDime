@@ -33,6 +33,7 @@ public class CrimeAndDime extends Game {
 	private static final int closingTime = 20;
 	private int day;
 	private int timeLeftOnBreak;
+	private int lobbyID;
 	private String username;
 	private boolean updateLobby;
 
@@ -47,11 +48,11 @@ public class CrimeAndDime extends Game {
 		shelfChanged = false;
 		startTimer = false;
 		nextDay = false;
-		onBreak = true;
+		onBreak = false;
 		hour = 8;
 		accumulator = 0;
 		timeLeftOnBreak = 10;//This is the amount of time on break.
-		//printTime(hour);
+		lobbyID = -1;
 		day = 1;
 		updateLobby = false;
 	}
@@ -221,4 +222,8 @@ public class CrimeAndDime extends Game {
 	public void setUpdateLobby(boolean updateLobby) { this.updateLobby = updateLobby; }
 
 	public boolean getUpdateLobby() { return updateLobby; }
+
+	public int getLobbyID() { return lobbyID; }
+
+	public void setLobbyID(int lobbyID) { this.lobbyID = lobbyID; }
 }
