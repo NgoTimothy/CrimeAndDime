@@ -33,8 +33,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.json.JSONArray;
-
-import utility.Player;
 import utility.WebSocketClient;
 
 public class tileMapScreen implements Screen {
@@ -54,11 +52,9 @@ public class tileMapScreen implements Screen {
     public ArrayList<Tile> shelfTileArray;
     private CrimeAndDime game;
     private MapObjects shelfMapObject;
+    private WebSocketClient socketClient;
     private Label clock;
     private Label day;
-    private Label playerInfo1;
-    private Label playerInfo2;
-    private Label playerInfo3;
 
     public tileMapScreen(CrimeAndDime game) {
     	this.game = game;
@@ -82,38 +78,15 @@ public class tileMapScreen implements Screen {
     		}
         }
     	try {
-    	    //socketClient = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + 25 + "/" + "Tim"), game);
-            //socketClient = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + 25 + "/" + "Tim/"), game);
+    	    //socketClient = new WebSocketClient(new URI("ws://localhost:8082/websocket/" + 25 + "/" + "Tim"), game);
+            socketClient = new WebSocketClient(
+                    new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + game.getLobbyID() + "/" + game.getUsername()), game);
+            game.setOnBreak(true);
     	    //game.setStartTimer(true);//Delete this shit
-    		connect();
 
     	} catch (Exception e) {
     	    e.printStackTrace();
         }
-    	
-    }
-    
-    private void connect() throws URISyntaxException	{
-    	game.clientEndPoint = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + game.lobby.getLobbyID() + "/" + game.username), game);
-        game.clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
-                    @Override
-					public void handleMessage(String message) {
-                    	System.out.println(message);
-                    	if (message.contains("money"))
-                    	{
-                    		String[] m = message.split(":", 3);
-                    		if (m[1] != game.username)
-                    		{
-                    			if (playerInfo1.getText().contains("Opponent") || (playerInfo1.getText().contains(m[1])))
-                    					playerInfo1.setText(m[1] + ": " + m[2]);
-                    			else if (playerInfo2.getText().contains("Opponent") || (playerInfo2.getText().contains(m[1])))
-                					playerInfo2.setText(m[1] + ": " + m[2]);
-                    			else if (playerInfo3.getText().contains("Opponent") || (playerInfo3.getText().contains(m[1])))
-                					playerInfo3.setText(m[1] + ": " + m[2]);
-                    		}
-                    	}
-                    }
-                });
     }
 
     @Override
@@ -129,10 +102,6 @@ public class tileMapScreen implements Screen {
         clock.setText(timeToString(game.getHour()));
         day.setText("Day: " + Integer.toString(game.getDay()));
         stage.draw();
-    }
-
-    private void advancedDay() {
-        game.advanceDay();
     }
 
     @Override
@@ -192,7 +161,7 @@ public class tileMapScreen implements Screen {
                     textStyle = new Label.LabelStyle();
                     textStyle.font = font;
                     Double playerMoney = 100.00;
-                    playerInfo = new Label(game.username + ": " + game.gameStore.getBalance(),textStyle);
+                    playerInfo = new Label("Player 1 :" + game.gameStore.getBalance(),textStyle);
                     playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                     stage.addActor(playerInfo);
                 }
@@ -228,42 +197,24 @@ public class tileMapScreen implements Screen {
                 stage.addActor(clock);
                 x = x + 1;
             }
-            if (shelfObjects.getName().equals("Opponent Info 1")){
+            if (shelfObjects.getName().equals("Opponent Info")){
+                Label playerInfo;
                 Label.LabelStyle textStyle;
                 BitmapFont font = new BitmapFont();
+
                 textStyle = new Label.LabelStyle();
                 textStyle.font = font;
-                Double playerMoney = 9999.99;  
-                playerInfo1 = new Label("Opponent 1: " + playerMoney,textStyle);
-                playerInfo1.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
-                stage.addActor(playerInfo1);
+                Double playerMoney = 100.00;
+                playerInfo = new Label("Opponent 1 :" + playerMoney,textStyle);
+                playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                stage.addActor(playerInfo);
             }
-            if (shelfObjects.getName().equals("Opponent Info 2")){
-                Label.LabelStyle textStyle;
-                BitmapFont font = new BitmapFont();
-                textStyle = new Label.LabelStyle();
-                textStyle.font = font;
-                Double playerMoney = 9999.99;
-                playerInfo2 = new Label("Opponent 2: " + playerMoney,textStyle);
-                playerInfo2.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
-                stage.addActor(playerInfo2);
-            }
-            if (shelfObjects.getName().equals("Opponent Info 3")){
-                Label.LabelStyle textStyle;
-                BitmapFont font = new BitmapFont();
-                textStyle = new Label.LabelStyle();
-                textStyle.font = font;
-                Double playerMoney = 9999.99;
-                playerInfo3 = new Label("Opponent 3: " + playerMoney,textStyle);
-                playerInfo3.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
-                stage.addActor(playerInfo3);
-            }
-            
+
             Label playerInfo;
             Label.LabelStyle textStyle;
             BitmapFont font = new BitmapFont();
             textStyle = new Label.LabelStyle();
-            textStyle.font = font;            
+            textStyle.font = font;
             textStyle = new Label.LabelStyle();
             textStyle.font = font;
             Double playerMoney = 100.00;
@@ -303,21 +254,19 @@ public class tileMapScreen implements Screen {
     private String timeToString(int hour) {
         String AMOrPM = "AM";
         int timeOfDay = hour;
-        if(timeOfDay >= 12) {
-        	AMOrPM = "PM";
-        }
         if(timeOfDay > 12) {
-            timeOfDay -= 12;  
+            timeOfDay -= 12;
+            AMOrPM = "PM";
         }
         if(hour >= closingTime && game.getStartTimer()) {
             sendShelfListToServer();
             game.setStartTimer(false);
-            game.clientEndPoint.sendMessage("sendMyMoney " + game.gameStore.getBalance());
+            socketClient.sendMessage("sendMyMoney " + game.gameStore.getBalance());
         }
         else if(!game.getStartTimer() && game.getNextDay()) {
             try {
                 Thread.sleep(500);
-                advancedDay();
+                game.advanceDay();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -329,7 +278,7 @@ public class tileMapScreen implements Screen {
         JSONArray sendToServerArray = listToJSON();
         String msg = "storeInfo" + sendToServerArray.toString().replace("\\", "");
         msg = msg.replace("[", "");
-        game.clientEndPoint.sendMessage(msg);
+        socketClient.sendMessage(msg);
     }
 
     private JSONArray listToJSON() {

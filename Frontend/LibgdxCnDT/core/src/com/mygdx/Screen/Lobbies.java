@@ -108,8 +108,7 @@ public class Lobbies implements Screen {
         	@Override
 			public void clicked(InputEvent event, float x, float y) {
         		game.setScreen(new tileMapScreen(game));
-			}
-        });
+        	}});
         stage.addActor(playButton);
         
         getLobbies();
@@ -126,7 +125,7 @@ public class Lobbies implements Screen {
 	            public void clicked(InputEvent event, float x, float y) {	
 	            	getLobbies();
 	            	Lobby destLobby = lobbyList.get(index);
-	            	joinLobby(destLobby.getLobbyID());
+	            	joinLobby(destLobby.getLobbyID(), game.getUsername());
 	            	game.setScreen(new LobbyScreen(game, destLobby));
 	            }
 	        });
@@ -144,10 +143,12 @@ public class Lobbies implements Screen {
 	        {
 	            @Override
 	            public void clicked(InputEvent event, float x, float y) {	            	
-	            	addLobby(newLobby.getText());
-	            	Lobby destLobby = lobbyList.get(lobbyList.size() - 1);
-	            	joinLobby(destLobby.getLobbyID());
-	            	game.setScreen(new LobbyScreen(game, destLobby));
+	            	if(!addLobby(newLobby.getText()).equals("failure")) {
+	            	    Lobby newlyCreatedLobby = lobbyList.get(lobbyList.size()-1);
+                        joinLobby(newlyCreatedLobby.getLobbyID(), game.getUsername());
+                        game.setScreen(new LobbyScreen(game, newlyCreatedLobby));
+                        System.out.println(newLobby.getText());
+                    }
 	            }
 	        });
         stage.addActor(startLobbyButton);
@@ -200,7 +201,7 @@ public class Lobbies implements Screen {
     	String delims = "[{}\":,]+";
     	String[] tokens = result.split(delims);
     		
-    		//Parse the string
+    	//Parse the string
 		Lobby lobby;
 		for (int i = 1; i < tokens.length - 8; i += 8) {
 			if(tokens[i + 5].equals("false"))
@@ -221,8 +222,8 @@ public class Lobbies implements Screen {
     	return result;
     }
     
-    public String joinLobby(int lobbyID) {
-		String result = lobbyService.APIJoinALobby(lobbyID);
+    public String joinLobby(int lobbyId, String username) {
+		String result = lobbyService.APIJoinALobby(lobbyId, username);
 		System.out.println(result);
 		return result;
     }

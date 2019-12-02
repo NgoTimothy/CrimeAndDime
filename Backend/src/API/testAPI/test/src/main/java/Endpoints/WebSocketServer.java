@@ -63,6 +63,11 @@ public class WebSocketServer {
 
         if(message.contains("storeInfo"))
             parseStoreInformation(session, message);
+        else if(message.contains("updateLobby")) {//New Change
+            message = message.substring(12).trim();
+            int lobbyNum = Integer.parseInt(message);
+            broadcastToLobby(lobbyNum, "updateLobby");
+        }
         else if (message.contains("sendMyMoney")) {
             String[] tokens = message.split(" ");
             double curMoney = Double.parseDouble(tokens[1]);
@@ -95,8 +100,15 @@ public class WebSocketServer {
         sessionUsernameMap.remove(session);
         usernameSessionMap.remove(username);
 
-        String message= username + " has left this lobby.";
+        String message = username + " has left this lobby.";
         broadcast(message, sessionLobbyIDMap.get(session));
+        int lobbyID = sessionLobbyIDMap.get(session);
+        StoreInfo newStore = sessionStoreInfoMap.get(session);
+        sessionLobbyIDMap.remove(session, lobbyID);
+        lobbyIDSessionMap.remove(lobbyID, session);
+        sessionStoreInfoMap.remove(session, newStore);
+        storeInfoSessionMap.remove(newStore, session);
+        session.close();
     }
 
     @OnError
@@ -104,6 +116,12 @@ public class WebSocketServer {
     {
         // Do error handling here
         logger.info("Entered into Error");
+        try {
+            session.close();
+            System.out.println(throwable.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void sendMessageToParticularUser(String username, String message)
@@ -146,7 +164,10 @@ public class WebSocketServer {
         StoreInfo curStore = sessionStoreInfoMap.get(session);
         storeInfoSessionMap.remove(curStore);
         sessionStoreInfoMap.remove(session);
-        curStore.getList().clear();
+        if(curStore != null)
+            curStore.getList().clear();
+        else
+            curStore = new StoreInfo();
         message = message.replace("storeInfo", "");
         message = message.replace("]", "");
         if(message.length() < 2) {
@@ -253,8 +274,8 @@ public class WebSocketServer {
     }
 
     public void broadcastToLobby(int lobbyID, String msg) {
-        Map<Integer, Session> sameLobbies = lobbyIDSessionMap.entrySet().stream().filter(x -> x.getKey() == lobbyID).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
-        sameLobbies.forEach((lobbyId, session) -> {
+        Map<Session, Integer> sameLobbies = sessionLobbyIDMap.entrySet().stream().filter(x -> x.getValue() == lobbyID).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
+        sameLobbies.forEach((session, lobbyId) -> {
             synchronized (session) {
                 session.getAsyncRemote().sendText(msg);
             }

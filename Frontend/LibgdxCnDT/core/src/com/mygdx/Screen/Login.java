@@ -145,7 +145,6 @@ public class Login implements Screen {
      * @param psw
      */
     private void attemptToLogin(String usr, String psw) {
-        //TODO
         if(verifyLogin(usr, psw)) {
             game.setUsername(usr);
             ((Game) Gdx.app.getApplicationListener()).setScreen(new Lobbies(game));
@@ -178,7 +177,6 @@ public class Login implements Screen {
      * @param phoneNumber
      */
     private void registerAccount(String usr, String psw, String email, String phoneNumber) {
-        //TODO
         if(verifyRegisteringAccount(usr, psw, email, phoneNumber) && accountService.register(usr, psw, email, phoneNumber)) {
             game.setUsername(usr);
             ((Game) Gdx.app.getApplicationListener()).setScreen(new Lobbies(game));
@@ -207,7 +205,7 @@ public class Login implements Screen {
             System.out.println("Username cannot be empty");
             return false;
         }
-        else if(usr.length() <= 4) {
+        else if(usr.length() < 4) {
             System.out.println("Username must be at least 4 characters");
             return false;
         }

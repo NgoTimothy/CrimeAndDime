@@ -75,4 +75,15 @@ public class ServerSocketTest {
         assertEquals("tv", fakeStoreInfo.getList().get(3).getName());
     }
 
+    @Test
+    public void whenSocketGetsMessageToUpdateLobbyItBroadcastsToLobby() {
+        String msg = "updateLobby:10";
+        try {
+            testSocket.onMessage(mockSession, msg);
+            verify(testSocket, times(1)).broadcastToLobby(10, "updateLobby");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
