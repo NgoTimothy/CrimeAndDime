@@ -108,24 +108,25 @@ public class Lobbies implements Screen {
         	@Override
 			public void clicked(InputEvent event, float x, float y) {
         		game.setScreen(new tileMapScreen(game));
-			}
-        });
+        	}});
         stage.addActor(playButton);
         
         getLobbies();
-        
+
         joinButton = new TextButton[lobbyList.size()];
         for(int i = 0; i < 10 && i < lobbyList.size(); i++)
         {
 	        joinButton[i] = new TextButton("Join", TextButtonStyle());
 	        joinButton[i].setPosition(700, 575 - i * 35);
-	        final Lobby l = lobbyList.get(i);
+	        final int index = i;
 	        joinButton[i].addListener(new ClickListener()
 	        {
 	            @Override
 	            public void clicked(InputEvent event, float x, float y) {	
-	            	joinLobby(l.getLobbyID());
-	            	game.setScreen(new LobbyScreen(game, l));
+	            	getLobbies();
+	            	Lobby destLobby = lobbyList.get(index);
+	            	joinLobby(destLobby.getLobbyID(), game.getUsername());
+	            	game.setScreen(new LobbyScreen(game, destLobby));
 	            }
 	        });
 	        stage.addActor(joinButton[i]);
@@ -142,8 +143,12 @@ public class Lobbies implements Screen {
 	        {
 	            @Override
 	            public void clicked(InputEvent event, float x, float y) {	            	
-	            	addLobby(newLobby.getText());
-	            	System.out.println(newLobby.getText());
+	            	if(!addLobby(newLobby.getText()).equals("failure")) {
+	            	    Lobby newlyCreatedLobby = lobbyList.get(lobbyList.size()-1);
+                        joinLobby(newlyCreatedLobby.getLobbyID(), game.getUsername());
+                        game.setScreen(new LobbyScreen(game, newlyCreatedLobby));
+                        System.out.println(newLobby.getText());
+                    }
 	            }
 	        });
         stage.addActor(startLobbyButton);
@@ -151,20 +156,21 @@ public class Lobbies implements Screen {
 
 
     @Override
-    public void resize(int y, int x)	{
+    public void resize(int y, int x) {
     	
     }
 
     @Override
-    public void pause(){
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
 
     }
     @Override
-    public void resume(){
-
-    }
-    @Override
-    public void hide(){
+    public void hide() {
 
     }
 
@@ -189,12 +195,13 @@ public class Lobbies implements Screen {
     
     public ArrayList<Lobby> getLobbies()
     {
+    	lobbyList.clear();
     	//Get a string of lobby info from the API
     	String result = lobbyService.APIGetAllLobbies();
     	String delims = "[{}\":,]+";
     	String[] tokens = result.split(delims);
     		
-    		//Parse the string
+    	//Parse the string
 		Lobby lobby;
 		for (int i = 1; i < tokens.length - 8; i += 8) {
 			if(tokens[i + 5].equals("false"))
@@ -211,13 +218,12 @@ public class Lobbies implements Screen {
     
     public String addLobby(String lobbyName) {
     	String result = lobbyService.APIAddLobby(lobbyName);
-    	getLobbies();
-    	System.out.println(result);
+    	getLobbies();  	
     	return result;
     }
     
-    public String joinLobby(int lobbyID) {
-		String result = lobbyService.APIJoinALobby(lobbyID);
+    public String joinLobby(int lobbyId, String username) {
+		String result = lobbyService.APIJoinALobby(lobbyId, username);
 		System.out.println(result);
 		return result;
     }

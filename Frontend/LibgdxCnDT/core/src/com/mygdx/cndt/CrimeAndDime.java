@@ -33,6 +33,9 @@ public class CrimeAndDime extends Game {
 	private static final int closingTime = 20;
 	private int day;
 	private int timeLeftOnBreak;
+	private int lobbyID;
+	private String username;
+	private boolean updateLobby;
 
 	@Override
 	public void create() {
@@ -45,12 +48,13 @@ public class CrimeAndDime extends Game {
 		shelfChanged = false;
 		startTimer = false;
 		nextDay = false;
-		onBreak = true;
+		onBreak = false;
 		hour = 8;
 		accumulator = 0;
 		timeLeftOnBreak = 10;//This is the amount of time on break.
-		//printTime(hour);
+		lobbyID = -1;
 		day = 1;
+		updateLobby = false;
 	}
 
 	@Override
@@ -150,7 +154,7 @@ public class CrimeAndDime extends Game {
 	public void resize(int width, int height){
 		super.resize(width,height);
 	}
-	
+
 	public void createItems(CrimeAndDimeService service) {
 		try {
 			items = service.loadItems();
@@ -210,5 +214,16 @@ public class CrimeAndDime extends Game {
 	public void setOnBreak(boolean onBreak) { this.onBreak = onBreak; }
 
 	public boolean getOnBreak() {return onBreak; }
-}
 
+	public void setUsername(String username) { this.username = username; }
+
+	public String getUsername() { return username; }
+
+	public void setUpdateLobby(boolean updateLobby) { this.updateLobby = updateLobby; }
+
+	public boolean getUpdateLobby() { return updateLobby; }
+
+	public int getLobbyID() { return lobbyID; }
+
+	public void setLobbyID(int lobbyID) { this.lobbyID = lobbyID; }
+}

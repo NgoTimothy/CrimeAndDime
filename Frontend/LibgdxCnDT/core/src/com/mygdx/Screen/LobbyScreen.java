@@ -1,9 +1,10 @@
 package com.mygdx.Screen;
 
+import GameClasses.Player;
 import Services.LobbyScreenService;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,12 +18,8 @@ import com.mygdx.cndt.CrimeAndDime;
 import utility.Lobby;
 import utility.WebSocketClient;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class LobbyScreen implements Screen {
@@ -39,24 +36,29 @@ public class LobbyScreen implements Screen {
     private WebSocketClient clientEndPoint;
     private String username;
     private LobbyScreenService lobbyScreenService;
-    
+    private ArrayList<Player> users;
+    private boolean ready;
+
     public LobbyScreen(CrimeAndDime newGame, Lobby newLobby)
     {
     	lobby = newLobby;
+    	users = new ArrayList<>();
+    	lobbyScreenService = new LobbyScreenService();
     	getLobby();
     	game = newGame;
     	white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
     	black = new BitmapFont(Gdx.files.internal("font/BlackFNT.fnt"),false);
     	batch = new SpriteBatch();
-    	username = "player" + Integer.toString(lobby.getNumPlayers());
+    	username = game.getUsername();
     	messages = new ArrayList<String>();
-    	lobbyScreenService = new LobbyScreenService();
     	try {
 			connect();
-		} catch (Exception e) {
+            fillUsers();
+            ready = false;
+            game.setLobbyID(lobby.getLobbyID());
+        } catch (Exception e) {
 			e.printStackTrace();
 		}
-    	System.out.println(lobby.getLobbyID());
     }
 
     //For testing purposes only
@@ -67,48 +69,82 @@ public class LobbyScreen implements Screen {
 
 	void connect() throws Exception
     {
-    	clientEndPoint = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + lobby.getLobbyID() + "/" + username));
+    	//clientEndPoint = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + lobby.getLobbyID() + "/" + username), game);
+        //Change to line above to use the socket on server
+        clientEndPoint = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + lobby.getLobbyID() + "/" + username), game);
         clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
                     @Override
 					public void handleMessage(String message) {
-                    	messages.add(message);
-                    	getLobby();
+                        if(message.equals("updateLobby")) {
+                            getLobby();
+                            fillUsers();
+                            game.setUpdateLobby(false);
+                        }
+                        else if(message.contains("is not ready")) {
+                            String[] tokens = message.split(":");
+                            for(int i = 0; i < users.size(); i++) {
+                                if(users.get(i).getUsername().equals(tokens[0]))
+                                    users.get(i).setIsReady(false);
+                            }
+                        }
+                        else if(message.contains("is ready")) {
+                            String[] tokens = message.split(":");
+                            for(int i = 0; i < users.size(); i++) {
+                                if(users.get(i).getUsername().equals(tokens[0]))
+                                    users.get(i).setIsReady(true);
+                            }
+                        }
+                        else {
+                            messages.add(message);
+                            getLobby();
+                        }
                     }
                 });
-        	
-            	clientEndPoint.sendMessage(username + " has joined this lobby.");
-//            String m = "[{\"action\": \"join\", \"message\":\"" + username + " has joined this lobby.\"}]";
-//            clientEndPoint.sendMessage(m);
+        clientEndPoint.sendMessage(username + " has joined this lobby.");
+        clientEndPoint.sendMessage("updateLobby:" + lobby.getLobbyID());
     }
-    
+
     @Override
     public void render(float delta){
-    	
+
         Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);      
-        
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         stage.act(delta);
 
         stage.setDebugAll(true);
 
         stage.draw();
-        
+
         batch.begin();
         white.draw(batch, lobby.getLobbyName(), 500, 700);
         for(int i = 0; i < 4; i++)
         {
-	        if (i < lobby.getNumPlayers())
-	        	white.draw(batch, "player" + Integer.toString(i + 1), i * 200 + 250, 400);
+	        if (i < lobby.getNumPlayers() && i < users.size()) {
+	            BitmapFont font = new BitmapFont();
+	            if(users.get(i).getIsReady())
+	                font.setColor(Color.GREEN);
+	            else
+	                font.setColor(Color.RED);
+                font.getData().setScale(2);
+                font.draw(batch, users.get(i).getUsername(), i * 200 + 250, 400);
+			}
 	        else
 	        	white.draw(batch, "Open", i * 200 + 250, 400);
         }
-        
-        for(int i = 0; i < messages.size() && i < 5; i++)
-        {
+
+        for(int i = 0; i < messages.size() && i < 5; i++) {
         	white.draw(batch, messages.get(messages.size() - i - 1), 50, i * 30 + 50);
         }
-        
-        batch.end();        
+        batch.end();
+        //System.out.println(game.getUpdateLobby());
+        if(game.getUpdateLobby()) {
+            getLobby();
+            fillUsers();
+            game.setUpdateLobby(false);
+        }
+        if(readyToStart())
+            game.setScreen(new tileMapScreen(game));
     }
 
 
@@ -117,7 +153,6 @@ public class LobbyScreen implements Screen {
     {
     	stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        
         exitButton = new TextButton("X", TextButtonStyle());
         exitButton.setPosition(1100, 600);
         exitButton.setWidth(50);
@@ -128,19 +163,27 @@ public class LobbyScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
             	leaveLobby();
             	lobby.setNumPlayers(lobby.getNumPlayers() - 1);
-            	game.setScreen(new Lobbies(game));
+                clientEndPoint.sendMessage("updateLobby:" + lobby.getLobbyID());
+                game.setScreen(new Lobbies(game));
             }
         });
         stage.addActor(exitButton);
-        
+
         playButton = new TextButton("Play", TextButtonStyle());
         playButton.setPosition(1100, 50);
         playButton.addListener(new ClickListener()
         {
         	@Override
             public void clicked(InputEvent event, float x, float y) {
-        		clientEndPoint.sendMessage(username + " is ready.");
-        	}
+                if(!ready) {
+                    clientEndPoint.sendMessage(username + ":is ready.");
+                    ready = true;
+                }
+                else {
+                    clientEndPoint.sendMessage(username + ":is not ready.");
+                    ready = false;
+                }
+            }
         });
         stage.addActor(playButton);
     }
@@ -152,30 +195,34 @@ public class LobbyScreen implements Screen {
     }
 
     @Override
-    public void pause(){
+    public void pause() {
 
     }
     @Override
-    public void resume(){
+    public void resume() {
 
     }
     @Override
-    public void hide(){
+    public void hide() {
     	
     }
 
     @Override
     public void dispose () {
-    	leaveLobby();
+        leaveLobby();
+        try {
+            clientEndPoint.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
-    public String leaveLobby()
-    {
-    	return lobbyScreenService.APIDelete(lobby.getLobbyID());
+    public String leaveLobby() {
+        game.setLobbyID(-1);
+    	return lobbyScreenService.APIDelete(username);
     }
     
-    public void getLobby()
-    {
+    public void getLobby() {
     	String result = lobbyScreenService.callAPIGet(lobby.getLobbyID());
     	String delims = "[{}\":,]+";
     	String[] tokens = result.split(delims);
@@ -186,6 +233,20 @@ public class LobbyScreen implements Screen {
     		lobby.setNumPlayers(Integer.parseInt(tokens[8]));
     	else
     		lobby.setNumPlayers(Integer.parseInt(tokens[10]));
+    }
+
+    public void fillUsers() {
+        users.clear();
+        String result = lobbyScreenService.getUsernames(lobby.getLobbyID());
+        result =  result.replace("[", "");
+        result = result.replace("]", "");
+        result = result.replace("\"", "");
+        String[] tokens = result.split(",");
+        System.out.println(result);
+        for(int i = 0; i < tokens.length; i++) {
+            Player player = new Player(tokens[i], false);
+            users.add(player);
+        }
     }
     
     private TextButton.TextButtonStyle TextButtonStyle() {
@@ -201,91 +262,18 @@ public class LobbyScreen implements Screen {
 		return textButtonStyle;
 	}
 
-	public String callAPIGet() {
-		String result = "";
-		try {
-			String url = "http://coms-309-tc-3.misc.iastate.edu:8080/lobbyInfo?lobbyID=" + lobby.getLobbyID();
-
-			URL obj = new URL(url);
-			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-			// optional default is GET
-			con.setRequestMethod("GET");
-
-			String USER_AGENT = "Mozilla/5.0";
-
-			//add request header
-			con.setRequestProperty("User-Agent", USER_AGENT);
-
-			int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'GET' request to URL : " + url);
-			System.out.println("Response Code : " + responseCode);
-
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(con.getInputStream()));
-			String inputLine;
-			StringBuffer response = new StringBuffer();
-
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-			in.close();
-
-			result = response.toString();
-			return result;
-		}
-		catch(Exception e)	{
-			System.out.print(e);
-		}
-    	return "failure";
-	}
-
-	public String APIDelete() {
-		try {
-			String url = "http://coms-309-tc-3.misc.iastate.edu:8080/deleteUser";
-			URL obj = new URL(url);
-			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-			String USER_AGENT = "Mozilla/5.0";
-
-			//add request header
-			con.setRequestMethod("POST");
-			con.setRequestProperty("User-Agent", USER_AGENT);
-			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
-			String urlParameters = "lobbyID=" + lobby.getLobbyID();
-
-			// Send post request
-			con.setDoOutput(true);
-			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-			wr.writeBytes(urlParameters);
-			wr.flush();
-			wr.close();
-
-			int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'POST' request to URL : " + url);
-			System.out.println("Post parameters : " + urlParameters);
-			System.out.println("Response Code : " + responseCode);
-
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(con.getInputStream()));
-			String inputLine;
-			StringBuffer response = new StringBuffer();
-
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-			in.close();
-			return "success";
-		}
-		catch(Exception e)	{
-			System.out.print(e);
-		}
-		return "failure";
-	}
-
 	public Lobby returnCurrentLobby() {
     	return lobby;
 	}
+
+	public boolean readyToStart() {
+        if(lobby.getNumPlayers() < 2)
+            return false;
+        for(int i = 0; i < users.size(); i++) {
+            if(!users.get(i).getIsReady())
+                return false;
+        }
+        return true;
+    }
     
 }

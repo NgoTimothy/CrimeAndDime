@@ -1,6 +1,11 @@
+package test;
+
 import org.junit.*;
 import org.mockito.Mock;
 import utility.Lobby;
+import utility.Player;
+
+import java.util.HashMap;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -50,6 +55,51 @@ public class LobbyTest {
         assertEquals(2, testLobby.getNumPlayers());
         testLobby.setNumPlayers(1);
         assertEquals(1, testLobby.getNumPlayers());
+    }
+    
+    @Test
+    public void isLobbyReadyFalse() {
+    	Player p1 = mock(Player.class);
+    	when(p1.isReady()).thenReturn(false);
+    	Player p2 = mock(Player.class);
+    	when(p2.isReady()).thenReturn(true);
+    	testLobby.setNumPlayers(0);
+    	testLobby.addPlayer(p1);
+    	testLobby.addPlayer(p2);
+    	assertFalse(testLobby.isLobbyReady());
+    }
+    
+    @Test
+    public void isLobbyReadyTrue() {
+    	testLobby = new Lobby(0, "lobby", 0);
+    	Player p1 = mock(Player.class);
+    	when(p1.isReady()).thenReturn(true);
+    	Player p2 = mock(Player.class);
+    	when(p2.isReady()).thenReturn(true);
+    	testLobby.setNumPlayers(0);
+    	testLobby.addPlayer(p1);
+    	testLobby.addPlayer(p2);
+    	assertTrue(testLobby.isLobbyReady());
+    }
+    
+    @Test
+    public void addPlayer() {
+        Player p1 = mock(Player.class);
+        when(p1.getUsername()).thenReturn("player1");
+        testLobby.setNumPlayers(0);
+        testLobby.addPlayer(p1);
+        assertEquals(1, testLobby.getNumPlayers());
+        assertEquals("player1", testLobby.getPlayers().get(0).getUsername());        
+    }
+
+    @Test
+    public void hashmapTest() {
+        HashMap<String, Integer> usernameToLobby = new HashMap<String, Integer>();
+        usernameToLobby.put("player1", 1);
+        usernameToLobby.put("player1", 2);
+        for(int i = 0; i < usernameToLobby.size(); i++)
+            System.out.println(usernameToLobby.size());
+
     }
 
 }

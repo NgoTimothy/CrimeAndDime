@@ -3,9 +3,12 @@ Endpoints\Item.class
 Endpoints\InventoryController.class
 Endpoints\ItemEncoder.class
 Endpoints\LobbyControllerTest.class
+Endpoints\LoginControllerTest.class
 Endpoints\Application.class
 Endpoints\StoreInfoControllerTest.class
+Endpoints\LoginController.class
 Endpoints\WebSocketServer.class
+Endpoints\Customer.class
 Endpoints\Inventory.class
 Endpoints\Lobby.class
 Endpoints\User.class
