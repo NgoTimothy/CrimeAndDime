@@ -249,7 +249,6 @@ public class tileMapScreen implements Screen {
                 playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                 stage.addActor(playerInfo);
             }
-<<<<<<< HEAD
             if (shelfObjects.getName().equals("BLOCKED")){
                 wallArrayList.add(new Wall((RectangleMapObject) shelfObjects));
 
@@ -262,10 +261,7 @@ public class tileMapScreen implements Screen {
 
                 stage.addActor(shelfImage);
             }
-            
-=======
 
->>>>>>> 9a5cb5a526c271b90b7eb534d2a77d09bd7f9617
             Label playerInfo;
             Label.LabelStyle textStyle;
             BitmapFont font = new BitmapFont();
