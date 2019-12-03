@@ -37,7 +37,7 @@ public class GenerateCustomerTest {
     @Test
     public void generatedCustomersPurchaseValidAmountOfItems() {
         double total = 0;
-        fakeGame.createCustomers();
+      //  fakeGame.createCustomers();
         for(int i = 0; i < fakeGame.customers.size(); i++) {
             for(int j = 0; j < fakeGame.customers.get(i).getDesiredItems().size(); j++) {
                 Item cusItem = fakeGame.customers.get(i).getDesiredItems().get(j);

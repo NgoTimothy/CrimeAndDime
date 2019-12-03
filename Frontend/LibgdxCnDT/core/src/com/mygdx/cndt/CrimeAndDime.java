@@ -64,7 +64,7 @@ public class CrimeAndDime extends Game {
 			accumulator += Gdx.graphics.getDeltaTime();
 			if(accumulator >= 5f) {//1f is 1 second, 2f is 2 seconds and so forth
 				customers.clear();
-				createCustomers();
+	//			createCustomers();
 				hour++;
 				accumulator = 0;
 			}
@@ -91,9 +91,11 @@ public class CrimeAndDime extends Game {
 		accumulator = 0;
 	}
 
+
 	/**
 	 * Method will generated new customers for the day
 	 */
+	/*
 	public void createCustomers() {
 		//For now just generate 10 customers at random
 		if(gameStore.getListOfInventoryItems().size() <= 0)
@@ -120,6 +122,7 @@ public class CrimeAndDime extends Game {
 			newCustomer.purchaseItem(customerDesiredItem);
 		}
 	}
+	*/
 
 	private void subQuantityFromItemsList(int quantityPurchased, Item customerDesiredItem) {
 		if(quantityPurchased <= 0)
