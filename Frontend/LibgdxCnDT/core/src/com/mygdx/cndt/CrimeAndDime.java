@@ -72,7 +72,7 @@ public class CrimeAndDime extends Game {
 		super.render();
 		if(startTimer) {
 			accumulator += Gdx.graphics.getDeltaTime();
-			if(accumulator >= 5f) {//1f is 1 second, 2f is 2 seconds and so forth
+			if(accumulator >= 20f) {//1f is 1 second, 2f is 2 seconds and so forth
 				customers.clear();
 				createCustomers();
 				hour++;
