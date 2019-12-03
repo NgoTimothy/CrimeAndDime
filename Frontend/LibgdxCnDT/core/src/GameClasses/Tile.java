@@ -20,11 +20,13 @@ public class Tile {
     private Item stockedItem;
     private shelfDirection curShelfDirection;
     private static final int shelfMax = 10;
+    private int id;
 
     public Tile() {
         curTileType = tileType.EMPTY;
         stockedItem = null;
         curShelfDirection = shelfDirection.NONE;
+        id = -1;
     }
 
     /**
@@ -151,6 +153,17 @@ public class Tile {
     }
 
     /**
+     * @return The Tile id
+     */
+    public int getTileId() { return id; }
+
+    /**
+     * Sets the id equal to the id passed in
+     * @param id The new tile id
+     */
+    public void setTileId(int id) { this.id = id; }
+
+    /**
      * Overrides toString method to print out the item or else nothing prints out
      * @return
      */
@@ -160,5 +173,18 @@ public class Tile {
             return "";
         }
         return stockedItem.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o)
+            return true;
+
+        if(!(o instanceof Tile))
+            return false;
+
+        Tile obj = (Tile) o;
+
+        return obj.id == this.id;
     }
 }

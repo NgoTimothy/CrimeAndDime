@@ -27,6 +27,7 @@ import GameClasses.Tile;
 import GameExceptions.ShelfWithNoDirectionException;
 import com.mygdx.cndt.CrimeAndDime;
 
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -62,7 +63,8 @@ public class tileMapScreen implements Screen {
         maps = new TmxMapLoader().load("img/StoreTileMap.tmx");
         render = new OrthogonalTiledMapRenderer(maps);
         shelfMapObject = maps.getLayers().get("Shelf Object Layer").getObjects();
-        shelfTileArray = new ArrayList<Tile>(0);
+        shelfTileArray = new ArrayList<Tile>();
+        int i = 0;
     	for (MapObject shelfObjects : shelfMapObject)
         {
     		if (shelfObjects instanceof RectangleMapObject){
@@ -70,6 +72,8 @@ public class tileMapScreen implements Screen {
                     Tile shelfTile = new Tile();
                 	try {
                 		shelfTile.setShelfTile(Tile.shelfDirection.NORTH);
+                		shelfTile.setTileId(i);
+                		i++;
                 	} catch (ShelfWithNoDirectionException e) {
 						e.printStackTrace();
 					}
@@ -101,7 +105,27 @@ public class tileMapScreen implements Screen {
         stage.setDebugAll(true);
         clock.setText(timeToString(game.getHour()));
         day.setText("Day: " + Integer.toString(game.getDay()));
+        if(game.getCustomerBuyItems()) {
+            getListOfItemsOnShelves();
+            game.setCustomerBuyItems(false);
+        }
+        if(game.getUpdateShelves()) {
+            updateShelves();
+            game.clearPurchasedShelves();
+            game.setUpdateShelves(false);
+        }
         stage.draw();
+    }
+
+    private void updateShelves() {
+        ArrayList<Tile> tiles = (ArrayList<Tile>) game.purchasedShelves.clone();
+        for(int i = 0; i < tiles.size(); i++) {
+            int index = shelfTileArray.indexOf(tiles.get(i));
+            if(index >= 0)
+                shelfTileArray.get(index).getItem().subtractQuantity(tiles.get(i).getItem().getQuantity());
+            if(shelfTileArray.get(index).getItem().getQuantity() == 0)
+                shelfTileArray.get(index).removeItemFromShelf();
+        }
     }
 
     @Override
@@ -112,8 +136,7 @@ public class tileMapScreen implements Screen {
     }
 
     @Override
-    public void show ()
-    {
+    public void show () {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         skin = new Skin();
@@ -286,13 +309,14 @@ public class tileMapScreen implements Screen {
         return jsArray;
     }
 
-    private ArrayList<Tile> getListOfItemsOnShelves() {
+    public ArrayList<Tile> getListOfItemsOnShelves() {
         ArrayList<Tile> tileArr = new ArrayList<>();
         for(int i = 0; i < shelfTileArray.size(); i++) {
             if(shelfTileArray.get(i).getItem() != null) {
                 tileArr.add(shelfTileArray.get(i));
             }
         }
+        game.setShelvesToBeBoughtFrom(tileArr);
         return tileArr;
     }
 }

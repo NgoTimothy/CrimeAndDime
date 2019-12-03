@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import GameClasses.Customer;
+import GameClasses.Tile;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -21,6 +22,8 @@ public class CrimeAndDime extends Game {
 
 	public Store gameStore;
 	public ArrayList<Item> items;
+	public ArrayList<Tile> shelvesToBeBoughtFrom;
+	public ArrayList<Tile> purchasedShelves;
 	public ArrayList<Customer> customers;
 	public tileMapScreen tileMap;
 	private Boolean shelfChanged;
@@ -30,12 +33,14 @@ public class CrimeAndDime extends Game {
 	private boolean startTimer;
 	private boolean nextDay;
 	private boolean onBreak;
+	private boolean customerBuyItems;
 	private static final int closingTime = 20;
 	private int day;
 	private int timeLeftOnBreak;
 	private int lobbyID;
 	private String username;
 	private boolean updateLobby;
+	private boolean updateShelves;
 
 	@Override
 	public void create() {
@@ -55,6 +60,11 @@ public class CrimeAndDime extends Game {
 		lobbyID = -1;
 		day = 1;
 		updateLobby = false;
+		updateShelves = false;
+		shelvesToBeBoughtFrom = new ArrayList<Tile>();
+		customerBuyItems = false;
+		username = "initName";
+		purchasedShelves = new ArrayList<Tile>();
 	}
 
 	@Override
@@ -66,6 +76,7 @@ public class CrimeAndDime extends Game {
 				customers.clear();
 				createCustomers();
 				hour++;
+				customerBuyItems = true;
 				accumulator = 0;
 			}
 		}
@@ -95,17 +106,18 @@ public class CrimeAndDime extends Game {
 	 * Method will generated new customers for the day
 	 */
 	public void createCustomers() {
+		cleanShelvesToBeBoughtFrom();
 		//For now just generate 10 customers at random
-		if(gameStore.getListOfInventoryItems().size() <= 0)
+		if(shelvesToBeBoughtFrom.size() <= 0)
 			return;
 		int numOfNewCustomers = 10;
 		for(int i = 0; i < numOfNewCustomers; i++) {//For testing purposes only one item is added to customers desired items
-			if(gameStore.getListOfInventoryItems().isEmpty())
-				return;
-			int randItemIndex = random.nextInt(gameStore.getListOfInventoryItems().size());
-			Item customerDesiredItem = new Item(gameStore.getListOfInventoryItems().get(randItemIndex));
-			if(gameStore.getListOfInventoryItems().get(randItemIndex).getQuantity() > 1)
-				customerDesiredItem.setQuantity(random.nextInt(gameStore.getListOfInventoryItems().get(randItemIndex).getQuantity() - 1) + 1);
+			if(shelvesToBeBoughtFrom.isEmpty())
+				break;
+			int randItemIndex = random.nextInt(shelvesToBeBoughtFrom.size());
+			Item customerDesiredItem = new Item(shelvesToBeBoughtFrom.get(randItemIndex).getItem());
+			if(customerDesiredItem.getQuantity() > 1)
+				customerDesiredItem.setQuantity(random.nextInt(customerDesiredItem.getQuantity() - 1) + 1);
 			else
 				customerDesiredItem.setQuantity(1);
 			ArrayList<Item> desiredCustomerItems = new ArrayList<Item>();
@@ -114,10 +126,26 @@ public class CrimeAndDime extends Game {
 			Customer newCustomer = new Customer(desiredCustomerItems, budget);
 			customers.add(newCustomer);
 			int quantityPurchased = gameStore.getInventory().purchaseItem(customerDesiredItem);//When customers are generated they are automatically purchased from store, may delete later
+			shelvesToBeBoughtFrom.get(randItemIndex).getItem().subtractQuantity(quantityPurchased);
+			int indexOfTargetTile = purchasedShelves.indexOf(shelvesToBeBoughtFrom.get(randItemIndex));
+			if(indexOfTargetTile < 0)
+				purchasedShelves.add(shelvesToBeBoughtFrom.get(randItemIndex));
+			else
+				purchasedShelves.get(indexOfTargetTile).getItem().addQuantity(quantityPurchased);
 			subQuantityFromItemsList(quantityPurchased, customerDesiredItem);
+			if(shelvesToBeBoughtFrom.get(randItemIndex).getItem().getQuantity() == 0)
+				shelvesToBeBoughtFrom.remove(randItemIndex);
 			double priceToBeAdded = Math.round((customerDesiredItem.getRetailCost() * customerDesiredItem.getQuantity()) * 100.0) / 100.0;
 			gameStore.addBalance(priceToBeAdded);//May delete this too
 			newCustomer.purchaseItem(customerDesiredItem);
+		}
+		updateShelves = true;
+	}
+
+	private void cleanShelvesToBeBoughtFrom() {
+		for(int i = 0; i < shelvesToBeBoughtFrom.size(); i++) {
+			if(shelvesToBeBoughtFrom.get(i).getItem() == null)
+				shelvesToBeBoughtFrom.remove(i);
 		}
 	}
 
@@ -226,4 +254,18 @@ public class CrimeAndDime extends Game {
 	public int getLobbyID() { return lobbyID; }
 
 	public void setLobbyID(int lobbyID) { this.lobbyID = lobbyID; }
+
+	public void setShelvesToBeBoughtFrom(ArrayList<Tile> shelvesToBeBoughtFrom) { this.shelvesToBeBoughtFrom = new ArrayList<Tile>(shelvesToBeBoughtFrom); }
+
+	public ArrayList<Tile> getShelvesToBeBoughtFrom() { return shelvesToBeBoughtFrom; }
+
+	public boolean getCustomerBuyItems() { return customerBuyItems; }
+
+	public void setCustomerBuyItems(boolean customerBuyItems) { this.customerBuyItems = customerBuyItems; }
+
+	public void setUpdateShelves(boolean updateShelves) { this.updateShelves = updateShelves; }
+
+	public boolean getUpdateShelves() { return updateShelves; }
+
+	public void clearPurchasedShelves() { purchasedShelves.clear(); }
 }
