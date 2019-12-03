@@ -79,6 +79,16 @@ public class tileMapScreen implements Screen {
         render = new OrthogonalTiledMapRenderer(maps);
         shelfMapObject = maps.getLayers().get("Shelf Object Layer").getObjects();
         shelfTileArray = new ArrayList<Tile>(0);
+
+
+        wallArrayList = new ArrayList<Wall>(0);
+        batch = new SpriteBatch();
+        sprite = new Sprite(new Texture("img/sprite.png"));
+        Vector2 tempVector2 = new Vector2(625,70);
+        customer = new Customer((int) spawnPoint.x,(int) spawnPoint.y,sprite,tempVector2);
+        customer.setWallArrayList(wallArrayList);
+        customer.setPosition((int) spawnPoint.x,(int) spawnPoint.y);
+
     	for (MapObject shelfObjects : shelfMapObject)
         {
     		if (shelfObjects instanceof RectangleMapObject){
@@ -165,7 +175,6 @@ public class tileMapScreen implements Screen {
         camera.update();
         int i = 0;
         int x = 1;
-        wallArrayList = new ArrayList<Wall>(0);
         for (MapObject shelfObjects : shelfMapObject)
         {
             if (shelfObjects instanceof RectangleMapObject){
@@ -273,15 +282,6 @@ public class tileMapScreen implements Screen {
                 }
             });
         }
-
-        batch = new SpriteBatch();
-        sprite = new Sprite(new Texture("img/sprite.png"));
-        Vector2 tempVector2 = new Vector2(625,70);
-        customer = new Customer((int) spawnPoint.x,(int) spawnPoint.y,sprite,tempVector2);
-        customer.setWallArrayList(wallArrayList);
-        customer.setPosition((int) spawnPoint.x,(int) spawnPoint.y);
-
-
     }
 
 
