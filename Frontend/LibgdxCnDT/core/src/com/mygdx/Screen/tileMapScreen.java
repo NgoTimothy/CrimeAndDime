@@ -83,8 +83,8 @@ public class tileMapScreen implements Screen {
 
         wallArrayList = new ArrayList<Wall>(0);
         batch = new SpriteBatch();
-        sprite = new Sprite(new Texture("img/sprite.png"));
-        Vector2 tempVector2 = new Vector2(625,70);
+        sprite = new Sprite(new Texture("img/CustomerSpriteBLCK.png"));
+        Vector2 tempVector2 = new Vector2(625,80);
         customer = new Customer((int) spawnPoint.x,(int) spawnPoint.y,sprite,tempVector2);
         customer.setWallArrayList(wallArrayList);
         customer.setPosition((int) spawnPoint.x,(int) spawnPoint.y);
