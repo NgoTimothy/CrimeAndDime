@@ -119,14 +119,12 @@ public class CrimeAndDime extends Game {
 			Item customerDesiredItem = new Item(shelvesToBeBoughtFrom.get(randomShelfIndex).getItem());
 			if(customerDesiredItem.getQuantity() <= 0) {
 				System.out.println(customerDesiredItem.getQuantity());
+				shelvesToBeBoughtFrom.remove(randomShelfIndex);
+				continue;
 			}
 			int quantityPurchased = 0;
 			if(customerDesiredItem.getQuantity() == 1)
 				quantityPurchased = 1;
-			else if(customerDesiredItem.getQuantity() < 1) {
-				shelvesToBeBoughtFrom.remove(randomShelfIndex);
-				break;
-			}
 			else {
 				quantityPurchased = random.nextInt(customerDesiredItem.getQuantity()) + 1;
 			}
@@ -152,6 +150,7 @@ public class CrimeAndDime extends Game {
 			if(shelvesToBeBoughtFrom.get(randomShelfIndex).getItem().getQuantity() == 0) {
 				shelvesToBeBoughtFrom.remove(randomShelfIndex);
 			}
+			//Adding money to player account
 			double priceOfItemsPurchased = Math.round(customerDesiredItem.getRetailCost() * quantityPurchased * 100.0) / 100.0;
 			gameStore.addBalance(priceOfItemsPurchased);
 			newCustomer.purchaseItem(customerDesiredItem);

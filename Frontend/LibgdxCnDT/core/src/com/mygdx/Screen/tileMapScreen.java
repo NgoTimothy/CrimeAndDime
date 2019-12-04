@@ -309,7 +309,10 @@ public class tileMapScreen implements Screen {
         ArrayList<Tile> tileArr = new ArrayList<>();
         for(int i = 0; i < shelfTileArray.size(); i++) {
             if(shelfTileArray.get(i).getItem() != null) {
-                tileArr.add(shelfTileArray.get(i));
+                if(shelfTileArray.get(i).getItem().getQuantity() == 0)
+                    shelfTileArray.get(i).removeItemFromShelf();
+                else
+                    tileArr.add(shelfTileArray.get(i));
             }
         }
         game.setShelvesToBeBoughtFrom(tileArr);
