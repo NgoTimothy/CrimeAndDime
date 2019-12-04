@@ -3,6 +3,9 @@ package GameClasses;
 import GameExceptions.CustomerMovingIntoShelfException;
 import GameExceptions.PlacingItemWithNoShelfException;
 import GameExceptions.ShelfWithNoDirectionException;
+import com.badlogic.gdx.math.Vector2;
+
+import java.util.Vector;
 
 /**
  * Tile class is used to represent one space in the store
@@ -20,11 +23,24 @@ public class Tile {
     private Item stockedItem;
     private shelfDirection curShelfDirection;
     private static final int shelfMax = 10;
+    private int id;
+    private float x;
+    private float y;
 
     public Tile() {
         curTileType = tileType.EMPTY;
         stockedItem = null;
         curShelfDirection = shelfDirection.NONE;
+        id = -1;
+    }
+
+    public Tile(float x, float y, shelfDirection initShelfDirection) {
+        id = -1;
+        curTileType = tileType.SHELF;
+        stockedItem = null;
+        curShelfDirection = initShelfDirection;
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -151,6 +167,17 @@ public class Tile {
     }
 
     /**
+     * @return The Tile id
+     */
+    public int getTileId() { return id; }
+
+    /**
+     * Sets the id equal to the id passed in
+     * @param id The new tile id
+     */
+    public void setTileId(int id) { this.id = id; }
+
+    /**
      * Overrides toString method to print out the item or else nothing prints out
      * @return
      */
@@ -161,4 +188,30 @@ public class Tile {
         }
         return stockedItem.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o)
+            return true;
+
+        if(!(o instanceof Tile))
+            return false;
+
+        Tile obj = (Tile) o;
+
+        return obj.id == this.id;
+    }
+
+    public Vector2 getPosition() {
+        Vector2 returnableVector = new Vector2(x, y);
+        return returnableVector;
+    }
+
+    public void setX(float x) { this.x = x; }
+
+    public float getX() { return x; }
+
+    public void setY(float y) { this.y = y; }
+
+    public float getY() { return y; }
 }

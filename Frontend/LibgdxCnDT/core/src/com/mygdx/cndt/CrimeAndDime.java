@@ -2,8 +2,11 @@ package com.mygdx.cndt;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import GameClasses.Customer;
+import GameClasses.Tile;
+import GameExceptions.PlacingItemWithNoShelfException;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -21,6 +24,8 @@ public class CrimeAndDime extends Game {
 
 	public Store gameStore;
 	public ArrayList<Item> items;
+	public ArrayList<Tile> shelvesToBeBoughtFrom;//Shelves that customers can purchase from
+	public ArrayList<Tile> purchasedShelves;
 	public ArrayList<Customer> customers;
 	public tileMapScreen tileMap;
 	private Boolean shelfChanged;
@@ -30,12 +35,14 @@ public class CrimeAndDime extends Game {
 	private boolean startTimer;
 	private boolean nextDay;
 	private boolean onBreak;
+	private boolean customerBuyItems;
 	private static final int closingTime = 20;
 	private int day;
 	private int timeLeftOnBreak;
 	private int lobbyID;
 	private String username;
 	private boolean updateLobby;
+	private boolean updateShelves;
 
 	@Override
 	public void create() {
@@ -55,6 +62,11 @@ public class CrimeAndDime extends Game {
 		lobbyID = -1;
 		day = 1;
 		updateLobby = false;
+		updateShelves = false;
+		shelvesToBeBoughtFrom = new ArrayList<Tile>();
+		customerBuyItems = false;
+		username = "initName";
+		purchasedShelves = new ArrayList<Tile>();
 	}
 
 	@Override
@@ -64,6 +76,7 @@ public class CrimeAndDime extends Game {
 			accumulator += Gdx.graphics.getDeltaTime();
 			if(accumulator >= 5f) {//1f is 1 second, 2f is 2 seconds and so forth
 				customers.clear();
+				customerBuyItems = true;
 				createCustomers();
 				hour++;
 				accumulator = 0;
@@ -95,29 +108,64 @@ public class CrimeAndDime extends Game {
 	 * Method will generated new customers for the day
 	 */
 	public void createCustomers() {
+		customers.clear();
 		//For now just generate 10 customers at random
-		if(gameStore.getListOfInventoryItems().size() <= 0)
-			return;
-		int numOfNewCustomers = 10;
-		for(int i = 0; i < numOfNewCustomers; i++) {//For testing purposes only one item is added to customers desired items
-			if(gameStore.getListOfInventoryItems().isEmpty())
-				return;
-			int randItemIndex = random.nextInt(gameStore.getListOfInventoryItems().size());
-			Item customerDesiredItem = new Item(gameStore.getListOfInventoryItems().get(randItemIndex));
-			if(gameStore.getListOfInventoryItems().get(randItemIndex).getQuantity() > 1)
-				customerDesiredItem.setQuantity(random.nextInt(gameStore.getListOfInventoryItems().get(randItemIndex).getQuantity() - 1) + 1);
-			else
-				customerDesiredItem.setQuantity(1);
+		int newCustomers = getNumberOfCustomers();
+		for(int i = 0; i < newCustomers; i++) {
+			cleanShelvesToBeBoughtFrom();
+			if(shelvesToBeBoughtFrom.isEmpty())
+				break;
+			int randomShelfIndex = random.nextInt(shelvesToBeBoughtFrom.size());
+			Item customerDesiredItem = new Item(shelvesToBeBoughtFrom.get(randomShelfIndex).getItem());
+			if(customerDesiredItem.getQuantity() <= 0) {
+				System.out.println(customerDesiredItem.getQuantity());
+				shelvesToBeBoughtFrom.remove(randomShelfIndex);
+				continue;
+			}
+			int quantityPurchased = 0;
+			if(customerDesiredItem.getQuantity() == 1)
+				quantityPurchased = 1;
+			else {
+				quantityPurchased = random.nextInt(customerDesiredItem.getQuantity()) + 1;
+			}
+			customerDesiredItem.setQuantity(quantityPurchased);
 			ArrayList<Item> desiredCustomerItems = new ArrayList<Item>();
 			desiredCustomerItems.add(customerDesiredItem);
-			double budget = totalCostOfItems(desiredCustomerItems);
-			Customer newCustomer = new Customer(desiredCustomerItems, budget);
+			Customer newCustomer = new Customer(desiredCustomerItems);
 			customers.add(newCustomer);
-			int quantityPurchased = gameStore.getInventory().purchaseItem(customerDesiredItem);//When customers are generated they are automatically purchased from store, may delete later
-			subQuantityFromItemsList(quantityPurchased, customerDesiredItem);
-			double priceToBeAdded = Math.round((customerDesiredItem.getRetailCost() * customerDesiredItem.getQuantity()) * 100.0) / 100.0;
-			gameStore.addBalance(priceToBeAdded);//May delete this too
+			int indexOfItemInItems = items.indexOf(customerDesiredItem);
+			if(indexOfItemInItems >= 0)
+				items.get(indexOfItemInItems).subtractQuantity(customerDesiredItem.getQuantity());//Removes quantity from items (Inventory Screen)
+			//Logic for getting tiles that have been purchased
+			int indexOfShelfToBePurchasedFromInPurchasedShelves = purchasedShelves.indexOf(shelvesToBeBoughtFrom.get(randomShelfIndex));
+			if(indexOfShelfToBePurchasedFromInPurchasedShelves >= 0) {//If found then simply add the extra items into the list
+				purchasedShelves.get(indexOfShelfToBePurchasedFromInPurchasedShelves).getItem().addQuantity(quantityPurchased);
+			}
+			else {//If not in list then must add it and then set the quantity the amount purchased
+				purchasedShelves.add(shelvesToBeBoughtFrom.get(randomShelfIndex));
+				purchasedShelves.get(purchasedShelves.size() - 1).getItem().setQuantity(quantityPurchased);
+			}
+			//Subtract the item from the list of items that can be purchased from
+			shelvesToBeBoughtFrom.get(randomShelfIndex).getItem().subtractQuantity(quantityPurchased);
+			if(shelvesToBeBoughtFrom.get(randomShelfIndex).getItem().getQuantity() == 0) {
+				shelvesToBeBoughtFrom.remove(randomShelfIndex);
+			}
+			//Adding money to player account
+			double priceOfItemsPurchased = Math.round(customerDesiredItem.getRetailCost() * quantityPurchased * 100.0) / 100.0;
+			gameStore.addBalance(priceOfItemsPurchased);
 			newCustomer.purchaseItem(customerDesiredItem);
+		}
+		updateShelves = true;
+	}
+
+	private int getNumberOfCustomers() {
+		return 2;
+	}
+
+	private void cleanShelvesToBeBoughtFrom() {
+		for(int i = 0; i < shelvesToBeBoughtFrom.size(); i++) {
+			if(shelvesToBeBoughtFrom.get(i).getItem() == null || shelvesToBeBoughtFrom.get(i).getItem().getQuantity() == 0)
+				shelvesToBeBoughtFrom.remove(i);
 		}
 	}
 
@@ -131,18 +179,6 @@ public class CrimeAndDime extends Game {
 				System.out.println(items.get(i));
 			}
 		}
-	}
-
-	/**
-	 * Method will calculate how much money the list of desired items cost
-	 * @param desiredCustomerItems
-	 * @return Amount of money requried to purchase all items
-	 */
-	private double totalCostOfItems(ArrayList<Item> desiredCustomerItems) {
-		double total = 0;
-		for(int i = 0; i < desiredCustomerItems.size(); i++)
-			total += desiredCustomerItems.get(i).getQuantity() * desiredCustomerItems.get(i).getRetailCost();
-		return total;
 	}
 
 	@Override
@@ -226,4 +262,18 @@ public class CrimeAndDime extends Game {
 	public int getLobbyID() { return lobbyID; }
 
 	public void setLobbyID(int lobbyID) { this.lobbyID = lobbyID; }
+
+	public void setShelvesToBeBoughtFrom(ArrayList<Tile> shelvesToBeBoughtFrom) { this.shelvesToBeBoughtFrom = new ArrayList<Tile>(shelvesToBeBoughtFrom); }
+
+	public ArrayList<Tile> getShelvesToBeBoughtFrom() { return shelvesToBeBoughtFrom; }
+
+	public boolean getCustomerBuyItems() { return customerBuyItems; }
+
+	public void setCustomerBuyItems(boolean customerBuyItems) { this.customerBuyItems = customerBuyItems; }
+
+	public void setUpdateShelves(boolean updateShelves) { this.updateShelves = updateShelves; }
+
+	public boolean getUpdateShelves() { return updateShelves; }
+
+	public void clearPurchasedShelves() { purchasedShelves.clear(); }
 }

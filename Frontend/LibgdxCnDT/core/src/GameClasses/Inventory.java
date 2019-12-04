@@ -19,17 +19,15 @@ public class Inventory {
      * @return Quantity purchased
      */
     public int purchaseItem(Item itemToBePurchased) {
-        for(int i = 0; i < inventory.size(); i++) {
-            if(itemToBePurchased.equals(inventory.get(i))) {
-                int quantityLeftover = inventory.get(i).getQuantity() - itemToBePurchased.getQuantity();
-                if(quantityLeftover == 0)
-                    removeItem(itemToBePurchased);
-                else
-                    inventory.get(i).subtractQuantity(quantityLeftover);
-                return itemToBePurchased.getQuantity();
-            }
+        int index = inventory.indexOf(itemToBePurchased);
+        if(index >= 0) {
+            inventory.get(index).subtractQuantity(itemToBePurchased.getQuantity());
+            if(inventory.get(index).getQuantity() == 0)
+                inventory.remove(index);
         }
-        return 0;
+        else
+            return 0;
+        return itemToBePurchased.getQuantity();
     }
 
     /**
