@@ -69,15 +69,10 @@ public class tileMapScreen implements Screen {
         {
     		if (shelfObjects instanceof RectangleMapObject){
                 if (shelfObjects.getName().equals("Shelf")) {
-                    Tile shelfTile = new Tile();
-                	try {
-                		shelfTile.setShelfTile(Tile.shelfDirection.NORTH);
-                		shelfTile.setTileId(i);
-                		i++;
-                	} catch (ShelfWithNoDirectionException e) {
-						e.printStackTrace();
-					}
-		            shelfTileArray.add(shelfTile);
+                    Tile shelfTile = new Tile(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY(), Tile.shelfDirection.NORTH);
+                    shelfTile.setTileId(i);
+                    shelfTileArray.add(shelfTile);
+                    i++;
                 }
     		}
         }
@@ -106,13 +101,13 @@ public class tileMapScreen implements Screen {
         clock.setText(timeToString(game.getHour()));
         day.setText("Day: " + Integer.toString(game.getDay()));
         if(game.getCustomerBuyItems()) {
-            getListOfItemsOnShelves();
             game.setCustomerBuyItems(false);
+            getListOfItemsOnShelves();
         }
         if(game.getUpdateShelves()) {
-            updateShelves();
-            game.clearPurchasedShelves();
             game.setUpdateShelves(false);
+            game.clearPurchasedShelves();
+            updateShelves();
         }
         stage.draw();
     }
@@ -121,10 +116,11 @@ public class tileMapScreen implements Screen {
         ArrayList<Tile> tiles = (ArrayList<Tile>) game.purchasedShelves.clone();
         for(int i = 0; i < tiles.size(); i++) {
             int index = shelfTileArray.indexOf(tiles.get(i));
-            if(index >= 0)
+            if(index >= 0) {//If purchased tile is in array then subtract quantity of screen tile by the purchased tile
                 shelfTileArray.get(index).getItem().subtractQuantity(tiles.get(i).getItem().getQuantity());
-            if(shelfTileArray.get(index).getItem().getQuantity() == 0)
-                shelfTileArray.get(index).removeItemFromShelf();
+                if(shelfTileArray.get(index).getItem().getQuantity() == 0)
+                    shelfTileArray.get(index).removeItemFromShelf();
+            }
         }
     }
 
@@ -197,7 +193,7 @@ public class tileMapScreen implements Screen {
                 textStyle = new Label.LabelStyle();
                 textStyle.font = font;
 
-                day = new Label("Day: " + Integer.toString(game.getDay()), textStyle);
+                day = new Label("Day: " + game.getDay(), textStyle);
 
                 day.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                 day.setAlignment(100);
@@ -282,7 +278,7 @@ public class tileMapScreen implements Screen {
             AMOrPM = "PM";
         }
         if(hour >= closingTime && game.getStartTimer()) {
-            sendShelfListToServer();
+            //sendShelfListToServer();
             game.setStartTimer(false);
             socketClient.sendMessage("sendMyMoney " + game.gameStore.getBalance());
         }

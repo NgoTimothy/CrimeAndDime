@@ -3,6 +3,9 @@ package GameClasses;
 import GameExceptions.CustomerMovingIntoShelfException;
 import GameExceptions.PlacingItemWithNoShelfException;
 import GameExceptions.ShelfWithNoDirectionException;
+import com.badlogic.gdx.math.Vector2;
+
+import java.util.Vector;
 
 /**
  * Tile class is used to represent one space in the store
@@ -21,12 +24,23 @@ public class Tile {
     private shelfDirection curShelfDirection;
     private static final int shelfMax = 10;
     private int id;
+    private float x;
+    private float y;
 
     public Tile() {
         curTileType = tileType.EMPTY;
         stockedItem = null;
         curShelfDirection = shelfDirection.NONE;
         id = -1;
+    }
+
+    public Tile(float x, float y, shelfDirection initShelfDirection) {
+        id = -1;
+        curTileType = tileType.SHELF;
+        stockedItem = null;
+        curShelfDirection = initShelfDirection;
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -187,4 +201,17 @@ public class Tile {
 
         return obj.id == this.id;
     }
+
+    public Vector2 getPosition() {
+        Vector2 returnableVector = new Vector2(x, y);
+        return returnableVector;
+    }
+
+    public void setX(float x) { this.x = x; }
+
+    public float getX() { return x; }
+
+    public void setY(float y) { this.y = y; }
+
+    public float getY() { return y; }
 }

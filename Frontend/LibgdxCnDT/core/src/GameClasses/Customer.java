@@ -16,6 +16,11 @@ public class Customer {
         this.budget = budget;
     }
 
+    public Customer(ArrayList<Item> desiredItems) {
+        this.desiredItems = desiredItems;
+        budget = totalCostOfItems(desiredItems);
+    }
+
     /**
      * @return Whether the customer is done shopping or not
      */
@@ -106,5 +111,17 @@ public class Customer {
      */
     public void addBudget(double price) {
         budget += price;
+    }
+
+    /**
+     * Method will calculate how much money the list of desired items cost
+     * @param desiredCustomerItems
+     * @return Amount of money requried to purchase all items
+     */
+    private double totalCostOfItems(ArrayList<Item> desiredCustomerItems) {
+        double total = 0;
+        for(int i = 0; i < desiredCustomerItems.size(); i++)
+            total += desiredCustomerItems.get(i).getQuantity() * desiredCustomerItems.get(i).getRetailCost();
+        return total;
     }
 }
