@@ -125,7 +125,8 @@ public class Lobbies implements Screen {
 	            public void clicked(InputEvent event, float x, float y) {	
 	            	getLobbies();
 	            	Lobby destLobby = lobbyList.get(index);
-	            	joinLobby(destLobby.getLobbyID(), game.getUsername());
+	            	if(joinLobby(destLobby.getLobbyID(), game.getUsername()).equals("failure"))
+                        joinLobby(destLobby.getLobbyID(), game.getUsername());
 	            	game.setScreen(new LobbyScreen(game, destLobby));
 	            }
 	        });
