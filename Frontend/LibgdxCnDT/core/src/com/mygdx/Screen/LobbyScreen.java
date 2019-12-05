@@ -56,6 +56,7 @@ public class LobbyScreen implements Screen {
             fillUsers();
             ready = false;
             game.setLobbyID(lobby.getLobbyID());
+            clientEndPoint.sendMessage("updateLobby:" + lobby.getLobbyID());
         } catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -120,14 +121,22 @@ public class LobbyScreen implements Screen {
         white.draw(batch, lobby.getLobbyName(), 500, 700);
         for(int i = 0; i < 4; i++)
         {
-	        if (i < lobby.getNumPlayers() && i < users.size()) {
+	        if (users.size() > 0 && i < lobby.getNumPlayers() && i < users.size()) {
 	            BitmapFont font = new BitmapFont();
-	            if(users.get(i).getIsReady())
-	                font.setColor(Color.GREEN);
-	            else
-	                font.setColor(Color.RED);
+	            try {
+                    if(users.get(i).getIsReady())
+                        font.setColor(Color.GREEN);
+                    else
+                        font.setColor(Color.RED);
+                } catch(Exception e) {
+	                System.out.println(users.size());
+                }
                 font.getData().setScale(2);
-                font.draw(batch, users.get(i).getUsername(), i * 200 + 250, 400);
+	            try {
+                    font.draw(batch, users.get(i).getUsername(), i * 200 + 250, 400);
+                } catch (Exception e) {
+                    white.draw(batch, "Open", i * 200 + 250, 400);
+                }
 			}
 	        else
 	        	white.draw(batch, "Open", i * 200 + 250, 400);
@@ -163,7 +172,8 @@ public class LobbyScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
             	leaveLobby();
             	lobby.setNumPlayers(lobby.getNumPlayers() - 1);
-                clientEndPoint.sendMessage("updateLobby:" + lobby.getLobbyID());
+            	if(clientEndPoint != null)
+                    clientEndPoint.sendMessage("updateLobby:" + lobby.getLobbyID());
                 game.setScreen(new Lobbies(game));
             }
         });
@@ -175,13 +185,15 @@ public class LobbyScreen implements Screen {
         {
         	@Override
             public void clicked(InputEvent event, float x, float y) {
-                if(!ready) {
-                    clientEndPoint.sendMessage(username + ":is ready.");
-                    ready = true;
-                }
-                else {
-                    clientEndPoint.sendMessage(username + ":is not ready.");
-                    ready = false;
+        	    if(clientEndPoint != null) {
+                    if(!ready) {
+                        clientEndPoint.sendMessage(username + ":is ready.");
+                        ready = true;
+                    }
+                    else {
+                        clientEndPoint.sendMessage(username + ":is not ready.");
+                        ready = false;
+                    }
                 }
             }
         });
