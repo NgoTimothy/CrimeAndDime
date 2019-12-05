@@ -57,6 +57,7 @@ public class LobbyScreen implements Screen {
             ready = false;
             game.setLobbyID(lobby.getLobbyID());
             clientEndPoint.sendMessage("updateLobby:" + lobby.getLobbyID());
+            System.out.println(users.size());
         } catch (Exception e) {
 			e.printStackTrace();
 		}
