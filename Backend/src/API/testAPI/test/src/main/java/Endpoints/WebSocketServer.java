@@ -117,7 +117,8 @@ public class WebSocketServer {
         // Do error handling here
         logger.info("Entered into Error");
         try {
-            session.close();
+            if(session != null)
+                session.close();
             System.out.println(throwable.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
