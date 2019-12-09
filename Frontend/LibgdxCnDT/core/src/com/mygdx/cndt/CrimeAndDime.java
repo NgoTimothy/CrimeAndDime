@@ -9,6 +9,9 @@ import GameClasses.Tile;
 import GameExceptions.PlacingItemWithNoShelfException;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.mygdx.Screen.*;
@@ -17,6 +20,8 @@ import GameClasses.Item;
 import GameClasses.Store;
 
 import Services.CrimeAndDimeService;
+import com.mygdx.entities.CustomerSprite;
+import com.mygdx.entities.Wall;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
@@ -43,6 +48,7 @@ public class CrimeAndDime extends Game {
 	private String username;
 	private boolean updateLobby;
 	private boolean updateShelves;
+
 
 	@Override
 	public void create() {
@@ -72,10 +78,11 @@ public class CrimeAndDime extends Game {
 	@Override
 	public void render() {
 		super.render();
+		createCustomers();
 		if(startTimer) {
 			accumulator += Gdx.graphics.getDeltaTime();
 			if(accumulator >= 5f) {//1f is 1 second, 2f is 2 seconds and so forth
-				customers.clear();
+			//	customers.clear();
 				customerBuyItems = true;
 				createCustomers();
 				hour++;
@@ -108,7 +115,7 @@ public class CrimeAndDime extends Game {
 	 * Method will generated new customers for the day
 	 */
 	public void createCustomers() {
-		customers.clear();
+		//customers.clear();
 		//For now just generate 10 customers at random
 		int newCustomers = getNumberOfCustomers();
 		for(int i = 0; i < newCustomers; i++) {
@@ -133,8 +140,10 @@ public class CrimeAndDime extends Game {
 			customerDesiredItem.setQuantity(quantityPurchased);
 			ArrayList<Item> desiredCustomerItems = new ArrayList<Item>();
 			desiredCustomerItems.add(customerDesiredItem);
+
 			Customer newCustomer = new Customer(desiredCustomerItems);
 			customers.add(newCustomer);
+
 			int indexOfItemInItems = items.indexOf(customerDesiredItem);
 			if(indexOfItemInItems >= 0)
 				items.get(indexOfItemInItems).subtractQuantity(customerDesiredItem.getQuantity());//Removes quantity from items (Inventory Screen)
@@ -277,4 +286,6 @@ public class CrimeAndDime extends Game {
 	public boolean getUpdateShelves() { return updateShelves; }
 
 	public void clearPurchasedShelves() { purchasedShelves.clear(); }
+
+	public ArrayList<Customer> getCustomers() {return customers; }
 }

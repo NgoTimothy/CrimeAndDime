@@ -8,18 +8,21 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.Screen.tileMapScreen;
+import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 
 public class CustomerSprite extends Sprite{
 
-    private static final int MOVEMENT = 50;
+    private static final int MOVEMENT = 70;
  //   private Texture customerTexture;
     private Vector2 position;
     private Vector2 velocity;
     private Vector2 targetPosition;
     private Rectangle bounds;
     private Sprite sprite;
+
+    public String curDirection;
 
     private boolean hasCollided = false;
     private ArrayList<Wall> walls;
@@ -66,23 +69,30 @@ public class CustomerSprite extends Sprite{
     }
 
     public void updateMovement(float dt){
-        hasReachedTargetPosition();
         switch (isValidMovement()){
             case 1:
                 velocity.y = MOVEMENT * dt;
                 position.set(position.x, position.y - velocity.y);
+                hasReachedTargetPosition();
+                curDirection = "Down";
                 break;
             case 2:
                 velocity.x = MOVEMENT * dt;
                 position.set(position.x - velocity.x, position.y);
+                hasReachedTargetPosition();
+                curDirection = "Right";
                 break;
             case 3:
                 velocity.x = MOVEMENT * dt;
                 position.set(position.x + velocity.x, position.y);
+                hasReachedTargetPosition();
+                curDirection = "Left";
                 break;
             case 4:
                 velocity.y = MOVEMENT * dt;
                 position.set(position.x, position.y + velocity.y);
+                hasReachedTargetPosition();
+                curDirection = "Up";
                 break;
             default:
                 System.out.println(isValidMovement());
@@ -94,18 +104,29 @@ public class CustomerSprite extends Sprite{
     public int isValidMovement(){
         Vector2 futureMovement = new Vector2();
         Rectangle futureMovementBound;
-        if (position.x != targetPosition.x && position.y != targetPosition.y)  // Could make this a boolean that checks the "checkpoint" for the targetGoal.
+        if (position.y != targetPosition.y)  // Could make this a boolean that checks the "checkpoint" for the targetGoal.
         {
-            if (position.y > targetPosition.y){
+            if (position.y > targetPosition.y && curDirection != "Up") {
                 futureMovement.x = targetPosition.x;
                 futureMovement.y = targetPosition.y + (MOVEMENT * Gdx.graphics.getDeltaTime());
-                futureMovementBound = new Rectangle(futureMovement.x,futureMovement.y,sprite.getWidth(),sprite.getHeight()); // Not 100% sure about this.
-                if (!isWallCollistion(futureMovementBound))
-                {
+                futureMovementBound = new Rectangle(futureMovement.x, futureMovement.y, sprite.getWidth(), sprite.getHeight()); // Not 100% sure about this.
+                if (!isWallCollistion(futureMovementBound)) {
                     return 1;
                 }
                 // Should never be true becasue if it is, position.y <= targetPosition.y
             }
+            if (position.y < targetPosition.y && curDirection != "Down") {
+                futureMovement.x = targetPosition.x;
+                futureMovement.y = targetPosition.y + (MOVEMENT * Gdx.graphics.getDeltaTime());
+                futureMovementBound = new Rectangle(futureMovement.x, futureMovement.y, sprite.getWidth(), sprite.getHeight());
+                if (!isWallCollistion(futureMovementBound)) {
+                    return 4;
+                }
+            }
+        }
+        if (position.x != targetPosition.x && curDirection != "Left")
+        {
+            // I know the problem. Its because of how if statemenets work going down a chain that it is not checing all the four directions.
             if (position.x > targetPosition.x){
                 futureMovement.x = targetPosition.x - (MOVEMENT * Gdx.graphics.getDeltaTime());
                 futureMovement.y = targetPosition.y;
@@ -115,22 +136,13 @@ public class CustomerSprite extends Sprite{
                     return 2;
                 }
             }
-            if (position.x < targetPosition.x){
+            if (position.x < targetPosition.x && curDirection != "Right"){
                 futureMovement.x = targetPosition.x + (MOVEMENT * Gdx.graphics.getDeltaTime());
                 futureMovement.y = targetPosition.y;
                 futureMovementBound = new Rectangle(futureMovement.x,futureMovement.y,sprite.getWidth(),sprite.getHeight());
                 if (!isWallCollistion(futureMovementBound))
                 {
                     return 3;
-                }
-            }
-            if(position.y < targetPosition.y){
-                futureMovement.x = targetPosition.x;
-                futureMovement.y = targetPosition.y + (MOVEMENT * Gdx.graphics.getDeltaTime());
-                futureMovementBound = new Rectangle(futureMovement.x,futureMovement.y,sprite.getWidth(),sprite.getHeight());
-                if (!isWallCollistion(futureMovementBound))
-                {
-                    return 4;
                 }
             }
         }
@@ -151,9 +163,14 @@ public class CustomerSprite extends Sprite{
     }
 
     public void hasReachedTargetPosition(){
-        if (position.x - targetPosition.x < 1 && position.y - targetPosition.y < 1) {
-            Vector2 endVector = new Vector2(870, 620);
-            targetPosition = endVector;
+        if ((int) (targetPosition.x - position.x) == 0)
+        {
+            if ((int) (targetPosition.y - position.y) == 0)
+            {
+                Vector2 endVector = new Vector2(870, 620);
+                targetPosition = endVector;
+                System.out.println("Hit Target");
+            }
         }
     }
 }

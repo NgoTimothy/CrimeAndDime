@@ -1,5 +1,7 @@
 package com.mygdx.Screen;
 
+import GameClasses.Customer;
+import GameClasses.Item;
 import GameClasses.Tile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -24,8 +26,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.cndt.CrimeAndDime;
 
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.mygdx.entities.CustomerSprite;
 import com.mygdx.entities.Wall;
@@ -57,51 +61,50 @@ public class tileMapScreen implements Screen {
     private SpriteBatch batch;
     private Sprite sprite;
 
-    private Vector2 spawnPoint = new Vector2(175,620);
+    private Vector2 spawnPoint = new Vector2(175, 620);
 
     private CustomerSprite customerSprite;
     private ArrayList<Wall> wallArrayList;
+    private ArrayList<Customer> customerArrayList;
+
 
     public tileMapScreen(CrimeAndDime game) {
-    	this.game = game;
+        this.game = game;
         white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
         maps = new TmxMapLoader().load("img/StoreTileMap.tmx");
         render = new OrthogonalTiledMapRenderer(maps);
         shelfMapObject = maps.getLayers().get("Shelf Object Layer").getObjects();
         shelfTileArray = new ArrayList<Tile>();
         wallArrayList = new ArrayList<Wall>(0);
+        customerArrayList = new ArrayList<Customer>(0);
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture("img/sprite.png"));
-        Vector2 tempVector2 = new Vector2(625,70);
-        customerSprite = new CustomerSprite((int) spawnPoint.x,(int) spawnPoint.y,sprite,tempVector2);
-        customerSprite.setWallArrayList(wallArrayList);
-        customerSprite.setPosition((int) spawnPoint.x,(int) spawnPoint.y);
+
         int i = 0;
-    	for (MapObject shelfObjects : shelfMapObject)
-        {
-    		if (shelfObjects instanceof RectangleMapObject){
+        for (MapObject shelfObjects : shelfMapObject) {
+            if (shelfObjects instanceof RectangleMapObject) {
                 if (shelfObjects.getName().equals("Shelf")) {
                     Tile shelfTile = new Tile(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY(), Tile.shelfDirection.NORTH);
                     shelfTile.setTileId(i);
                     shelfTileArray.add(shelfTile);
                     i++;
                 }
-    		}
+            }
         }
-    	try {
-    	    //socketClient = new WebSocketClient(new URI("ws://localhost:8082/websocket/" + 25 + "/" + "Tim"), game);
+        try {
+            //socketClient = new WebSocketClient(new URI("ws://localhost:8082/websocket/" + 25 + "/" + "Tim"), game);
             socketClient = new WebSocketClient(
                     new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + game.getLobbyID() + "/" + game.getUsername()), game);
             game.setOnBreak(true);
-    	    //game.setStartTimer(true);//Delete this shit
+            //game.setStartTimer(true);//Delete this shit
 
-    	} catch (Exception e) {
-    	    e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public void render(float delta){
+    public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -112,17 +115,42 @@ public class tileMapScreen implements Screen {
         stage.setDebugAll(true);
         clock.setText(timeToString(game.getHour()));
         day.setText("Day: " + Integer.toString(game.getDay()));
-        if(game.getCustomerBuyItems()) {
+        if (game.getCustomerBuyItems()) {
             game.setCustomerBuyItems(false);
             getListOfItemsOnShelves();
         }
-        if(game.getUpdateShelves()) {
+        if (game.getUpdateShelves()) {
             game.setUpdateShelves(false);
             game.clearPurchasedShelves();
             updateShelves();
         }
         stage.draw();
 
+        for (int i = 0; i < 1; i++) {
+            Vector2 targetVector = new Vector2();
+            ArrayList<Item> inventoryList = game.gameStore.getListOfInventoryItems();
+            System.out.println(inventoryList.size());
+            Random rand = new Random();
+            int randInt = rand.nextInt(7);
+
+            Item customerDesiredItem = inventoryList.get(randInt);
+            ArrayList<Item> tempDesireItemArray = new ArrayList<Item>();
+            tempDesireItemArray.add(customerDesiredItem);
+            Customer customer = new Customer(tempDesireItemArray, 99999.999);
+
+            ArrayList<Tile> tileArray = getListOfItemsOnShelves();
+            for (int k = 0; k < tileArray.size(); k++) {
+                Tile tempTile = tileArray.get(k);
+                if (tempDesireItemArray.get(i).equals(tempTile.getItem())) {
+                    targetVector = tempTile.getPosition();
+                } else {
+                    // Create a path for the ai to walk then leave.
+                }
+            }
+            customerSprite = new CustomerSprite((int) spawnPoint.x, (int) spawnPoint.y, sprite, targetVector);
+            customerSprite.setWallArrayList(wallArrayList);
+            customerSprite.setPosition((int) spawnPoint.x, (int) spawnPoint.y);
+        }
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -130,9 +158,9 @@ public class tileMapScreen implements Screen {
         customerSprite.setPosition(customerSprite.getPosition().x, customerSprite.getPosition().y);
         batch.end();
 
-        for (int i = 0; i < wallArrayList.size(); i++){
+        for (int i = 0; i < wallArrayList.size(); i++) {
             Wall tempWall = wallArrayList.get(i);
-            if (tempWall.collides(customerSprite.getBounds())){
+            if (tempWall.collides(customerSprite.getBounds())) {
                 customerSprite.stop();
             }
         }

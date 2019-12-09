@@ -1,5 +1,7 @@
 package GameClasses;
 
+import com.badlogic.gdx.math.Vector2;
+
 import java.util.*;
 
 /**
@@ -10,6 +12,10 @@ import java.util.*;
 public class Customer {
     private double budget;
     private ArrayList<Item> desiredItems;
+
+    //
+    private ArrayList<Vector2> itemLocation;
+    //
 
     public Customer(ArrayList<Item> desiredItems, Double budget) {
         this.desiredItems = desiredItems;
@@ -27,6 +33,7 @@ public class Customer {
     public boolean isDoneShopping() {
         return desiredItems.isEmpty();
     }
+
 
     /**
      * This method purchases the item for the customer and subtracts the cost of the item from the budget
