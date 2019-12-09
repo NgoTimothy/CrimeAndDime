@@ -9,9 +9,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.Screen.tileMapScreen;
 
+import GameClasses.Customer;
+
 import java.util.ArrayList;
 
-public class Customer extends Sprite{
+public class CustomerSprite extends Sprite{
 
     private static final int MOVEMENT = 50;
  //   private Texture customerTexture;
@@ -24,8 +26,9 @@ public class Customer extends Sprite{
     private boolean hasCollided = false;
     private ArrayList<Wall> walls;
 
-    public Customer(int x, int y, Sprite sprite, Vector2 targetPosition){
+    public CustomerSprite(int x, int y, Sprite sprite, Vector2 targetPosition){
         super(sprite);
+
         this.sprite = sprite;
         position = new Vector2(x,y);
         velocity = new Vector2(0,0);
@@ -70,14 +73,17 @@ public class Customer extends Sprite{
             case 1:
                 velocity.y = MOVEMENT * dt;
                 position.set(position.x, position.y - velocity.y);
+                hasReachedTargetPosition();
                 break;
             case 2:
                 velocity.x = MOVEMENT * dt;
                 position.set(position.x - velocity.x, position.y);
+                hasReachedTargetPosition();
                 break;
             case 3:
                 velocity.x = MOVEMENT * dt;
                 position.set(position.x + velocity.x, position.y);
+                hasReachedTargetPosition();
                 break;
             default:
                 System.out.println(isValidMovement());
@@ -134,5 +140,13 @@ public class Customer extends Sprite{
             }
         }
         return false;
+    }
+
+    public void hasReachedTargetPosition(){
+
+        if (position.x - targetPosition.x < 1 && position.y - targetPosition.y < 1) {
+                Vector2 endVector = new Vector2(870, 620);
+                targetPosition = endVector;
+        }
     }
 }

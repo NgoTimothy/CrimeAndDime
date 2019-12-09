@@ -1,10 +1,8 @@
 package com.mygdx.Screen;
 
 import GameClasses.Tile;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,21 +21,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.Screen.InventoryScreen;
-import com.mygdx.Screen.ShelfScreen;
 import com.mygdx.cndt.CrimeAndDime;
-import GameClasses.Tile;
 import GameExceptions.ShelfWithNoDirectionException;
-import com.mygdx.cndt.CrimeAndDime;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import com.mygdx.entities.Customer;
+import com.mygdx.entities.CustomerSprite;
 import com.mygdx.entities.Wall;
 import org.json.JSONArray;
 import utility.WebSocketClient;
@@ -69,7 +60,7 @@ public class tileMapScreen implements Screen {
 
     private Vector2 spawnPoint = new Vector2(175,620);
 
-    private Customer customer;
+    private CustomerSprite customerSprite;
     private ArrayList<Wall> wallArrayList;
 
     public tileMapScreen(CrimeAndDime game) {
@@ -85,9 +76,9 @@ public class tileMapScreen implements Screen {
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture("img/CustomerSpriteBLCK.png"));
         Vector2 tempVector2 = new Vector2(625,80);
-        customer = new Customer((int) spawnPoint.x,(int) spawnPoint.y,sprite,tempVector2);
-        customer.setWallArrayList(wallArrayList);
-        customer.setPosition((int) spawnPoint.x,(int) spawnPoint.y);
+        customerSprite = new CustomerSprite((int) spawnPoint.x,(int) spawnPoint.y,sprite,tempVector2);
+        customerSprite.setWallArrayList(wallArrayList);
+        customerSprite.setPosition((int) spawnPoint.x,(int) spawnPoint.y);
 
     	for (MapObject shelfObjects : shelfMapObject)
         {
@@ -132,14 +123,14 @@ public class tileMapScreen implements Screen {
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        customer.draw(batch);
-        customer.setPosition(customer.getPosition().x, customer.getPosition().y);
+        customerSprite.draw(batch);
+        customerSprite.setPosition(customerSprite.getPosition().x, customerSprite.getPosition().y);
         batch.end();
 
         for (int i = 0; i < wallArrayList.size(); i++){
             Wall tempWall = wallArrayList.get(i);
-            if (tempWall.collides(customer.getBounds())){
-                customer.stop();
+            if (tempWall.collides(customerSprite.getBounds())){
+                customerSprite.stop();
             }
         }
     }
@@ -348,7 +339,7 @@ public class tileMapScreen implements Screen {
         return tileArr;
     }
 
-    public Customer getCustomerTestCollsion(){
-        return customer;
+    public CustomerSprite getCustomerTestCollsion(){
+        return customerSprite;
     }
 }
