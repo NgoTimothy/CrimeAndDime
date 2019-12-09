@@ -44,6 +44,7 @@ public class CrimeAndDime extends Game {
 	private boolean updateLobby;
 	private boolean updateShelves;
 
+
 	@Override
 	public void create() {
 		gameStore = new Store("My Store");
@@ -110,7 +111,15 @@ public class CrimeAndDime extends Game {
 	public void createCustomers() {
 		customers.clear();
 		//For now just generate 10 customers at random
-		int newCustomers = getNumberOfCustomers();
+		int newCustomers = 0;
+		if(gameStore.getListOfInventoryItems().size() <= 0)
+			return;
+		if(gameStore.getMarketScore() < -90){
+			newCustomers = 1;
+		}
+		else {
+			newCustomers = 10 + (gameStore.getMarketScore() / 10);
+		}
 		for(int i = 0; i < newCustomers; i++) {
 			cleanShelvesToBeBoughtFrom();
 			if(shelvesToBeBoughtFrom.isEmpty())
