@@ -27,6 +27,13 @@ public class Store {
         initStore();
     }
 
+    public Store(String initName, double balance) {
+        name = initName;
+        storeMap = new ArrayList<List<Tile>>();
+        this.balance = balance;
+        storeInventory = new Inventory();
+        initStore();
+    }
     public Store(String initName, double balance, int marketScore, int crime) {
         name = initName;
         storeMap = new ArrayList<List<Tile>>();
@@ -36,6 +43,7 @@ public class Store {
         this.crime = crime;
         initStore();
     }
+
 
     public static void main(String[] args) {
         Store newStore = new Store("Tim's Store");

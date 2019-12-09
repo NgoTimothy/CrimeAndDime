@@ -18,7 +18,7 @@ public class GenerateCustomerTest {
     @Before
     public void setup() {
         fakeGame = new CrimeAndDime();
-        fakeGame.gameStore = new Store("testStore", 0, 0, 0);
+        fakeGame.gameStore = new Store("testStore", 0);
         fakeGame.customers = new ArrayList<>();
         faker = new Faker();
 
