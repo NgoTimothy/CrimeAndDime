@@ -27,13 +27,13 @@ public class Store {
         initStore();
     }
 
-    public Store(String initName, double balance/*, int marketScore, int crime*/) {
+    public Store(String initName, double balance, int marketScore, int crime) {
         name = initName;
         storeMap = new ArrayList<List<Tile>>();
         this.balance = balance;
         storeInventory = new Inventory();
-        /*this.marketScore = marketScore;
-        this.crime = crime;*/
+        this.marketScore = marketScore;
+        this.crime = crime;
         initStore();
     }
 
