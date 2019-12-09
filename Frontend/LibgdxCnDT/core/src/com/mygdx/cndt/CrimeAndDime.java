@@ -17,6 +17,8 @@ import GameClasses.Item;
 import GameClasses.Store;
 
 import Services.CrimeAndDimeService;
+import utility.Lobby;
+import utility.WebSocketClient;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
@@ -39,10 +41,10 @@ public class CrimeAndDime extends Game {
 	private static final int closingTime = 20;
 	private int day;
 	private int timeLeftOnBreak;
-	private int lobbyID;
 	private String username;
-	private boolean updateLobby;
 	private boolean updateShelves;
+    public WebSocketClient clientEndPoint;
+    public Lobby lobby;
 
 	@Override
 	public void create() {
@@ -59,9 +61,7 @@ public class CrimeAndDime extends Game {
 		hour = 8;
 		accumulator = 0;
 		timeLeftOnBreak = 10;//This is the amount of time on break.
-		lobbyID = -1;
 		day = 1;
-		updateLobby = false;
 		updateShelves = false;
 		shelvesToBeBoughtFrom = new ArrayList<Tile>();
 		customerBuyItems = false;
@@ -254,14 +254,6 @@ public class CrimeAndDime extends Game {
 	public void setUsername(String username) { this.username = username; }
 
 	public String getUsername() { return username; }
-
-	public void setUpdateLobby(boolean updateLobby) { this.updateLobby = updateLobby; }
-
-	public boolean getUpdateLobby() { return updateLobby; }
-
-	public int getLobbyID() { return lobbyID; }
-
-	public void setLobbyID(int lobbyID) { this.lobbyID = lobbyID; }
 
 	public void setShelvesToBeBoughtFrom(ArrayList<Tile> shelvesToBeBoughtFrom) { this.shelvesToBeBoughtFrom = new ArrayList<Tile>(shelvesToBeBoughtFrom); }
 

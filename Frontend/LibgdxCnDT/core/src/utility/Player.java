@@ -10,6 +10,11 @@ public class Player {
 		ready = false;
 	}
 	
+	public Player(String username, boolean isReady) {
+        this.username = username;
+        this.ready = isReady;
+    }
+	
 	public String getUsername()
 	{
 		return username;
@@ -24,9 +29,21 @@ public class Player {
 	{
 		ready = true;
 	}
-	
-	public boolean isReady()
-	{
-		return ready;
-	}
+
+    public boolean getIsReady() { return ready; }
+
+    public void setIsReady(boolean isReady) { ready = isReady; }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == this) {
+            return true;
+        }
+
+        if(!(o instanceof Player))
+            return false;
+
+        Player obj = (Player) o;
+        return obj.getUsername() == this.getUsername();
+    }
 }

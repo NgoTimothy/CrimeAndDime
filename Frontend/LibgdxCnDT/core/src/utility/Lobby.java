@@ -7,9 +7,7 @@ public class Lobby {
 	private int lobbyID;
 	private String lobbyName;
 	private int numPlayers;
-	private Player me;
 	private ArrayList<Player> players;
-	private ArrayList<String> lobbyUsernames;
 	
 	public Lobby(int lobbyID, String lobbyName, int numPlayers)
 	{
@@ -17,9 +15,14 @@ public class Lobby {
 		this.lobbyName = lobbyName;
 		this.numPlayers = numPlayers;
 		players = new ArrayList<Player>();
-		for(int i = 0; i < numPlayers; i++)
-			players.add(new Player("player" + (i + 1)));
-		lobbyUsernames = new ArrayList<String>();
+	}
+	
+	public Lobby(int lobbyID, String lobbyName)
+	{
+		this.lobbyID = lobbyID;
+		this.lobbyName = lobbyName;
+		this.numPlayers = 0;
+		players = new ArrayList<Player>();
 	}
 	
 	public void setLobbyID(int lobbyID)
@@ -52,28 +55,23 @@ public class Lobby {
 	public void addPlayer(Player player)
 	{
 		players.add(player);
-		numPlayers++;
+		numPlayers = players.size();
 	}
 	
 	public void addPlayer(String playerName)
 	{
 		players.add(new Player(playerName));
-		numPlayers++;
+		numPlayers = players.size();
 	}
 	
 	public void removePlayer(String playerName)
 	{
-		numPlayers--;
 		for (Player p : players)
 		{
 			if (p.getUsername().equals(playerName))
 				players.remove(p);
 		}
-		
-		for (int i = 0; i < players.size(); i++)
-		{
-			players.get(i).setUsername("player" + (i + 1));
-		}
+		numPlayers = players.size();
 	}
 	
 	public void readyPlayer(String playerName)
@@ -90,15 +88,23 @@ public class Lobby {
 		return players;
 	}
 	
+	public void setPlayers(ArrayList<Player> players)
+	{
+		this.players = players;
+		numPlayers = players.size();
+	}
+	
 	public boolean isLobbyReady()
 	{
 		if(players.size() == 0)
 			return false;
 		for(Player p : players)
 		{
-			if(!p.isReady())
+			if(!p.getIsReady())
 				return false;
 		}
 		return true;
 	}
+	
+	
 }
