@@ -79,6 +79,10 @@ public class Customer extends Sprite{
                 velocity.x = MOVEMENT * dt;
                 position.set(position.x + velocity.x, position.y);
                 break;
+            case 4:
+                velocity.y = MOVEMENT * dt;
+                position.set(position.x, position.y + velocity.y);
+                break;
             default:
                 System.out.println(isValidMovement());
                 System.out.println("It should never get to this????");
@@ -117,6 +121,15 @@ public class Customer extends Sprite{
                 if (!isWallCollistion(futureMovementBound))
                 {
                     return 3;
+                }
+            }
+            if(position.y < targetPosition.y){
+                futureMovement.x = targetPosition.x;
+                futureMovement.y = targetPosition.y + (MOVEMENT * Gdx.graphics.getDeltaTime());
+                futureMovementBound = new Rectangle(futureMovement.x,futureMovement.y,sprite.getWidth(),sprite.getHeight()); // Not 100% sure about this.
+                if (!isWallCollistion(futureMovementBound))
+                {
+                    return 4;
                 }
             }
         }
