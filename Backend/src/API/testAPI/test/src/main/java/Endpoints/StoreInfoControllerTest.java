@@ -42,7 +42,12 @@ public class StoreInfoControllerTest
 
             //This test works for all API methods. You could also check the fields if they match but that was so redundant I decided to check if the connection was proper and the results were okay.
         }
-        @Test
+
+    /**
+     * Tests to see if the storeInfo API call works
+     * @throws Exception
+     */
+    @Test
         public void storeInfoTest() throws Exception {
             String result = "fail";
             json = "{\"storeName\":\"walmart\",\"cash\":1000.0,\"market_score\":500,\"nextDay\":false}";

@@ -29,8 +29,6 @@ public class InventoryController {
         try {
             //create array list of items
             ArrayList<Item> items = new ArrayList<Item>();
-            //Gson gson = new Gson();
-            //JSONArray array = new JSONArray();
             //query to query the database
             String query = "select * from crime_and_dime.inventory";
 
@@ -50,24 +48,10 @@ public class InventoryController {
                 tempItem.setPrice(rs.getDouble("price"));
                 tempItem.setItemId(rs.getInt("itemid"));
                 items.add(tempItem);
-                /*JSONObject object = new JSONObject();
-                object.put("Item", rs.getString("item"));
-                object.put("ItemID", rs.getInt("itemid"));
-                object.put("Price", rs.getInt("price"));*/
-                //array.put(object);
             }
             con.close();
             return items;
-//            would return as a json array
-//            JSONArray jsonArray = new JSONArray();cd
-//            for (int i=0; i < inventories.size(); i++) {
-//                jsonArray.put(inventories.get(i).getJSONObject());
-//            }
-            //return inventories as json string
 
-            //String string = gson.toJson(array);
-
-            //return string;
         } catch (Exception e) {
             System.out.println(e);
         }

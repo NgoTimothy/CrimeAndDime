@@ -43,6 +43,11 @@ class LobbyControllerTest {
 
         //This test works for all API methods. You could also check the fields if they match but that was so redundant I decided to check if the connection was proper and the results were okay.
     }
+
+    /**
+     * Tests the individual lobby API call
+     * @throws Exception
+     */
     @Test
     public void lobbyTest() throws Exception {
         String result = "fail";
@@ -71,6 +76,10 @@ class LobbyControllerTest {
 
     }
 
+    /**
+     * Tests the lobbyInfo call
+     * @throws Exception
+     */
     @Test
     public void lobbyInfoTest() throws Exception {
         String result = "fail";

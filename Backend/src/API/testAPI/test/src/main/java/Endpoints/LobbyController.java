@@ -28,7 +28,6 @@ public class LobbyController {
             String query = "SELECT * FROM crime_and_dime.lobby";
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
-                     //"jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","root","");
                      "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
             PreparedStatement prst = con.prepareStatement(query);
             Statement stmt = con.createStatement();
@@ -69,7 +68,6 @@ public class LobbyController {
             String query = "SELECT * FROM crime_and_dime.lobby_group WHERE lobbyID = ?";
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
-                    // "jdbc:mysql://localhost:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false","teamTC3","TC_3CrimeAndDime");
                     "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
             PreparedStatement prst = con.prepareStatement(query);
             prst.setInt(1, lobbyID);
@@ -106,7 +104,6 @@ public class LobbyController {
             String query2 = "INSERT INTO lobby_group(username, lobbyID) VALUES(?, ?)";
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
-                    // "jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","teamTC3","TC_3CrimeAndDime");
                     "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
             PreparedStatement prst = con.prepareStatement(query2);
             prst.setString(1, username);
@@ -141,7 +138,6 @@ public class LobbyController {
             String query = "UPDATE lobby SET numberOfPlayers = numberofPlayers + 1 WHERE lobbyID = ?";
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
-                    // "jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","teamTC3","TC_3CrimeAndDime");
                     "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
 
             PreparedStatement prst = con.prepareStatement(query);
@@ -173,7 +169,6 @@ public class LobbyController {
             String query = "DELETE FROM crime_and_dime.lobby WHERE lobbyID = ?";
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
-                    //"jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","root","");
                     "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
             PreparedStatement prst = con.prepareStatement(query);
             prst.setInt(1, lobbyID);
@@ -202,20 +197,13 @@ public class LobbyController {
     public String addLobby(@RequestParam(value = "lobbyName", defaultValue = "Gaymer's") String lobbyName /*,@RequestParam(value = "username", defaultValue = "laknoll") String username*/) throws SQLException {
         Connection con = null;
         try {
-
-            //String query = "INSERT INTO lobby_group(username, lobbyID) VALUES(?, ?)";
             String query2 = "INSERT INTO lobby(lobbyName, hasPassword, numberOfPlayers) VALUES(?, 0, 0)";
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
-                    // "jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","teamTC3","TC_3CrimeAndDime");
                     "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
             PreparedStatement prst = con.prepareStatement(query2);
             prst.setString(1, lobbyName);
             prst.executeUpdate();
-            //prst = con.prepareStatement(query);
-            //prst.setString(1, username);
-            //prst.setInt(2, lobbyID);
-            //prst.executeUpdate();
 
             return "Welcome to the lobby!";
 
@@ -243,7 +231,6 @@ public class LobbyController {
             String query3 = "UPDATE lobby SET numberOfPlayers = numberofPlayers - 1 WHERE lobbyID = ?";
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
-                    //"jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","root","");
                     "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
             PreparedStatement prst = con.prepareStatement(query1);
             prst.setString(1, username);
@@ -281,7 +268,6 @@ public class LobbyController {
             String query = "UPDATE lobby SET numberOfPlayers = numberofPlayers - 1 WHERE lobbyID = ?";
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
-                    //"jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","root","");
                     "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
             PreparedStatement prst = con.prepareStatement(query);
             prst.setInt(1, lobbyID);
@@ -313,7 +299,6 @@ public class LobbyController {
             String query = "SELECT * FROM crime_and_dime.lobby WHERE lobbyID = ?";
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
-                    // "jdbc:mysql://localhost:3306/dime_and_crime?allowPublicKeyRetrieval=true&useSSL=false","teamTC3","TC_3CrimeAndDime");
                     "jdbc:mysql://coms-309-tc-3.misc.iastate.edu:3306/crime_and_dime?allowPublicKeyRetrieval=true&useSSL=false", "teamTC3", "TC_3_CrimeAndDime");
             PreparedStatement prst = con.prepareStatement(query);
             prst.setInt(1, lobbyID);

@@ -40,8 +40,13 @@ public class LoginControllerTest
 
         //This test works for all API methods. You could also check the fields if they match but that was so redundant I decided to check if the connection was proper and the results were okay.
     }
+
+    /**
+     * Tests to see if the login API call works
+     * @throws Exception
+     */
     @Test
-    public void lobbyTest() throws Exception {
+    public void loginTest() throws Exception {
         String result = "fail";
         json = "Accepted";
         String URL = "http://coms-309-tc-3.misc.iastate.edu:8080/login";
