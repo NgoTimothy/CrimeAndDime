@@ -118,7 +118,7 @@ public class CrimeAndDime extends Game {
 
 
 	public void createCustomers() {
-	
+
 		//customers.clear();
 		//For now just generate 10 customers at random
 		int newCustomers = getNumberOfCustomers();

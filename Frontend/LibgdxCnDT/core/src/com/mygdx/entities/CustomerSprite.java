@@ -17,7 +17,7 @@ public class CustomerSprite extends Sprite{
     private static final int MOVEMENT = 70;
  //   private Texture customerTexture;
     private Vector2 position;
-    private Vector2 velocity;
+    private float velocity;
     private Vector2 targetPosition;
     private Rectangle bounds;
     private Sprite sprite;
@@ -25,7 +25,6 @@ public class CustomerSprite extends Sprite{
     public String curDirection;
 
     private boolean hasCollided = false;
-    private boolean remove = false;
     private ArrayList<Wall> walls;
     private Vector2 endVector = new Vector2(870, 620);
 
@@ -33,7 +32,7 @@ public class CustomerSprite extends Sprite{
         super(sprite);
         this.sprite = sprite;
         position = new Vector2(x,y);
-        velocity = new Vector2(0,0);
+       // velocity = new Vector2(0,0);
         this.targetPosition = targetPosition;
         bounds = new Rectangle(x,y,sprite.getWidth(),sprite.getWidth());
     }
@@ -50,7 +49,7 @@ public class CustomerSprite extends Sprite{
     }
 
     public void stop(){
-        velocity.set(0,0);
+        velocity = 0;
         hasCollided = true;
     }
     public Rectangle getBounds(){
@@ -71,42 +70,38 @@ public class CustomerSprite extends Sprite{
     }
 
     public void updateMovement(float dt){
-
-        switch (isValidMovement()){
-            case 1:
-                velocity.y = MOVEMENT * dt;
-                position.set(position.x, position.y - velocity.y);
-                hasReachedTargetPosition();
-                hasReachedEnd();
-                curDirection = "Down";
-                break;
-            case 2:
-                velocity.x = MOVEMENT * dt;
-                position.set(position.x - velocity.x, position.y);
-                hasReachedTargetPosition();
-                hasReachedEnd();
-                curDirection = "Right";
-                break;
-            case 3:
-                velocity.x = MOVEMENT * dt;
-                position.set(position.x + velocity.x, position.y);
-                hasReachedTargetPosition();
-                hasReachedEnd();
-                curDirection = "Left";
-                break;
-            case 4:
-                velocity.y = MOVEMENT * dt;
-                position.set(position.x, position.y + velocity.y);
-                hasReachedTargetPosition();
-                hasReachedEnd();
-                curDirection = "Up";
-                break;
-            default:
-         //       System.out.println(isValidMovement());
-        //        System.out.println("It should never get to this????");
-                break;
-        }
+        velocity = MOVEMENT * dt;
+            switch (isValidMovement()){
+                case 1:
+                    position.set(position.x, position.y - velocity);
+                    hasReachedTargetPosition();
+                    hasReachedEnd();
+                    curDirection = "Down";
+                    break;
+                case 2:
+                    position.set(position.x - velocity, position.y);
+                    hasReachedTargetPosition();
+                    hasReachedEnd();
+                    curDirection = "Right";
+                    break;
+                case 3:
+                    position.set(position.x + velocity, position.y);
+                    hasReachedTargetPosition();
+                    hasReachedEnd();
+                    curDirection = "Left";
+                    break;
+                case 4:
+                    position.set(position.x, position.y + velocity);
+                    hasReachedTargetPosition();
+                    hasReachedEnd();
+                    curDirection = "Up";
+                    break;
+                default:
+                    break;
+            }
     }
+
+
 
     public int isValidMovement(){
         Vector2 futureMovement = new Vector2();
@@ -176,7 +171,6 @@ public class CustomerSprite extends Sprite{
             {
                 Vector2 endVector = new Vector2(870, 620);
                 targetPosition = endVector;
-           //     System.out.println("Hit Target");
             }
         }
     }
@@ -186,11 +180,9 @@ public class CustomerSprite extends Sprite{
         {
             if ((int) (endVector.y - position.y) == 0)
             {
-               remove = true;
-               return remove;
+               return true;
             }
         }
         return false;
     }
-
 }

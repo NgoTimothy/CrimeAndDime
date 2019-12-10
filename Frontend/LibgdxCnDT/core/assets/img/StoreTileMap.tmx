@@ -133,36 +133,36 @@
 </data>
  </layer>
  <objectgroup id="2" name="Shelf Object Layer">
-  <object id="1" name="Shelf" x="48" y="128" width="31.5" height="31"/>
+  <object id="1" name="Shelf" x="48.5455" y="128" width="31.5" height="31"/>
   <object id="2" name="Shelf" x="112.25" y="128.25" width="31.5" height="31"/>
-  <object id="3" name="Shelf" x="47.75" y="192.125" width="31.5" height="31"/>
+  <object id="3" name="Shelf" x="48.4773" y="192.489" width="31.5" height="31"/>
   <object id="4" name="Shelf" x="112.25" y="191.875" width="31.5" height="31"/>
-  <object id="5" name="Shelf" x="48" y="257.063" width="31.5" height="31"/>
+  <object id="5" name="Shelf" x="48.7273" y="256.881" width="31.5" height="31"/>
   <object id="6" name="Shelf" x="112.5" y="256.813" width="31.5" height="31"/>
-  <object id="7" name="Shelf" x="48" y="320.688" width="31.5" height="31"/>
+  <object id="7" name="Shelf" x="48.7273" y="320.688" width="31.5" height="31"/>
   <object id="8" name="Shelf" x="112.5" y="320.438" width="31.5" height="31"/>
-  <object id="12" name="Shelf" x="47.2083" y="384.531" width="31.5" height="31"/>
+  <object id="12" name="Shelf" x="48.481" y="384.531" width="31.5" height="31"/>
   <object id="13" name="Shelf" x="111.708" y="384.281" width="31.5" height="31"/>
-  <object id="14" name="Shelf" x="47.2083" y="448.156" width="31.5" height="31"/>
+  <object id="14" name="Shelf" x="48.1174" y="448.156" width="31.5" height="31"/>
   <object id="15" name="Shelf" x="111.708" y="447.906" width="31.5" height="31"/>
-  <object id="16" name="Shelf" x="47.4583" y="513.094" width="31.5" height="31"/>
+  <object id="16" name="Shelf" x="48.3674" y="512.73" width="31.5" height="31"/>
   <object id="17" name="Shelf" x="111.958" y="512.844" width="31.5" height="31"/>
-  <object id="18" name="Shelf" x="47.4583" y="576.719" width="31.5" height="31"/>
+  <object id="18" name="Shelf" x="48.1856" y="576.537" width="31.5" height="31"/>
   <object id="19" name="Shelf" x="111.958" y="576.469" width="31.5" height="31"/>
   <object id="20" name="Shelf" x="945.146" y="128.515" width="31.5" height="31"/>
-  <object id="21" name="Shelf" x="1009.65" y="128.265" width="31.5" height="31"/>
+  <object id="21" name="Shelf" x="1008.38" y="128.265" width="31.5" height="31"/>
   <object id="22" name="Shelf" x="945.146" y="192.14" width="31.5" height="31"/>
-  <object id="23" name="Shelf" x="1009.65" y="191.89" width="31.5" height="31"/>
+  <object id="23" name="Shelf" x="1008.2" y="191.89" width="31.5" height="31"/>
   <object id="24" name="Shelf" x="945.396" y="257.078" width="31.5" height="31"/>
-  <object id="25" name="Shelf" x="1009.9" y="256.828" width="31.5" height="31"/>
+  <object id="25" name="Shelf" x="1008.26" y="256.464" width="31.5" height="31"/>
   <object id="26" name="Shelf" x="945.396" y="320.703" width="31.5" height="31"/>
-  <object id="27" name="Shelf" x="1009.9" y="320.453" width="31.5" height="31"/>
+  <object id="27" name="Shelf" x="1008.45" y="320.635" width="31.5" height="31"/>
   <object id="28" name="Shelf" x="944.604" y="384.546" width="31.5" height="31"/>
-  <object id="29" name="Shelf" x="1009.1" y="384.296" width="31.5" height="31"/>
+  <object id="29" name="Shelf" x="1008.01" y="384.841" width="31.5" height="31"/>
   <object id="30" name="Shelf" x="944.604" y="448.171" width="31.5" height="31"/>
-  <object id="31" name="Shelf" x="1009.1" y="447.921" width="31.5" height="31"/>
+  <object id="31" name="Shelf" x="1008.37" y="448.285" width="31.5" height="31"/>
   <object id="32" name="Shelf" x="944.854" y="513.11" width="31.5" height="31"/>
-  <object id="33" name="Shelf" x="1009.35" y="512.86" width="31.5" height="31"/>
+  <object id="33" name="Shelf" x="1008.44" y="512.133" width="31.5" height="31"/>
   <object id="34" name="Shelf" x="944.854" y="576.735" width="31.5" height="31"/>
   <object id="35" name="Shelf" x="1009.35" y="576.485" width="31.5" height="31"/>
   <object id="36" name="Shelf" x="240.333" y="192.292" width="31.5" height="31"/>
@@ -210,7 +210,7 @@
   <object id="86" name="Shelf" x="816.876" y="639.459" width="31.5" height="31"/>
   <object id="87" name="Shelf" x="880.542" y="639.542" width="31.5" height="31"/>
   <object id="88" name="Shelf" x="945.042" y="639.292" width="31.5" height="31"/>
-  <object id="89" name="Shelf" x="1006.25" y="638.5" width="31.5" height="31"/>
+  <object id="89" name="Shelf" x="1007.52" y="639.227" width="31.5" height="31"/>
   <object id="91" name="Player Info" x="1105" y="13" width="157" height="49"/>
   <object id="92" name="Player Info" x="1103.5" y="97.5" width="157" height="49"/>
   <object id="93" name="Player Info" x="1104.5" y="175.5" width="157" height="49"/>
@@ -219,9 +219,9 @@
   <object id="96" name="Opponent Info 3" x="1104.75" y="575.75" width="157" height="49"/>
   <object id="100" name="Clock" x="1120" y="272" width="130.667" height="31.6667"/>
   <object id="101" name="DayCounter" x="1120" y="336.083" width="130.667" height="31.6667"/>
-  <object id="113" name="BLOCKED" x="1040.56" y="-2.104" width="46.875" height="718.208"/>
+  <object id="113" name="BLOCKED" x="1041.29" y="-1.92218" width="46.875" height="718.208"/>
   <object id="114" name="BLOCKED" x="47.5" y="2.27275" width="991" height="45.4545"/>
-  <object id="115" name="BLOCKED" x="48.5" y="671.273" width="991" height="45.4545"/>
-  <object id="117" name="BLOCKED" x="1.5625" y="-1.104" width="46.875" height="718.208"/>
+  <object id="115" name="BLOCKED" x="49.2273" y="672.546" width="991" height="45.4545"/>
+  <object id="117" name="BLOCKED" x="0.653409" y="1.07782" width="46.875" height="718.208"/>
  </objectgroup>
 </map>

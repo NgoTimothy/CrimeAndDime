@@ -63,13 +63,9 @@ public class tileMapScreen implements Screen {
 
     private Vector2 spawnPoint = new Vector2(175, 620);
 
-    private CustomerSprite customerSprite;
     private ArrayList<Wall> wallArrayList;
-    private ArrayList<Customer> customerArrayList;
-    private ArrayList<String> inventoryList = new ArrayList<String>(0);
-    private ArrayList<Tile> tileArray = new ArrayList<Tile>(0);
-    private boolean hasSpawned = false;
 
+    private ArrayList<Item> inventoryList;
     private ArrayList<CustomerSprite> customerSpriteList;
 
     public tileMapScreen(CrimeAndDime game) {
@@ -80,8 +76,8 @@ public class tileMapScreen implements Screen {
         shelfMapObject = maps.getLayers().get("Shelf Object Layer").getObjects();
         shelfTileArray = new ArrayList<Tile>();
         wallArrayList = new ArrayList<Wall>(0);
-        customerArrayList = new ArrayList<Customer>(0);
         customerSpriteList = new ArrayList<CustomerSprite>(0);
+        inventoryList = new ArrayList<Item>(0);
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture("img/sprite.png"));
 
@@ -107,20 +103,7 @@ public class tileMapScreen implements Screen {
             e.printStackTrace();
         }
 
-        inventoryList.add("book");
-        inventoryList.add("charger");
-        inventoryList.add("phone");
-        inventoryList.add("tv");
-        inventoryList.add("chair");
-        inventoryList.add("table");
-        inventoryList.add("apple");
-        inventoryList.add("watch");
-        inventoryList.add("gum");
-        inventoryList.add("guitar");
-
-        System.out.println(inventoryList.size());
-
-
+        inventoryList = game.items;
     }
 
     @Override
@@ -164,9 +147,8 @@ public class tileMapScreen implements Screen {
                 }
                 if (customerSpriteList.get(i).hasReachedEnd())
                 {
-                    System.out.println("Hello");
+
                     customerSpriteList.remove(i);
-                    System.out.println("Items in shelves to be bought from : Left the door" + game.getShelvesToBeBoughtFrom().size());
                 }
             }
         }
@@ -206,17 +188,13 @@ public class tileMapScreen implements Screen {
         shelfButtonStyle.down = skin.getDrawable("button.down");
 
         getListOfItemsOnShelves();
-        System.out.println("Items in shelves to be bought from :" + game.getShelvesToBeBoughtFrom().size());
         if(game.getShelvesToBeBoughtFrom().size() > 1)
         {
             spawnCustomerSprite((int) spawnPoint.x,(int) spawnPoint.y,sprite,game.getShelvesToBeBoughtFrom().get(1).getPosition());
-            shelfTileArray.get(1).removeItemFromShelf();
             game.shelvesToBeBoughtFrom.remove(1);
-
         }
         if(game.getShelvesToBeBoughtFrom().size() > 0) {
             spawnCustomerSprite((int) spawnPoint.x, (int) spawnPoint.y, sprite, game.getShelvesToBeBoughtFrom().get(0).getPosition());
-            shelfTileArray.get(0).removeItemFromShelf();
             game.shelvesToBeBoughtFrom.remove(0);
         }
 
@@ -305,7 +283,6 @@ public class tileMapScreen implements Screen {
             if (shelfObjects.getName().equals("BLOCKED")) {
                 wallArrayList.add(new Wall((RectangleMapObject) shelfObjects));
 
-                // Temp code
                 Texture texture = new Texture(Gdx.files.internal("img/transparentPicture.png"));
                 Image shelfImage = new Image(texture);
                 shelfImage.setPosition(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY());
@@ -395,16 +372,12 @@ public class tileMapScreen implements Screen {
     public ArrayList<Tile> getListOfItemsOnShelves() {
         ArrayList<Tile> tileArr = new ArrayList<>();
         for (int i = 0; i < shelfTileArray.size(); i++) {
-            if (shelfTileArray.get(i).getItem() != null) {
+            if (shelfTileArray.get(i).getItem() != null && shelfTileArray.get(i).getItem().getQuantity() != 0 ) {
                 tileArr.add(shelfTileArray.get(i));
             }
         }
         game.setShelvesToBeBoughtFrom(tileArr);
         return tileArr;
-    }
-
-    public CustomerSprite getCustomerTestCollsion() {
-        return customerSprite;
     }
 
     public void spawnCustomerSprite(int x, int y, Sprite sprite, Vector2 vector2) {
@@ -421,8 +394,8 @@ public class tileMapScreen implements Screen {
             Tile tempTile = tileArray.get(i);
             for(int k = 0; k < inventoryList.size(); k++)
             {
-                String tempString = inventoryList.get(k);
-                if (tempTile.getItem().getName().equals(tempString)) {
+                Item tempItem = inventoryList.get(k);
+                if (tempTile.getItem().equals(tempItem)) {
                     Vector2 targetVector = tempTile.getPosition();
                     return targetVector;
                 } else {
