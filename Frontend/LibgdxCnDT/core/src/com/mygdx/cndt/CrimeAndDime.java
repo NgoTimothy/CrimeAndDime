@@ -146,7 +146,7 @@ public class CrimeAndDime extends Game {
 			desiredCustomerItems.add(customerDesiredItem);
 
 			Customer newCustomer = new Customer(desiredCustomerItems);
-			customers.add(newCustomer);
+			
 
 			int indexOfItemInItems = items.indexOf(customerDesiredItem);
 			if(indexOfItemInItems >= 0)
@@ -163,11 +163,13 @@ public class CrimeAndDime extends Game {
 			//Subtract the item from the list of items that can be purchased from
 			shelvesToBeBoughtFrom.get(randomShelfIndex).getItem().subtractQuantity(quantityPurchased);
 			if(shelvesToBeBoughtFrom.get(randomShelfIndex).getItem().getQuantity() == 0) {
+				newCustomer.itemLocation = shelvesToBeBoughtFrom.get(randomShelfIndex).getPosition();
 				shelvesToBeBoughtFrom.remove(randomShelfIndex);
 			}
 			double priceOfItemsPurchased = Math.round(customerDesiredItem.getRetailCost() * quantityPurchased * 100.0) / 100.0;
 			gameStore.addBalance(priceOfItemsPurchased);
 			newCustomer.purchaseItem(customerDesiredItem);
+			customers.add(newCustomer);
 		}
 		updateShelves = true;
 

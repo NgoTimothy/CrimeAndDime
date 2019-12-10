@@ -20,7 +20,6 @@ public class CustomerSprite extends Sprite{
     private float velocity;
     private Vector2 targetPosition;
     private Rectangle bounds;
-    private Sprite sprite;
 
     public String curDirection;
 
@@ -29,8 +28,7 @@ public class CustomerSprite extends Sprite{
     private Vector2 endVector = new Vector2(870, 620);
 
     public CustomerSprite(int x, int y, Sprite sprite, Vector2 targetPosition){
-        super(sprite);
-        this.sprite = sprite;
+        super(new Sprite(new Texture("img/customers/customer1-right.png")));
         position = new Vector2(x,y);
        // velocity = new Vector2(0,0);
         this.targetPosition = targetPosition;
@@ -73,28 +71,32 @@ public class CustomerSprite extends Sprite{
         velocity = MOVEMENT * dt;
             switch (isValidMovement()){
                 case 1:
-                    position.set(position.x, position.y - velocity);
+                    position.set(position.x, position.y - 1);
                     hasReachedTargetPosition();
                     hasReachedEnd();
                     curDirection = "Down";
+                    setTexture(new Texture("img/customers/customer1-down.png"));
                     break;
                 case 2:
-                    position.set(position.x - velocity, position.y);
-                    hasReachedTargetPosition();
-                    hasReachedEnd();
-                    curDirection = "Right";
-                    break;
-                case 3:
-                    position.set(position.x + velocity, position.y);
+                    position.set(position.x - 1, position.y);
                     hasReachedTargetPosition();
                     hasReachedEnd();
                     curDirection = "Left";
+                    setTexture(new Texture("img/customers/customer1-left.png"));
+                    break;
+                case 3:
+                    position.set(position.x + 1, position.y);
+                    hasReachedTargetPosition();
+                    hasReachedEnd();
+                    curDirection = "Right";
+                    setTexture(new Texture("img/customers/customer1-right.png"));
                     break;
                 case 4:
-                    position.set(position.x, position.y + velocity);
+                    position.set(position.x, position.y + 1);
                     hasReachedTargetPosition();
                     hasReachedEnd();
                     curDirection = "Up";
+                    setTexture(new Texture("img/customers/customer1-up.png"));
                     break;
                 default:
                     break;
@@ -106,46 +108,50 @@ public class CustomerSprite extends Sprite{
     public int isValidMovement(){
         Vector2 futureMovement = new Vector2();
         Rectangle futureMovementBound;
-        if (position.y != targetPosition.y)  // Could make this a boolean that checks the "checkpoint" for the targetGoal.
+        if (position.y != (int) targetPosition.y)  // Could make this a boolean that checks the "checkpoint" for the targetGoal.
         {
-            if (position.y > targetPosition.y && curDirection != "Up") {
-                futureMovement.x = targetPosition.x;
-                futureMovement.y = targetPosition.y + (MOVEMENT * Gdx.graphics.getDeltaTime());
-                futureMovementBound = new Rectangle(futureMovement.x, futureMovement.y, sprite.getWidth(), sprite.getHeight()); // Not 100% sure about this.
-                if (!isWallCollistion(futureMovementBound)) {
-                    return 1;
-                }
+            if (position.y > (int) targetPosition.y) {
+//                futureMovement.x = targetPosition.x;
+//                futureMovement.y = targetPosition.y + (MOVEMENT * Gdx.graphics.getDeltaTime());
+//                futureMovementBound = new Rectangle(futureMovement.x, futureMovement.y, getWidth(), getHeight()); // Not 100% sure about this.
+//                if (!isWallCollistion(futureMovementBound)) {
+//                    return 1;
+//                }
+                return 1;
                 // Should never be true becasue if it is, position.y <= targetPosition.y
             }
-            if (position.y < targetPosition.y && curDirection != "Down") {
-                futureMovement.x = targetPosition.x;
-                futureMovement.y = targetPosition.y + (MOVEMENT * Gdx.graphics.getDeltaTime());
-                futureMovementBound = new Rectangle(futureMovement.x, futureMovement.y, sprite.getWidth(), sprite.getHeight());
-                if (!isWallCollistion(futureMovementBound)) {
-                    return 4;
-                }
+            if (position.y < (int) targetPosition.y) {
+//                futureMovement.x = targetPosition.x;
+//                futureMovement.y = targetPosition.y + (MOVEMENT * Gdx.graphics.getDeltaTime());
+//                futureMovementBound = new Rectangle(futureMovement.x, futureMovement.y, getWidth(), getHeight());
+//                if (!isWallCollistion(futureMovementBound)) {
+//                    return 4;
+//                }
+                return 4;
             }
         }
-        if (position.x != targetPosition.x && curDirection != "Left")
+        else if (position.x != (int) targetPosition.x)
         {
             // I know the problem. Its because of how if statemenets work going down a chain that it is not checing all the four directions.
-            if (position.x > targetPosition.x){
-                futureMovement.x = targetPosition.x - (MOVEMENT * Gdx.graphics.getDeltaTime());
-                futureMovement.y = targetPosition.y;
-                futureMovementBound = new Rectangle(futureMovement.x,futureMovement.y,sprite.getWidth(),sprite.getHeight());
-                if (!isWallCollistion(futureMovementBound))
-                {
-                    return 2;
-                }
+            if (position.x > (int) targetPosition.x){
+//                futureMovement.x = targetPosition.x - (MOVEMENT * Gdx.graphics.getDeltaTime());
+//                futureMovement.y = targetPosition.y;
+//                futureMovementBound = new Rectangle(futureMovement.x,futureMovement.y,getWidth(),getHeight());
+//                if (!isWallCollistion(futureMovementBound))
+//                {
+//                    return 2;
+//                }
+                return 2;
             }
-            if (position.x < targetPosition.x && curDirection != "Right"){
-                futureMovement.x = targetPosition.x + (MOVEMENT * Gdx.graphics.getDeltaTime());
-                futureMovement.y = targetPosition.y;
-                futureMovementBound = new Rectangle(futureMovement.x,futureMovement.y,sprite.getWidth(),sprite.getHeight());
-                if (!isWallCollistion(futureMovementBound))
-                {
-                    return 3;
-                }
+            if (position.x < (int) targetPosition.x){
+//                futureMovement.x = targetPosition.x + (MOVEMENT * Gdx.graphics.getDeltaTime());
+//                futureMovement.y = targetPosition.y;
+//                futureMovementBound = new Rectangle(futureMovement.x,futureMovement.y,getWidth(),getHeight());
+//                if (!isWallCollistion(futureMovementBound))
+//                {
+//                    return 3;
+//                }
+                return 3;
             }
         }
         else {

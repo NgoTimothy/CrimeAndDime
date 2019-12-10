@@ -12,10 +12,7 @@ import java.util.*;
 public class Customer {
     private double budget;
     private ArrayList<Item> desiredItems;
-
-    //
-    private ArrayList<Vector2> itemLocation;
-    //
+    public Vector2 itemLocation;
 
     public Customer(ArrayList<Item> desiredItems, Double budget) {
         this.desiredItems = desiredItems;

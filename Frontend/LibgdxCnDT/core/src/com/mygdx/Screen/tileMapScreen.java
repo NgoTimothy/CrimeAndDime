@@ -79,7 +79,7 @@ public class tileMapScreen implements Screen {
         customerSpriteList = new ArrayList<CustomerSprite>(0);
         inventoryList = new ArrayList<Item>(0);
         batch = new SpriteBatch();
-        sprite = new Sprite(new Texture("img/sprite.png"));
+        sprite = new Sprite(new Texture("img/customers/customer1-down.png"));
 
         int i = 0;
         for (MapObject shelfObjects : shelfMapObject) {
@@ -121,6 +121,11 @@ public class tileMapScreen implements Screen {
         if (game.getCustomerBuyItems()) {
             game.setCustomerBuyItems(false);
             getListOfItemsOnShelves();
+            for(int i = 0; i < game.customers.size(); i++)
+            {
+                    spawnCustomerSprite((int) spawnPoint.x,(int) spawnPoint.y,sprite,game.customers.get(i).itemLocation);
+                    game.customers.remove(i);
+            }
         }
         if (game.getUpdateShelves()) {
             game.setUpdateShelves(false);
@@ -187,16 +192,12 @@ public class tileMapScreen implements Screen {
         shelfButtonStyle.up = skin.getDrawable("button.up.9");
         shelfButtonStyle.down = skin.getDrawable("button.down");
 
-        getListOfItemsOnShelves();
-        if(game.getShelvesToBeBoughtFrom().size() > 1)
-        {
-            spawnCustomerSprite((int) spawnPoint.x,(int) spawnPoint.y,sprite,game.getShelvesToBeBoughtFrom().get(1).getPosition());
-            game.shelvesToBeBoughtFrom.remove(1);
-        }
+        /*
         if(game.getShelvesToBeBoughtFrom().size() > 0) {
             spawnCustomerSprite((int) spawnPoint.x, (int) spawnPoint.y, sprite, game.getShelvesToBeBoughtFrom().get(0).getPosition());
             game.shelvesToBeBoughtFrom.remove(0);
         }
+        */
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -385,24 +386,5 @@ public class tileMapScreen implements Screen {
         tempCustomerSprite.setWallArrayList(wallArrayList);
         tempCustomerSprite.setPosition((int) spawnPoint.x, (int) spawnPoint.y);
         customerSpriteList.add(tempCustomerSprite);
-    }
-
-    private Vector2 getTargetVector() {
-        ArrayList<Tile> tileArray = getListOfItemsOnShelves();
-        System.out.println(tileArray.size());
-        for (int i = 0; i < tileArray.size(); i++) {
-            Tile tempTile = tileArray.get(i);
-            for(int k = 0; k < inventoryList.size(); k++)
-            {
-                Item tempItem = inventoryList.get(k);
-                if (tempTile.getItem().equals(tempItem)) {
-                    Vector2 targetVector = tempTile.getPosition();
-                    return targetVector;
-                } else {
-                    break;
-                }
-            }
-        }
-        return null;
     }
 }
