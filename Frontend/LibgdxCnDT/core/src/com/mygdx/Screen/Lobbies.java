@@ -123,7 +123,6 @@ public class Lobbies implements Screen {
 	        {
 	            @Override
 	            public void clicked(InputEvent event, float x, float y) {	
-	            	getLobbies();
 	            	Lobby destLobby = lobbyList.get(index);
 	            	if(joinLobby(destLobby.getLobbyID(), game.getUsername()).equals("failure"))
                         joinLobby(destLobby.getLobbyID(), game.getUsername());
@@ -145,6 +144,7 @@ public class Lobbies implements Screen {
 	            @Override
 	            public void clicked(InputEvent event, float x, float y) {	            	
 	            	if(!addLobby(newLobby.getText()).equals("failure")) {
+	            		getLobbies();
 	            	    Lobby newlyCreatedLobby = lobbyList.get(lobbyList.size()-1);
                         joinLobby(newlyCreatedLobby.getLobbyID(), game.getUsername());
                         game.setScreen(new LobbyScreen(game, newlyCreatedLobby));

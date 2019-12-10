@@ -99,7 +99,7 @@ public class tileMapScreen implements Screen {
         try {
             //socketClient = new WebSocketClient(new URI("ws://localhost:8082/websocket/" + 25 + "/" + "Tim"), game);
             socketClient = new WebSocketClient(
-                    new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + game.getLobbyID() + "/" + game.getUsername()), game);
+                    new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + game.lobby.getLobbyID() + "/" + game.getUsername()), game);
             game.setOnBreak(true);
             //game.setStartTimer(true);//Delete this shit
 

@@ -20,8 +20,8 @@ import GameClasses.Item;
 import GameClasses.Store;
 
 import Services.CrimeAndDimeService;
-import com.mygdx.entities.CustomerSprite;
-import com.mygdx.entities.Wall;
+import utility.Lobby;
+import utility.WebSocketClient;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
@@ -44,10 +44,11 @@ public class CrimeAndDime extends Game {
 	private static final int closingTime = 20;
 	private int day;
 	private int timeLeftOnBreak;
-	private int lobbyID;
 	private String username;
-	private boolean updateLobby;
 	private boolean updateShelves;
+    public WebSocketClient clientEndPoint;
+    public Lobby lobby;
+
 
 
 	@Override
@@ -65,9 +66,7 @@ public class CrimeAndDime extends Game {
 		hour = 8;
 		accumulator = 0;
 		timeLeftOnBreak = 10;//This is the amount of time on break.
-		lobbyID = -1;
 		day = 1;
-		updateLobby = false;
 		updateShelves = false;
 		shelvesToBeBoughtFrom = new ArrayList<Tile>();
 		customerBuyItems = false;
@@ -121,7 +120,15 @@ public class CrimeAndDime extends Game {
 
 		//customers.clear();
 		//For now just generate 10 customers at random
-		int newCustomers = getNumberOfCustomers();
+		int newCustomers = 0;
+		if(gameStore.getListOfInventoryItems().size() <= 0)
+			return;
+		if(gameStore.getMarketScore() < -90){
+			newCustomers = 1;
+		}
+		else {
+			newCustomers = 10 + (gameStore.getMarketScore() / 10);
+		}
 		for(int i = 0; i < newCustomers; i++) {
 			cleanShelvesToBeBoughtFrom();
 			if(shelvesToBeBoughtFrom.isEmpty())
@@ -272,14 +279,6 @@ public class CrimeAndDime extends Game {
 	public void setUsername(String username) { this.username = username; }
 
 	public String getUsername() { return username; }
-
-	public void setUpdateLobby(boolean updateLobby) { this.updateLobby = updateLobby; }
-
-	public boolean getUpdateLobby() { return updateLobby; }
-
-	public int getLobbyID() { return lobbyID; }
-
-	public void setLobbyID(int lobbyID) { this.lobbyID = lobbyID; }
 
 	public void setShelvesToBeBoughtFrom(ArrayList<Tile> shelvesToBeBoughtFrom) { this.shelvesToBeBoughtFrom = new ArrayList<Tile>(shelvesToBeBoughtFrom); }
 

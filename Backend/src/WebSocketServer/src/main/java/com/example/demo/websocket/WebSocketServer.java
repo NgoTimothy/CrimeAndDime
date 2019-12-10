@@ -122,11 +122,12 @@ public class WebSocketServer {
     	logger.info("Entered into Close");
     	
     	String username = sessionUsernameMap.get(session);
+    	int lobbyID = sessionLobbyIDMap.get(session);
     	sessionUsernameMap.remove(session);
     	usernameSessionMap.remove(username);
-        
-    	String message= username + " has left this lobby.";
-        broadcast(message, sessionLobbyIDMap.get(session));
+    	sessionLobbyIDMap.remove(session);
+    	lobbyIDSessionMap.remove(lobbyID);
+
     }
  
     @OnError
