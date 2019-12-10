@@ -69,8 +69,7 @@ public class WebSocketClient {
     }
  
     public void sendMessage(String message) {
-        if(userSession != null)
-            this.userSession.getAsyncRemote().sendText(message);
+        this.userSession.getAsyncRemote().sendText(message);
     }
     
     public void close() throws IOException

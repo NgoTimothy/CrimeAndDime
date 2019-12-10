@@ -51,8 +51,8 @@ public class LobbyScreen implements Screen {
             ready = false;
             System.out.println(game.lobby.getNumPlayers());
         } catch (Exception e) {
-			e.printStackTrace();
-		}
+            e.printStackTrace();
+        }
     }
 
     //For testing purposes only
@@ -61,9 +61,9 @@ public class LobbyScreen implements Screen {
 		lobbyScreenService = newLobbyScreenService;
 	}
 
-	void connect() throws Exception
+    void connect() throws Exception
     {
-    	//clientEndPoint = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + lobby.getLobbyID() + "/" + username), game);
+        //clientEndPoint = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + lobby.getLobbyID() + "/" + username), game);
         //Change to line above to use the socket on server
         game.clientEndPoint = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + game.lobby.getLobbyID() + "/" + game.getUsername()), game);
         game.clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
@@ -134,7 +134,7 @@ public class LobbyScreen implements Screen {
         }
 
         for(int i = 0; i < messages.size() && i < 5; i++) {
-        	white.draw(batch, messages.get(messages.size() - i - 1), 50, i * 30 + 50);
+            white.draw(batch, messages.get(messages.size() - i - 1), 50, i * 30 + 50);
         }
         if(game.lobby.isLobbyReady())
             game.setScreen(new tileMapScreen(game));
@@ -145,7 +145,7 @@ public class LobbyScreen implements Screen {
     @Override
     public void show()
     {
-    	stage = new Stage();
+        stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         exitButton = new TextButton("X", TextButtonStyle());
         exitButton.setPosition(1100, 600);
@@ -164,7 +164,7 @@ public class LobbyScreen implements Screen {
         playButton.setPosition(1100, 50);
         playButton.addListener(new ClickListener()
         {
-        	@Override
+            @Override
             public void clicked(InputEvent event, float x, float y) {
         	    if(game.clientEndPoint != null) {
                     if(!ready) {
@@ -184,7 +184,7 @@ public class LobbyScreen implements Screen {
 
     @Override
     public void resize(int y, int x){
-    	
+
     }
 
     @Override
@@ -209,7 +209,7 @@ public class LobbyScreen implements Screen {
             e.printStackTrace();
         }
     }
-    
+
     public String leaveLobby() {
     	game.clientEndPoint.sendMessage(username + " has left this lobby.");
     	String s = lobbyScreenService.APIDelete(username);
@@ -247,7 +247,7 @@ public class LobbyScreen implements Screen {
         for(Player p : game.lobby.getPlayers())
         	System.out.println("user: " + p.getUsername());
     }
-    
+
     private TextButton.TextButtonStyle TextButtonStyle() {
 		atlas = new TextureAtlas("ui/button.pack");
 		skin = new Skin(atlas);
@@ -274,5 +274,5 @@ public class LobbyScreen implements Screen {
         }
         return true;
     }
-    
+
 }
