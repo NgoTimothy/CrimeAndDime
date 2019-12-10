@@ -1,10 +1,10 @@
 package com.mygdx.Screen;
 
+import GameClasses.Customer;
+import GameClasses.Item;
 import GameClasses.Tile;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,22 +23,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.Screen.InventoryScreen;
-import com.mygdx.Screen.ShelfScreen;
-import com.mygdx.cndt.CrimeAndDime;
-import GameClasses.Tile;
-import GameExceptions.ShelfWithNoDirectionException;
 import com.mygdx.cndt.CrimeAndDime;
 
 import java.lang.reflect.Array;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Random;
 
-import com.mygdx.entities.Customer;
+import com.mygdx.entities.CustomerSprite;
 import com.mygdx.entities.Wall;
 import org.json.JSONArray;
 import utility.WebSocketClient;
@@ -63,56 +56,62 @@ public class tileMapScreen implements Screen {
     private WebSocketClient socketClient;
     private Label clock;
     private Label day;
+    private Label playerInfo1;
+    private Label playerInfo2;
+    private Label playerInfo3;
+
 
     // Customer
     private SpriteBatch batch;
     private Sprite sprite;
 
-    private Vector2 spawnPoint = new Vector2(175,620);
+    private Vector2 spawnPoint = new Vector2(175, 620);
 
-    private Customer customer;
     private ArrayList<Wall> wallArrayList;
 
+    private ArrayList<Item> inventoryList;
+    private ArrayList<CustomerSprite> customerSpriteList;
+
     public tileMapScreen(CrimeAndDime game) {
-    	this.game = game;
+        this.game = game;
         white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
         maps = new TmxMapLoader().load("img/StoreTileMap.tmx");
         render = new OrthogonalTiledMapRenderer(maps);
         shelfMapObject = maps.getLayers().get("Shelf Object Layer").getObjects();
         shelfTileArray = new ArrayList<Tile>();
         wallArrayList = new ArrayList<Wall>(0);
+        customerSpriteList = new ArrayList<CustomerSprite>(0);
+        inventoryList = new ArrayList<Item>(0);
         batch = new SpriteBatch();
-        sprite = new Sprite(new Texture("img/sprite.png"));
-        Vector2 tempVector2 = new Vector2(625,70);
-        customer = new Customer((int) spawnPoint.x,(int) spawnPoint.y,sprite,tempVector2);
-        customer.setWallArrayList(wallArrayList);
-        customer.setPosition((int) spawnPoint.x,(int) spawnPoint.y);
+        sprite = new Sprite(new Texture("img/customers/customer1-down.png"));
+
         int i = 0;
-    	for (MapObject shelfObjects : shelfMapObject)
-        {
-    		if (shelfObjects instanceof RectangleMapObject){
+        for (MapObject shelfObjects : shelfMapObject) {
+            if (shelfObjects instanceof RectangleMapObject) {
                 if (shelfObjects.getName().equals("Shelf")) {
                     Tile shelfTile = new Tile(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY(), Tile.shelfDirection.NORTH);
                     shelfTile.setTileId(i);
                     shelfTileArray.add(shelfTile);
                     i++;
                 }
-    		}
+            }
         }
-    	try {
-    	    //socketClient = new WebSocketClient(new URI("ws://localhost:8082/websocket/" + 25 + "/" + "Tim"), game);
+        try {
+            //socketClient = new WebSocketClient(new URI("ws://localhost:8082/websocket/" + 25 + "/" + "Tim"), game);
             socketClient = new WebSocketClient(
                     new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + game.lobby.getLobbyID() + "/" + game.getUsername()), game);
             game.setOnBreak(true);
-    	    //game.setStartTimer(true);//Delete this shit
+            //game.setStartTimer(true);//Delete this shit
 
-    	} catch (Exception e) {
-    	    e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        inventoryList = game.items;
     }
 
     @Override
-    public void render(float delta){
+    public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -123,53 +122,69 @@ public class tileMapScreen implements Screen {
         stage.setDebugAll(true);
         clock.setText(timeToString(game.getHour()));
         day.setText("Day: " + Integer.toString(game.getDay()));
-        if(game.getCustomerBuyItems()) {
+        if (game.getCustomerBuyItems()) {
             game.setCustomerBuyItems(false);
             getListOfItemsOnShelves();
+            for(int i = 0; i < game.customers.size(); i++)
+            {
+                    spawnCustomerSprite((int) spawnPoint.x,(int) spawnPoint.y,sprite,game.customers.get(i).itemLocation);
+                    game.customers.remove(i);
+            }
         }
-        if(game.getUpdateShelves()) {
+        if (game.getUpdateShelves()) {
             game.setUpdateShelves(false);
             game.clearPurchasedShelves();
             updateShelves();
         }
         stage.draw();
 
+        if (!customerSpriteList.isEmpty())
+        {
+            for(int i = 0; i < customerSpriteList.size(); i++)
+            {
+                batch.setProjectionMatrix(camera.combined);
+                batch.begin();
+                customerSpriteList.get(i).draw(batch);
+                customerSpriteList.get(i).setPosition(customerSpriteList.get(i).getPosition().x, customerSpriteList.get(i).getPosition().y);
+                batch.end();
 
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        customer.draw(batch);
-        customer.setPosition(customer.getPosition().x, customer.getPosition().y);
-        batch.end();
+                for (int j = 0; j < wallArrayList.size(); j++) {
+                    Wall tempWall = wallArrayList.get(j);
+                    if (tempWall.collides(customerSpriteList.get(i).getBounds())) {
+                        customerSpriteList.get(i).stop();
+                    }
+                }
+                if (customerSpriteList.get(i).hasReachedEnd())
+                {
 
-        for (int i = 0; i < wallArrayList.size(); i++){
-            Wall tempWall = wallArrayList.get(i);
-            if (tempWall.collides(customer.getBounds())){
-                customer.stop();
+                    customerSpriteList.remove(i);
+                }
             }
         }
+
     }
 
     private void updateShelves() {
         ArrayList<Tile> tiles = (ArrayList<Tile>) game.purchasedShelves.clone();
-        for(int i = 0; i < tiles.size(); i++) {
+        for (int i = 0; i < tiles.size(); i++) {
             int index = shelfTileArray.indexOf(tiles.get(i));
-            if(index >= 0) {//If purchased tile is in array then subtract quantity of screen tile by the purchased tile
+            if (index >= 0) {//If purchased tile is in array then subtract quantity of screen tile by the purchased tile
                 shelfTileArray.get(index).getItem().subtractQuantity(tiles.get(i).getItem().getQuantity());
-                if(shelfTileArray.get(index).getItem().getQuantity() == 0)
+                if (shelfTileArray.get(index).getItem().getQuantity() == 0)
                     shelfTileArray.get(index).removeItemFromShelf();
             }
         }
     }
 
     @Override
-    public void resize(int width, int height){
+    public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
         camera.update();
     }
 
     @Override
-    public void show () {
+    public void show() {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         skin = new Skin();
@@ -185,13 +200,12 @@ public class tileMapScreen implements Screen {
         float h = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,w,h);
+        camera.setToOrtho(false, w, h);
         camera.update();
         int i = 0;
         int x = 1;
-        for (MapObject shelfObjects : shelfMapObject)
-        {
-            if (shelfObjects instanceof RectangleMapObject){
+        for (MapObject shelfObjects : shelfMapObject) {
+            if (shelfObjects instanceof RectangleMapObject) {
                 if (shelfObjects.getName().equals("Shelf")) {
 
                     Texture texture = new Texture(Gdx.files.internal("img/transparentPicture.png"));
@@ -209,7 +223,7 @@ public class tileMapScreen implements Screen {
                     });
                     i++;
                 }
-                if (shelfObjects.getName().equals("Player Info")){
+                if (shelfObjects.getName().equals("Player Info")) {
                     Label playerInfo;
                     Label.LabelStyle textStyle;
                     BitmapFont font = new BitmapFont();
@@ -217,13 +231,12 @@ public class tileMapScreen implements Screen {
                     textStyle = new Label.LabelStyle();
                     textStyle.font = font;
                     Double playerMoney = 100.00;
-                    playerInfo = new Label("Player 1 :" + game.gameStore.getBalance(),textStyle);
-                    playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                    playerInfo = new Label("Player 1 :" + game.gameStore.getBalance(), textStyle);
+                    playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY(), ((RectangleMapObject) shelfObjects).getRectangle().getWidth(), ((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                     stage.addActor(playerInfo);
                 }
             }
-            if (shelfObjects.getName().equals("DayCounter"))
-            {
+            if (shelfObjects.getName().equals("DayCounter")) {
                 Label.LabelStyle textStyle;
                 BitmapFont font = new BitmapFont();
 
@@ -232,13 +245,13 @@ public class tileMapScreen implements Screen {
 
                 day = new Label("Day: " + game.getDay(), textStyle);
 
-                day.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                day.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY(), ((RectangleMapObject) shelfObjects).getRectangle().getWidth(), ((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                 day.setAlignment(100);
                 day.setFontScale(2);
                 stage.addActor(day);
                 x += 1;
             }
-            if(shelfObjects.getName().equals("Clock")) {
+            if (shelfObjects.getName().equals("Clock")) {
                 Label.LabelStyle textStyle;
                 BitmapFont font = new BitmapFont();
 
@@ -247,28 +260,46 @@ public class tileMapScreen implements Screen {
 
                 clock = new Label(timeToString(game.getHour()), textStyle);
 
-                clock.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                clock.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY(), ((RectangleMapObject) shelfObjects).getRectangle().getWidth(), ((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                 clock.setAlignment(100);
                 clock.setFontScale(2);
                 stage.addActor(clock);
                 x = x + 1;
             }
-            if (shelfObjects.getName().equals("Opponent Info")){
-                Label playerInfo;
+            if (shelfObjects.getName().equals("Opponent Info 1")){
                 Label.LabelStyle textStyle;
                 BitmapFont font = new BitmapFont();
-
                 textStyle = new Label.LabelStyle();
                 textStyle.font = font;
-                Double playerMoney = 100.00;
-                playerInfo = new Label("Opponent 1 :" + playerMoney,textStyle);
-                playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
-                stage.addActor(playerInfo);
+                Double playerMoney = 9999.99;  
+                playerInfo1 = new Label("Opponent 1: " + playerMoney,textStyle);
+                playerInfo1.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                stage.addActor(playerInfo1);
             }
-            if (shelfObjects.getName().equals("BLOCKED")){
+            if (shelfObjects.getName().equals("Opponent Info 2")){
+                Label.LabelStyle textStyle;
+                BitmapFont font = new BitmapFont();
+                textStyle = new Label.LabelStyle();
+                textStyle.font = font;
+                Double playerMoney = 9999.99;
+                playerInfo2 = new Label("Opponent 2: " + playerMoney,textStyle);
+                playerInfo2.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                stage.addActor(playerInfo2);
+            }
+            if (shelfObjects.getName().equals("Opponent Info 3")){
+                Label.LabelStyle textStyle;
+                BitmapFont font = new BitmapFont();
+                textStyle = new Label.LabelStyle();
+                textStyle.font = font;
+                Double playerMoney = 9999.99;
+                playerInfo3 = new Label("Opponent 3: " + playerMoney,textStyle);
+                playerInfo3.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                stage.addActor(playerInfo3);
+            }
+
+            if (shelfObjects.getName().equals("BLOCKED")) {
                 wallArrayList.add(new Wall((RectangleMapObject) shelfObjects));
 
-                // Temp code
                 Texture texture = new Texture(Gdx.files.internal("img/transparentPicture.png"));
                 Image shelfImage = new Image(texture);
                 shelfImage.setPosition(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY());
@@ -286,7 +317,7 @@ public class tileMapScreen implements Screen {
             textStyle = new Label.LabelStyle();
             textStyle.font = font;
             Double playerMoney = 100.00;
-            playerInfo = new Label("Inventory",textStyle);
+            playerInfo = new Label("Inventory", textStyle);
             playerInfo.setBounds(1100, 20, 100, 50);
             stage.addActor(playerInfo);
             playerInfo.addListener(new ClickListener() {
@@ -303,12 +334,14 @@ public class tileMapScreen implements Screen {
     public void pause() {
 
     }
+
     @Override
     public void resume() {
 
     }
+
     @Override
-    public void hide(){
+    public void hide() {
         //maps.dispose();
     }
 
@@ -322,16 +355,15 @@ public class tileMapScreen implements Screen {
     private String timeToString(int hour) {
         String AMOrPM = "AM";
         int timeOfDay = hour;
-        if(timeOfDay > 12) {
+        if (timeOfDay > 12) {
             timeOfDay -= 12;
             AMOrPM = "PM";
         }
-        if(hour >= closingTime && game.getStartTimer()) {
+        if (hour >= closingTime && game.getStartTimer()) {
             //sendShelfListToServer();
             game.setStartTimer(false);
             socketClient.sendMessage("sendMyMoney " + game.gameStore.getBalance());
-        }
-        else if(!game.getStartTimer() && game.getNextDay()) {
+        } else if (!game.getStartTimer() && game.getNextDay()) {
             try {
                 Thread.sleep(500);
                 game.advanceDay();
@@ -356,8 +388,8 @@ public class tileMapScreen implements Screen {
 
     public ArrayList<Tile> getListOfItemsOnShelves() {
         ArrayList<Tile> tileArr = new ArrayList<>();
-        for(int i = 0; i < shelfTileArray.size(); i++) {
-            if(shelfTileArray.get(i).getItem() != null) {
+        for (int i = 0; i < shelfTileArray.size(); i++) {
+            if (shelfTileArray.get(i).getItem() != null && shelfTileArray.get(i).getItem().getQuantity() != 0 ) {
                 tileArr.add(shelfTileArray.get(i));
             }
         }
@@ -365,7 +397,10 @@ public class tileMapScreen implements Screen {
         return tileArr;
     }
 
-    public Customer getCustomerTestCollsion(){
-        return customer;
+    public void spawnCustomerSprite(int x, int y, Sprite sprite, Vector2 vector2) {
+        CustomerSprite tempCustomerSprite = new CustomerSprite((int) spawnPoint.x, (int) spawnPoint.y, sprite, vector2);
+        tempCustomerSprite.setWallArrayList(wallArrayList);
+        tempCustomerSprite.setPosition((int) spawnPoint.x, (int) spawnPoint.y);
+        customerSpriteList.add(tempCustomerSprite);
     }
 }

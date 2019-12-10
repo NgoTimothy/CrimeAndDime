@@ -269,4 +269,5 @@ public class Store {
     public void setCrime(int crime) {
         this.crime = crime;
     }
+
 }
