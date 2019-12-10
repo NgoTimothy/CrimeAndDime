@@ -25,7 +25,9 @@ public class CustomerSprite extends Sprite{
     public String curDirection;
 
     private boolean hasCollided = false;
+    private boolean remove = false;
     private ArrayList<Wall> walls;
+    private Vector2 endVector = new Vector2(870, 620);
 
     public CustomerSprite(int x, int y, Sprite sprite, Vector2 targetPosition){
         super(sprite);
@@ -69,29 +71,34 @@ public class CustomerSprite extends Sprite{
     }
 
     public void updateMovement(float dt){
+
         switch (isValidMovement()){
             case 1:
                 velocity.y = MOVEMENT * dt;
                 position.set(position.x, position.y - velocity.y);
                 hasReachedTargetPosition();
+                hasReachedEnd();
                 curDirection = "Down";
                 break;
             case 2:
                 velocity.x = MOVEMENT * dt;
                 position.set(position.x - velocity.x, position.y);
                 hasReachedTargetPosition();
+                hasReachedEnd();
                 curDirection = "Right";
                 break;
             case 3:
                 velocity.x = MOVEMENT * dt;
                 position.set(position.x + velocity.x, position.y);
                 hasReachedTargetPosition();
+                hasReachedEnd();
                 curDirection = "Left";
                 break;
             case 4:
                 velocity.y = MOVEMENT * dt;
                 position.set(position.x, position.y + velocity.y);
                 hasReachedTargetPosition();
+                hasReachedEnd();
                 curDirection = "Up";
                 break;
             default:
@@ -169,8 +176,21 @@ public class CustomerSprite extends Sprite{
             {
                 Vector2 endVector = new Vector2(870, 620);
                 targetPosition = endVector;
-                System.out.println("Hit Target");
+           //     System.out.println("Hit Target");
             }
         }
     }
+
+    public boolean hasReachedEnd(){
+        if ((int) (endVector.x - position.x) == 0)
+        {
+            if ((int) (endVector.y - position.y) == 0)
+            {
+               remove = true;
+               return remove;
+            }
+        }
+        return false;
+    }
+
 }

@@ -67,7 +67,10 @@ public class tileMapScreen implements Screen {
     private ArrayList<Wall> wallArrayList;
     private ArrayList<Customer> customerArrayList;
     private ArrayList<String> inventoryList = new ArrayList<String>(0);
+    private ArrayList<Tile> tileArray = new ArrayList<Tile>(0);
     private boolean hasSpawned = false;
+
+    private ArrayList<CustomerSprite> customerSpriteList;
 
     public tileMapScreen(CrimeAndDime game) {
         this.game = game;
@@ -78,6 +81,7 @@ public class tileMapScreen implements Screen {
         shelfTileArray = new ArrayList<Tile>();
         wallArrayList = new ArrayList<Wall>(0);
         customerArrayList = new ArrayList<Customer>(0);
+        customerSpriteList = new ArrayList<CustomerSprite>(0);
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture("img/sprite.png"));
 
@@ -115,6 +119,8 @@ public class tileMapScreen implements Screen {
         inventoryList.add("guitar");
 
         System.out.println(inventoryList.size());
+
+
     }
 
     @Override
@@ -140,36 +146,31 @@ public class tileMapScreen implements Screen {
         }
         stage.draw();
 
-
-        //   String customerDesiredItem = inventoryList.get(randInt);
-        //   ArrayList<Item> tempDesireItemArray = new ArrayList<Item>();
-
-        //    tempDesireItemArray.add(customerDesiredItem);
-        //   Customer customer = new Customer(tempDesireItemArray, 99999.999);
-
-        ArrayList<Tile> tileArray = getListOfItemsOnShelves();
-        if(game.gameStore.storeInventory.getSize() > 0 && tileArray.size() > 0)
+        if (!customerSpriteList.isEmpty())
         {
-            spawnCustomerSprite((int) spawnPoint.x,(int) spawnPoint.y,sprite,getTargetVector());
-            tileArray.remove(0);
-            game.gameStore.setStoreInventory();
-        }
+            for(int i = 0; i < customerSpriteList.size(); i++)
+            {
+                batch.setProjectionMatrix(camera.combined);
+                batch.begin();
+                customerSpriteList.get(i).draw(batch);
+                customerSpriteList.get(i).setPosition(customerSpriteList.get(i).getPosition().x, customerSpriteList.get(i).getPosition().y);
+                batch.end();
 
-        if (hasSpawned)
-        {
-            batch.setProjectionMatrix(camera.combined);
-            batch.begin();
-            customerSprite.draw(batch);
-            customerSprite.setPosition(customerSprite.getPosition().x, customerSprite.getPosition().y);
-            batch.end();
-
-            for (int j = 0; j < wallArrayList.size(); j++) {
-                Wall tempWall = wallArrayList.get(j);
-                if (tempWall.collides(customerSprite.getBounds())) {
-                    customerSprite.stop();
+                for (int j = 0; j < wallArrayList.size(); j++) {
+                    Wall tempWall = wallArrayList.get(j);
+                    if (tempWall.collides(customerSpriteList.get(i).getBounds())) {
+                        customerSpriteList.get(i).stop();
+                    }
+                }
+                if (customerSpriteList.get(i).hasReachedEnd())
+                {
+                    System.out.println("Hello");
+                    customerSpriteList.remove(i);
+                    System.out.println("Items in shelves to be bought from : Left the door" + game.getShelvesToBeBoughtFrom().size());
                 }
             }
         }
+
     }
 
     private void updateShelves() {
@@ -203,6 +204,21 @@ public class tileMapScreen implements Screen {
         shelfButtonStyle.font = font;
         shelfButtonStyle.up = skin.getDrawable("button.up.9");
         shelfButtonStyle.down = skin.getDrawable("button.down");
+
+        getListOfItemsOnShelves();
+        System.out.println("Items in shelves to be bought from :" + game.getShelvesToBeBoughtFrom().size());
+        if(game.getShelvesToBeBoughtFrom().size() > 1)
+        {
+            spawnCustomerSprite((int) spawnPoint.x,(int) spawnPoint.y,sprite,game.getShelvesToBeBoughtFrom().get(1).getPosition());
+            shelfTileArray.get(1).removeItemFromShelf();
+            game.shelvesToBeBoughtFrom.remove(1);
+
+        }
+        if(game.getShelvesToBeBoughtFrom().size() > 0) {
+            spawnCustomerSprite((int) spawnPoint.x, (int) spawnPoint.y, sprite, game.getShelvesToBeBoughtFrom().get(0).getPosition());
+            shelfTileArray.get(0).removeItemFromShelf();
+            game.shelvesToBeBoughtFrom.remove(0);
+        }
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -391,16 +407,16 @@ public class tileMapScreen implements Screen {
         return customerSprite;
     }
 
-    public CustomerSprite spawnCustomerSprite(int x, int y, Sprite sprite, Vector2 vector2) {
-        customerSprite = new CustomerSprite((int) spawnPoint.x, (int) spawnPoint.y, sprite, vector2);
-        customerSprite.setWallArrayList(wallArrayList);
-        customerSprite.setPosition((int) spawnPoint.x, (int) spawnPoint.y);
-        hasSpawned = true;
-        return customerSprite;
+    public void spawnCustomerSprite(int x, int y, Sprite sprite, Vector2 vector2) {
+        CustomerSprite tempCustomerSprite = new CustomerSprite((int) spawnPoint.x, (int) spawnPoint.y, sprite, vector2);
+        tempCustomerSprite.setWallArrayList(wallArrayList);
+        tempCustomerSprite.setPosition((int) spawnPoint.x, (int) spawnPoint.y);
+        customerSpriteList.add(tempCustomerSprite);
     }
 
     private Vector2 getTargetVector() {
         ArrayList<Tile> tileArray = getListOfItemsOnShelves();
+        System.out.println(tileArray.size());
         for (int i = 0; i < tileArray.size(); i++) {
             Tile tempTile = tileArray.get(i);
             for(int k = 0; k < inventoryList.size(); k++)

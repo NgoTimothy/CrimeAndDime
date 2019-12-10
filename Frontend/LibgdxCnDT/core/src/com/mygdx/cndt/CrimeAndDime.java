@@ -111,10 +111,14 @@ public class CrimeAndDime extends Game {
 		accumulator = 0;
 	}
 
+
 	/**
 	 * Method will generated new customers for the day
 	 */
+
+
 	public void createCustomers() {
+	
 		//customers.clear();
 		//For now just generate 10 customers at random
 		int newCustomers = getNumberOfCustomers();
@@ -166,7 +170,9 @@ public class CrimeAndDime extends Game {
 			newCustomer.purchaseItem(customerDesiredItem);
 		}
 		updateShelves = true;
+
 	}
+
 
 	private int getNumberOfCustomers() {
 		return 2;

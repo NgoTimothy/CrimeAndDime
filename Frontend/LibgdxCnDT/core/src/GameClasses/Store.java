@@ -262,8 +262,4 @@ public class Store {
         this.crime = crime;
     }
 
-    public void setStoreInventory()
-    {
-        storeInventory = new Inventory();
-    }
 }
