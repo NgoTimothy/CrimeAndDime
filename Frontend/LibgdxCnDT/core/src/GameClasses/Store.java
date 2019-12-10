@@ -261,4 +261,9 @@ public class Store {
     public void setCrime(int crime) {
         this.crime = crime;
     }
+
+    public void setStoreInventory()
+    {
+        storeInventory = new Inventory();
+    }
 }

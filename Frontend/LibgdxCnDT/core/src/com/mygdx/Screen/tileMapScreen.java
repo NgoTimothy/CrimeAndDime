@@ -66,7 +66,8 @@ public class tileMapScreen implements Screen {
     private CustomerSprite customerSprite;
     private ArrayList<Wall> wallArrayList;
     private ArrayList<Customer> customerArrayList;
-
+    private ArrayList<String> inventoryList = new ArrayList<String>(0);
+    private boolean hasSpawned = false;
 
     public tileMapScreen(CrimeAndDime game) {
         this.game = game;
@@ -101,6 +102,19 @@ public class tileMapScreen implements Screen {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        inventoryList.add("book");
+        inventoryList.add("charger");
+        inventoryList.add("phone");
+        inventoryList.add("tv");
+        inventoryList.add("chair");
+        inventoryList.add("table");
+        inventoryList.add("apple");
+        inventoryList.add("watch");
+        inventoryList.add("gum");
+        inventoryList.add("guitar");
+
+        System.out.println(inventoryList.size());
     }
 
     @Override
@@ -126,67 +140,59 @@ public class tileMapScreen implements Screen {
         }
         stage.draw();
 
-        for (int i = 0; i < 1; i++) {
-            Vector2 targetVector = new Vector2();
-            ArrayList<Item> inventoryList = game.gameStore.getListOfInventoryItems();
-            System.out.println(inventoryList.size());
-            Random rand = new Random();
-            int randInt = rand.nextInt(7);
 
-            Item customerDesiredItem = inventoryList.get(randInt);
-            ArrayList<Item> tempDesireItemArray = new ArrayList<Item>();
-            tempDesireItemArray.add(customerDesiredItem);
-            Customer customer = new Customer(tempDesireItemArray, 99999.999);
+        //   String customerDesiredItem = inventoryList.get(randInt);
+        //   ArrayList<Item> tempDesireItemArray = new ArrayList<Item>();
 
-            ArrayList<Tile> tileArray = getListOfItemsOnShelves();
-            for (int k = 0; k < tileArray.size(); k++) {
-                Tile tempTile = tileArray.get(k);
-                if (tempDesireItemArray.get(i).equals(tempTile.getItem())) {
-                    targetVector = tempTile.getPosition();
-                } else {
-                    // Create a path for the ai to walk then leave.
-                }
-            }
-            customerSprite = new CustomerSprite((int) spawnPoint.x, (int) spawnPoint.y, sprite, targetVector);
-            customerSprite.setWallArrayList(wallArrayList);
-            customerSprite.setPosition((int) spawnPoint.x, (int) spawnPoint.y);
+        //    tempDesireItemArray.add(customerDesiredItem);
+        //   Customer customer = new Customer(tempDesireItemArray, 99999.999);
+
+        ArrayList<Tile> tileArray = getListOfItemsOnShelves();
+        if(game.gameStore.storeInventory.getSize() > 0 && tileArray.size() > 0)
+        {
+            spawnCustomerSprite((int) spawnPoint.x,(int) spawnPoint.y,sprite,getTargetVector());
+            tileArray.remove(0);
+            game.gameStore.setStoreInventory();
         }
 
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        customerSprite.draw(batch);
-        customerSprite.setPosition(customerSprite.getPosition().x, customerSprite.getPosition().y);
-        batch.end();
+        if (hasSpawned)
+        {
+            batch.setProjectionMatrix(camera.combined);
+            batch.begin();
+            customerSprite.draw(batch);
+            customerSprite.setPosition(customerSprite.getPosition().x, customerSprite.getPosition().y);
+            batch.end();
 
-        for (int i = 0; i < wallArrayList.size(); i++) {
-            Wall tempWall = wallArrayList.get(i);
-            if (tempWall.collides(customerSprite.getBounds())) {
-                customerSprite.stop();
+            for (int j = 0; j < wallArrayList.size(); j++) {
+                Wall tempWall = wallArrayList.get(j);
+                if (tempWall.collides(customerSprite.getBounds())) {
+                    customerSprite.stop();
+                }
             }
         }
     }
 
     private void updateShelves() {
         ArrayList<Tile> tiles = (ArrayList<Tile>) game.purchasedShelves.clone();
-        for(int i = 0; i < tiles.size(); i++) {
+        for (int i = 0; i < tiles.size(); i++) {
             int index = shelfTileArray.indexOf(tiles.get(i));
-            if(index >= 0) {//If purchased tile is in array then subtract quantity of screen tile by the purchased tile
+            if (index >= 0) {//If purchased tile is in array then subtract quantity of screen tile by the purchased tile
                 shelfTileArray.get(index).getItem().subtractQuantity(tiles.get(i).getItem().getQuantity());
-                if(shelfTileArray.get(index).getItem().getQuantity() == 0)
+                if (shelfTileArray.get(index).getItem().getQuantity() == 0)
                     shelfTileArray.get(index).removeItemFromShelf();
             }
         }
     }
 
     @Override
-    public void resize(int width, int height){
+    public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
         camera.update();
     }
 
     @Override
-    public void show () {
+    public void show() {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         skin = new Skin();
@@ -202,13 +208,12 @@ public class tileMapScreen implements Screen {
         float h = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,w,h);
+        camera.setToOrtho(false, w, h);
         camera.update();
         int i = 0;
         int x = 1;
-        for (MapObject shelfObjects : shelfMapObject)
-        {
-            if (shelfObjects instanceof RectangleMapObject){
+        for (MapObject shelfObjects : shelfMapObject) {
+            if (shelfObjects instanceof RectangleMapObject) {
                 if (shelfObjects.getName().equals("Shelf")) {
 
                     Texture texture = new Texture(Gdx.files.internal("img/transparentPicture.png"));
@@ -226,7 +231,7 @@ public class tileMapScreen implements Screen {
                     });
                     i++;
                 }
-                if (shelfObjects.getName().equals("Player Info")){
+                if (shelfObjects.getName().equals("Player Info")) {
                     Label playerInfo;
                     Label.LabelStyle textStyle;
                     BitmapFont font = new BitmapFont();
@@ -234,13 +239,12 @@ public class tileMapScreen implements Screen {
                     textStyle = new Label.LabelStyle();
                     textStyle.font = font;
                     Double playerMoney = 100.00;
-                    playerInfo = new Label("Player 1 :" + game.gameStore.getBalance(),textStyle);
-                    playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                    playerInfo = new Label("Player 1 :" + game.gameStore.getBalance(), textStyle);
+                    playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY(), ((RectangleMapObject) shelfObjects).getRectangle().getWidth(), ((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                     stage.addActor(playerInfo);
                 }
             }
-            if (shelfObjects.getName().equals("DayCounter"))
-            {
+            if (shelfObjects.getName().equals("DayCounter")) {
                 Label.LabelStyle textStyle;
                 BitmapFont font = new BitmapFont();
 
@@ -249,13 +253,13 @@ public class tileMapScreen implements Screen {
 
                 day = new Label("Day: " + game.getDay(), textStyle);
 
-                day.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                day.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY(), ((RectangleMapObject) shelfObjects).getRectangle().getWidth(), ((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                 day.setAlignment(100);
                 day.setFontScale(2);
                 stage.addActor(day);
                 x += 1;
             }
-            if(shelfObjects.getName().equals("Clock")) {
+            if (shelfObjects.getName().equals("Clock")) {
                 Label.LabelStyle textStyle;
                 BitmapFont font = new BitmapFont();
 
@@ -264,13 +268,13 @@ public class tileMapScreen implements Screen {
 
                 clock = new Label(timeToString(game.getHour()), textStyle);
 
-                clock.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                clock.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY(), ((RectangleMapObject) shelfObjects).getRectangle().getWidth(), ((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                 clock.setAlignment(100);
                 clock.setFontScale(2);
                 stage.addActor(clock);
                 x = x + 1;
             }
-            if (shelfObjects.getName().equals("Opponent Info")){
+            if (shelfObjects.getName().equals("Opponent Info")) {
                 Label playerInfo;
                 Label.LabelStyle textStyle;
                 BitmapFont font = new BitmapFont();
@@ -278,11 +282,11 @@ public class tileMapScreen implements Screen {
                 textStyle = new Label.LabelStyle();
                 textStyle.font = font;
                 Double playerMoney = 100.00;
-                playerInfo = new Label("Opponent 1 :" + playerMoney,textStyle);
-                playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                playerInfo = new Label("Opponent 1 :" + playerMoney, textStyle);
+                playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY(), ((RectangleMapObject) shelfObjects).getRectangle().getWidth(), ((RectangleMapObject) shelfObjects).getRectangle().getHeight());
                 stage.addActor(playerInfo);
             }
-            if (shelfObjects.getName().equals("BLOCKED")){
+            if (shelfObjects.getName().equals("BLOCKED")) {
                 wallArrayList.add(new Wall((RectangleMapObject) shelfObjects));
 
                 // Temp code
@@ -303,7 +307,7 @@ public class tileMapScreen implements Screen {
             textStyle = new Label.LabelStyle();
             textStyle.font = font;
             Double playerMoney = 100.00;
-            playerInfo = new Label("Inventory",textStyle);
+            playerInfo = new Label("Inventory", textStyle);
             playerInfo.setBounds(1100, 20, 100, 50);
             stage.addActor(playerInfo);
             playerInfo.addListener(new ClickListener() {
@@ -320,12 +324,14 @@ public class tileMapScreen implements Screen {
     public void pause() {
 
     }
+
     @Override
     public void resume() {
 
     }
+
     @Override
-    public void hide(){
+    public void hide() {
         //maps.dispose();
     }
 
@@ -339,16 +345,15 @@ public class tileMapScreen implements Screen {
     private String timeToString(int hour) {
         String AMOrPM = "AM";
         int timeOfDay = hour;
-        if(timeOfDay > 12) {
+        if (timeOfDay > 12) {
             timeOfDay -= 12;
             AMOrPM = "PM";
         }
-        if(hour >= closingTime && game.getStartTimer()) {
+        if (hour >= closingTime && game.getStartTimer()) {
             //sendShelfListToServer();
             game.setStartTimer(false);
             socketClient.sendMessage("sendMyMoney " + game.gameStore.getBalance());
-        }
-        else if(!game.getStartTimer() && game.getNextDay()) {
+        } else if (!game.getStartTimer() && game.getNextDay()) {
             try {
                 Thread.sleep(500);
                 game.advanceDay();
@@ -373,8 +378,8 @@ public class tileMapScreen implements Screen {
 
     public ArrayList<Tile> getListOfItemsOnShelves() {
         ArrayList<Tile> tileArr = new ArrayList<>();
-        for(int i = 0; i < shelfTileArray.size(); i++) {
-            if(shelfTileArray.get(i).getItem() != null) {
+        for (int i = 0; i < shelfTileArray.size(); i++) {
+            if (shelfTileArray.get(i).getItem() != null) {
                 tileArr.add(shelfTileArray.get(i));
             }
         }
@@ -382,7 +387,33 @@ public class tileMapScreen implements Screen {
         return tileArr;
     }
 
-    public CustomerSprite getCustomerTestCollsion(){
+    public CustomerSprite getCustomerTestCollsion() {
         return customerSprite;
+    }
+
+    public CustomerSprite spawnCustomerSprite(int x, int y, Sprite sprite, Vector2 vector2) {
+        customerSprite = new CustomerSprite((int) spawnPoint.x, (int) spawnPoint.y, sprite, vector2);
+        customerSprite.setWallArrayList(wallArrayList);
+        customerSprite.setPosition((int) spawnPoint.x, (int) spawnPoint.y);
+        hasSpawned = true;
+        return customerSprite;
+    }
+
+    private Vector2 getTargetVector() {
+        ArrayList<Tile> tileArray = getListOfItemsOnShelves();
+        for (int i = 0; i < tileArray.size(); i++) {
+            Tile tempTile = tileArray.get(i);
+            for(int k = 0; k < inventoryList.size(); k++)
+            {
+                String tempString = inventoryList.get(k);
+                if (tempTile.getItem().getName().equals(tempString)) {
+                    Vector2 targetVector = tempTile.getPosition();
+                    return targetVector;
+                } else {
+                    break;
+                }
+            }
+        }
+        return null;
     }
 }

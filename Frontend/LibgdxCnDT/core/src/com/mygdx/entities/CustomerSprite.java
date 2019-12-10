@@ -95,8 +95,8 @@ public class CustomerSprite extends Sprite{
                 curDirection = "Up";
                 break;
             default:
-                System.out.println(isValidMovement());
-                System.out.println("It should never get to this????");
+         //       System.out.println(isValidMovement());
+        //        System.out.println("It should never get to this????");
                 break;
         }
     }
