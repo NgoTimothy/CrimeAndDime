@@ -56,6 +56,10 @@ public class tileMapScreen implements Screen {
     private WebSocketClient socketClient;
     private Label clock;
     private Label day;
+    private Label playerInfo1;
+    private Label playerInfo2;
+    private Label playerInfo3;
+
 
     // Customer
     private SpriteBatch batch;
@@ -192,13 +196,6 @@ public class tileMapScreen implements Screen {
         shelfButtonStyle.up = skin.getDrawable("button.up.9");
         shelfButtonStyle.down = skin.getDrawable("button.down");
 
-        /*
-        if(game.getShelvesToBeBoughtFrom().size() > 0) {
-            spawnCustomerSprite((int) spawnPoint.x, (int) spawnPoint.y, sprite, game.getShelvesToBeBoughtFrom().get(0).getPosition());
-            game.shelvesToBeBoughtFrom.remove(0);
-        }
-        */
-
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
@@ -269,18 +266,37 @@ public class tileMapScreen implements Screen {
                 stage.addActor(clock);
                 x = x + 1;
             }
-            if (shelfObjects.getName().equals("Opponent Info")) {
-                Label playerInfo;
+            if (shelfObjects.getName().equals("Opponent Info 1")){
                 Label.LabelStyle textStyle;
                 BitmapFont font = new BitmapFont();
-
                 textStyle = new Label.LabelStyle();
                 textStyle.font = font;
-                Double playerMoney = 100.00;
-                playerInfo = new Label("Opponent 1 :" + playerMoney, textStyle);
-                playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY(), ((RectangleMapObject) shelfObjects).getRectangle().getWidth(), ((RectangleMapObject) shelfObjects).getRectangle().getHeight());
-                stage.addActor(playerInfo);
+                Double playerMoney = 9999.99;  
+                playerInfo1 = new Label("Opponent 1: " + playerMoney,textStyle);
+                playerInfo1.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                stage.addActor(playerInfo1);
             }
+            if (shelfObjects.getName().equals("Opponent Info 2")){
+                Label.LabelStyle textStyle;
+                BitmapFont font = new BitmapFont();
+                textStyle = new Label.LabelStyle();
+                textStyle.font = font;
+                Double playerMoney = 9999.99;
+                playerInfo2 = new Label("Opponent 2: " + playerMoney,textStyle);
+                playerInfo2.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                stage.addActor(playerInfo2);
+            }
+            if (shelfObjects.getName().equals("Opponent Info 3")){
+                Label.LabelStyle textStyle;
+                BitmapFont font = new BitmapFont();
+                textStyle = new Label.LabelStyle();
+                textStyle.font = font;
+                Double playerMoney = 9999.99;
+                playerInfo3 = new Label("Opponent 3: " + playerMoney,textStyle);
+                playerInfo3.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                stage.addActor(playerInfo3);
+            }
+
             if (shelfObjects.getName().equals("BLOCKED")) {
                 wallArrayList.add(new Wall((RectangleMapObject) shelfObjects));
 
