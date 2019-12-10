@@ -72,6 +72,7 @@ public class LobbyScreen implements Screen {
                     	if (message.contains("has joined this lobby.") || message.contains("has left this lobby."))
                     	{
                     		fillUsers();
+                    		messages.add(message);
                     		ready = false;
                     	}
                     	else if(message.contains("is not ready")) {
@@ -88,9 +89,8 @@ public class LobbyScreen implements Screen {
                                 	game.lobby.getPlayers().get(i).setIsReady(true);
                             }
                         }
-                        messages.add(message);
-                        if(game.lobby.isLobbyReady())
-                            game.setScreen(new tileMapScreen(game));
+                        else
+                        	messages.add(message);
                     }
                 });
         game.clientEndPoint.sendMessage(username + " has joined this lobby.");
@@ -136,6 +136,8 @@ public class LobbyScreen implements Screen {
         for(int i = 0; i < messages.size() && i < 5; i++) {
         	white.draw(batch, messages.get(messages.size() - i - 1), 50, i * 30 + 50);
         }
+        if(game.lobby.isLobbyReady())
+            game.setScreen(new tileMapScreen(game));
         batch.end();       
     }
 
@@ -153,7 +155,6 @@ public class LobbyScreen implements Screen {
         {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	leaveLobby();
                 game.setScreen(new Lobbies(game));
             }
         });
@@ -211,9 +212,9 @@ public class LobbyScreen implements Screen {
     
     public String leaveLobby() {
     	game.clientEndPoint.sendMessage(username + " has left this lobby.");
+    	String s = lobbyScreenService.APIDelete(username);
     	if (game.lobby.getNumPlayers() <= 1)
     		lobbyScreenService.APIDeleteLobby(game.lobby.getLobbyID());
-    	String s = lobbyScreenService.APIDelete(username);
     	return s;
     }
 
