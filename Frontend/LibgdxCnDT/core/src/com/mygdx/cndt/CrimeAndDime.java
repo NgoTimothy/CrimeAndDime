@@ -54,7 +54,6 @@ public class CrimeAndDime extends Game {
 	@Override
 	public void create() {
 		gameStore = new Store("My Store");
-		tileMap = new tileMapScreen(this);
 		CrimeAndDimeService newService = new CrimeAndDimeService();
 		createItems(newService);
 		customers = new ArrayList<Customer>();
@@ -117,7 +116,6 @@ public class CrimeAndDime extends Game {
 
 
 	public void createCustomers() {
-
 		//customers.clear();
 		//For now just generate 10 customers at random
 		int newCustomers = 0;
@@ -127,7 +125,8 @@ public class CrimeAndDime extends Game {
 			newCustomers = 1;
 		}
 		else {
-			newCustomers = 10 + (gameStore.getMarketScore() / 10);
+			newCustomers = getNumberOfCustomers();
+			//newCustomers = 10 + (gameStore.getMarketScore() / 10);
 		}
 		for(int i = 0; i < newCustomers; i++) {
 			cleanShelvesToBeBoughtFrom();
@@ -179,12 +178,18 @@ public class CrimeAndDime extends Game {
 			customers.add(newCustomer);
 		}
 		updateShelves = true;
-
 	}
 
 
 	private int getNumberOfCustomers() {
-		return 2;
+		int num = 0;
+		for (int i = 1; i <= 25; i++)
+		{
+			int rand = random.nextInt(i * 10);
+			if (gameStore.marketScore > rand)
+				num++;
+		}
+		return 5 + num;
 	}
 
 	private void cleanShelvesToBeBoughtFrom() {

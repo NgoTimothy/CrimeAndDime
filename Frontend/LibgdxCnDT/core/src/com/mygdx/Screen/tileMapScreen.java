@@ -26,14 +26,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.cndt.CrimeAndDime;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Random;
 
 import com.mygdx.entities.CustomerSprite;
 import com.mygdx.entities.Wall;
 import org.json.JSONArray;
+
+import utility.Player;
 import utility.WebSocketClient;
 
 public class tileMapScreen implements Screen {
@@ -53,12 +57,10 @@ public class tileMapScreen implements Screen {
     public ArrayList<Tile> shelfTileArray;
     private CrimeAndDime game;
     private MapObjects shelfMapObject;
-    private WebSocketClient socketClient;
     private Label clock;
     private Label day;
-    private Label playerInfo1;
-    private Label playerInfo2;
-    private Label playerInfo3;
+    Label playerInfo;
+    private Label[] playerLabels;
 
 
     // Customer
@@ -73,6 +75,7 @@ public class tileMapScreen implements Screen {
     private ArrayList<CustomerSprite> customerSpriteList;
 
     public tileMapScreen(CrimeAndDime game) {
+    	game.tileMap = this;
         this.game = game;
         white = new BitmapFont(Gdx.files.internal("font/WhiteFNT.fnt"), false);
         maps = new TmxMapLoader().load("img/StoreTileMap.tmx");
@@ -84,6 +87,13 @@ public class tileMapScreen implements Screen {
         inventoryList = new ArrayList<Item>(0);
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture("img/customers/customer1-down.png"));
+        playerLabels = new Label[3];
+        Label.LabelStyle textStyle;
+        BitmapFont font = new BitmapFont();
+
+        textStyle = new Label.LabelStyle();
+        textStyle.font = font;
+        playerInfo = new Label("Player 1 :" + game.gameStore.getBalance(), textStyle);
 
         int i = 0;
         for (MapObject shelfObjects : shelfMapObject) {
@@ -95,11 +105,19 @@ public class tileMapScreen implements Screen {
                     i++;
                 }
             }
+            for(int j = 0; j < 3; j++)
+            {
+            	if (shelfObjects.getName().equals("Opponent Info " + (j + 1))){
+                    playerLabels[j] = new Label("",textStyle);
+                    playerLabels[j].setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
+                    break;
+                }
+            }
         }
         try {
             //socketClient = new WebSocketClient(new URI("ws://localhost:8082/websocket/" + 25 + "/" + "Tim"), game);
-            socketClient = new WebSocketClient(
-                    new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + game.lobby.getLobbyID() + "/" + game.getUsername()), game);
+            //game.clientEndPoint = new WebSocketClient(new URI("ws://coms-309-tc-3.misc.iastate.edu:8080/websocket/" + game.lobby.getLobbyID() + "/" + game.getUsername()), game);
+
             game.setOnBreak(true);
             //game.setStartTimer(true);//Delete this shit
 
@@ -129,6 +147,7 @@ public class tileMapScreen implements Screen {
             {
                     spawnCustomerSprite((int) spawnPoint.x,(int) spawnPoint.y,sprite,game.customers.get(i).itemLocation);
                     game.customers.remove(i);
+                    updatePlayerInfo();
             }
         }
         if (game.getUpdateShelves()) {
@@ -161,10 +180,10 @@ public class tileMapScreen implements Screen {
                 }
             }
         }
-
     }
 
     private void updateShelves() {
+    	/*
         ArrayList<Tile> tiles = (ArrayList<Tile>) game.purchasedShelves.clone();
         for (int i = 0; i < tiles.size(); i++) {
             int index = shelfTileArray.indexOf(tiles.get(i));
@@ -174,6 +193,7 @@ public class tileMapScreen implements Screen {
                     shelfTileArray.get(index).removeItemFromShelf();
             }
         }
+        */
     }
 
     @Override
@@ -185,6 +205,34 @@ public class tileMapScreen implements Screen {
 
     @Override
     public void show() {
+    	try {
+			game.clientEndPoint = new WebSocketClient(new URI("ws://localhost:8080/websocket/" + game.lobby.getLobbyID() + "/" + game.getUsername()), game);
+			final String username = game.getUsername();
+	        game.clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
+	            @Override
+				public void handleMessage(String message) {
+	            	if (message.contains("money"))
+	            	{
+	            		String[] tokens = message.split(":");
+	            		if (!tokens[1].contains(game.getUsername()))
+	            		{
+		            		for(int i = 0; i < playerLabels.length; i++)
+		            		{
+		            			if (playerLabels[i].getText().toString().equals("") || playerLabels[i].getText().toString().contains(tokens[1]))
+		            			{
+		            				playerLabels[i].setText(tokens[1] + ": " + tokens[2]);
+		            				break;
+		            			}
+		            		}
+	            		}
+	            	}
+	            }
+	        });
+	        updatePlayerInfo();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         skin = new Skin();
@@ -223,18 +271,6 @@ public class tileMapScreen implements Screen {
                     });
                     i++;
                 }
-                if (shelfObjects.getName().equals("Player Info")) {
-                    Label playerInfo;
-                    Label.LabelStyle textStyle;
-                    BitmapFont font = new BitmapFont();
-
-                    textStyle = new Label.LabelStyle();
-                    textStyle.font = font;
-                    Double playerMoney = 100.00;
-                    playerInfo = new Label("Player 1 :" + game.gameStore.getBalance(), textStyle);
-                    playerInfo.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(), ((RectangleMapObject) shelfObjects).getRectangle().getY(), ((RectangleMapObject) shelfObjects).getRectangle().getWidth(), ((RectangleMapObject) shelfObjects).getRectangle().getHeight());
-                    stage.addActor(playerInfo);
-                }
             }
             if (shelfObjects.getName().equals("DayCounter")) {
                 Label.LabelStyle textStyle;
@@ -266,37 +302,13 @@ public class tileMapScreen implements Screen {
                 stage.addActor(clock);
                 x = x + 1;
             }
-            if (shelfObjects.getName().equals("Opponent Info 1")){
-                Label.LabelStyle textStyle;
-                BitmapFont font = new BitmapFont();
-                textStyle = new Label.LabelStyle();
-                textStyle.font = font;
-                Double playerMoney = 9999.99;  
-                playerInfo1 = new Label("Opponent 1: " + playerMoney,textStyle);
-                playerInfo1.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
-                stage.addActor(playerInfo1);
+            for(int j = 0; j < 3; j++)
+            {
+            	if (shelfObjects.getName().equals("Opponent Info " + (j + 1))){
+                    stage.addActor(playerLabels[j]);
+                    break;
+                }
             }
-            if (shelfObjects.getName().equals("Opponent Info 2")){
-                Label.LabelStyle textStyle;
-                BitmapFont font = new BitmapFont();
-                textStyle = new Label.LabelStyle();
-                textStyle.font = font;
-                Double playerMoney = 9999.99;
-                playerInfo2 = new Label("Opponent 2: " + playerMoney,textStyle);
-                playerInfo2.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
-                stage.addActor(playerInfo2);
-            }
-            if (shelfObjects.getName().equals("Opponent Info 3")){
-                Label.LabelStyle textStyle;
-                BitmapFont font = new BitmapFont();
-                textStyle = new Label.LabelStyle();
-                textStyle.font = font;
-                Double playerMoney = 9999.99;
-                playerInfo3 = new Label("Opponent 3: " + playerMoney,textStyle);
-                playerInfo3.setBounds(((RectangleMapObject) shelfObjects).getRectangle().getX(),((RectangleMapObject) shelfObjects).getRectangle().getY(),((RectangleMapObject) shelfObjects).getRectangle().getWidth(),((RectangleMapObject) shelfObjects).getRectangle().getHeight());
-                stage.addActor(playerInfo3);
-            }
-
             if (shelfObjects.getName().equals("BLOCKED")) {
                 wallArrayList.add(new Wall((RectangleMapObject) shelfObjects));
 
@@ -308,25 +320,41 @@ public class tileMapScreen implements Screen {
 
                 stage.addActor(shelfImage);
             }
-
-            Label playerInfo;
-            Label.LabelStyle textStyle;
-            BitmapFont font = new BitmapFont();
-            textStyle = new Label.LabelStyle();
-            textStyle.font = font;
-            textStyle = new Label.LabelStyle();
-            textStyle.font = font;
-            Double playerMoney = 100.00;
-            playerInfo = new Label("Inventory", textStyle);
-            playerInfo.setBounds(1100, 20, 100, 50);
-            stage.addActor(playerInfo);
-            playerInfo.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    game.setScreen(new InventoryScreen(game));
-                }
-            });
         }
+        
+        Label.LabelStyle textStyle;
+        BitmapFont font = new BitmapFont();
+        textStyle = new Label.LabelStyle();
+        textStyle.font = font;
+        textStyle = new Label.LabelStyle();
+        textStyle.font = font;
+        Label inventoryLabel = new Label("Inventory", textStyle);
+        inventoryLabel.setBounds(1100, 20, 75, 50);
+        stage.addActor(inventoryLabel);
+        inventoryLabel.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new InventoryScreen(game));
+            }
+        });
+        
+        playerInfo = new Label(game.getUsername() + " :" + game.gameStore.getBalance(), textStyle);
+        playerInfo.setBounds(1120, 585, 120, 30);
+        stage.addActor(playerInfo);
+        
+        Texture texture = new Texture(Gdx.files.internal("img/marketing.png"));
+        Image image = new Image(texture);
+        image.setPosition(1200, 20);
+        image.setSize(50, 50);
+        image.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.gameStore.addBalance(-10);
+                updatePlayerInfo();
+                game.gameStore.marketScore =  game.gameStore.marketScore + 1;
+            }
+        });
+        stage.addActor(image);
     }
 
 
@@ -343,13 +371,24 @@ public class tileMapScreen implements Screen {
     @Override
     public void hide() {
         //maps.dispose();
+    	try {
+			game.clientEndPoint.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     @Override
     public void dispose() {
         maps.dispose();
         render.dispose();
-        game = null;
+        try {
+			game.clientEndPoint.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     private String timeToString(int hour) {
@@ -362,7 +401,6 @@ public class tileMapScreen implements Screen {
         if (hour >= closingTime && game.getStartTimer()) {
             //sendShelfListToServer();
             game.setStartTimer(false);
-            socketClient.sendMessage("sendMyMoney " + game.gameStore.getBalance());
         } else if (!game.getStartTimer() && game.getNextDay()) {
             try {
                 Thread.sleep(500);
@@ -378,7 +416,6 @@ public class tileMapScreen implements Screen {
         JSONArray sendToServerArray = listToJSON();
         String msg = "storeInfo" + sendToServerArray.toString().replace("\\", "");
         msg = msg.replace("[", "");
-        socketClient.sendMessage(msg);
     }
 
     private JSONArray listToJSON() {
@@ -402,5 +439,11 @@ public class tileMapScreen implements Screen {
         tempCustomerSprite.setWallArrayList(wallArrayList);
         tempCustomerSprite.setPosition((int) spawnPoint.x, (int) spawnPoint.y);
         customerSpriteList.add(tempCustomerSprite);
+    }
+    
+    public void updatePlayerInfo()
+    {
+    	playerInfo.setText(game.getUsername() + ": " + game.gameStore.getBalance());
+    	game.clientEndPoint.sendMessage("money:" + game.getUsername() + ":" + game.gameStore.getBalance());
     }
 }
