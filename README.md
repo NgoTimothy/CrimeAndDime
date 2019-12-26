@@ -11,4 +11,6 @@ like marketing or they can be decreased by other stores attacks (Crime).
 
 The frontend was written in Java and used LIBGDX. 
 The backend was also written in Java and leveraged websockets and REST API's.
-The database used MySQL. 
+For databasing, we used MySQL.
+Testing used JUnit, Mockito and Faker.
+A CI/CD pipeline was implemented using GitLab's CI/CD tooling. 
