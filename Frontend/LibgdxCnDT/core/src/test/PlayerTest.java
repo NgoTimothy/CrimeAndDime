@@ -1,4 +1,4 @@
-package test;
+/*package test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -37,4 +37,4 @@ public class PlayerTest {
     	player.readyPlayer();
     	assertTrue(player.isReady());
     }
-}
+}*/
