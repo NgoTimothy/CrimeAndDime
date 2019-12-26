@@ -1,12 +1,14 @@
 package com.mygdx.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.btree.decorator.Random;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
+import static com.badlogic.gdx.math.MathUtils.random;
 
 public class CustomerSprite extends Sprite{
 
@@ -16,6 +18,7 @@ public class CustomerSprite extends Sprite{
     private float velocity;
     private Vector2 targetPosition;
     private Rectangle bounds;
+    private int spriteNum;
 
     public String curDirection;
 
@@ -25,6 +28,8 @@ public class CustomerSprite extends Sprite{
 
     public CustomerSprite(int x, int y, Sprite sprite, Vector2 targetPosition){
         super(new Sprite(new Texture("img/customers/customer1-right.png")));
+        spriteNum = random.nextInt(6) + 1;
+        setTexture(new Texture("img/customers/customer"+ spriteNum + "-down.png"));
         position = new Vector2(x,y);
        // velocity = new Vector2(0,0);
         this.targetPosition = targetPosition;
@@ -71,28 +76,28 @@ public class CustomerSprite extends Sprite{
                     hasReachedTargetPosition();
                     hasReachedEnd();
                     curDirection = "Down";
-                    setTexture(new Texture("img/customers/customer1-down.png"));
+                    setTexture(new Texture("img/customers/customer"+ spriteNum + "-down.png"));
                     break;
                 case 2:
                     position.set(position.x - 1, position.y);
                     hasReachedTargetPosition();
                     hasReachedEnd();
                     curDirection = "Left";
-                    setTexture(new Texture("img/customers/customer1-left.png"));
+                    setTexture(new Texture("img/customers/customer"+ spriteNum + "-left.png"));
                     break;
                 case 3:
                     position.set(position.x + 1, position.y);
                     hasReachedTargetPosition();
                     hasReachedEnd();
                     curDirection = "Right";
-                    setTexture(new Texture("img/customers/customer1-right.png"));
+                    setTexture(new Texture("img/customers/customer"+ spriteNum + "-right.png"));
                     break;
                 case 4:
                     position.set(position.x, position.y + 1);
                     hasReachedTargetPosition();
                     hasReachedEnd();
                     curDirection = "Up";
-                    setTexture(new Texture("img/customers/customer1-up.png"));
+                    setTexture(new Texture("img/customers/customer"+ spriteNum + "-up.png"));
                     break;
                 default:
                     break;
