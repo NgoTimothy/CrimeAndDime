@@ -1,4 +1,4 @@
-# TC_3_CrimeDime Tycoon
+CrimeAndDime Tycoon
 
 CrimeAndDime is a tycoon game that was made with 3 other people for a school project.
 The goal of the game is to have the most amount of money out of your competitors
